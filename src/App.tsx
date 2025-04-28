@@ -5,6 +5,13 @@ import { ParallaxProvider } from "react-scroll-parallax";
 import { CssBaseline, ThemeProvider as MuiThemeProvider } from "@mui/material";
 import { useThemeContext } from "./context/ThemeContext";
 import { getAppTheme } from "./theme/theme";
+import { Home } from "./pages/Home";
+import { About } from "./pages/About";
+import { Projects } from "./pages/Projects";
+import { Skills } from "./pages/Skills";
+import { Experience } from "./pages/Experience";
+import { Achievements } from "./pages/Achievements";
+import { Contact } from "./pages/Contact";
 
 function AppContent() {
   const { mode } = useThemeContext();
@@ -16,12 +23,13 @@ function AppContent() {
       <ParallaxProvider>
         <Routes>
           <Route path="/" element={<Portfolio />}>
-            <Route path="about" element={<div>About Me Page</div>} />
-            <Route path="projects" element={<div>Projects Page</div>} />
-            <Route path="skills" element={<div>Skills Page</div>} />
-            <Route path="experience" element={<div>Experience Page</div>} />
-            <Route path="achievements" element={<div>Achievements Page</div>} />
-            <Route path="contact" element={<div>Contact Page</div>} />
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="skills" element={<Skills />} />
+            <Route path="experience" element={<Experience />} />
+            <Route path="achievements" element={<Achievements />} />
+            <Route path="contact" element={<Contact />} />
           </Route>
         </Routes>
       </ParallaxProvider>
