@@ -11,9 +11,7 @@ interface SkillItemProps {
   color: string;
 }
 
-const SkillItem = ({ name, level, color }: SkillItemProps) => {
-  const theme = useTheme();
-  
+const SkillItem = ({ name, level, color }: SkillItemProps) => {  
   return (
     <Box sx={{ mb: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
@@ -167,7 +165,7 @@ export const Skills = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        // minHeight: '100vh',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
