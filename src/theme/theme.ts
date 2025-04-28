@@ -8,43 +8,75 @@ const getThemeOptions = (mode: PaletteMode): ThemeOptions => ({
       ? {
           // Light mode
           primary: {
-            main: '#6200ea',
-            light: '#9d46ff',
-            dark: '#0a00b6',
+            main: '#FF3366',
+            light: '#FF6B9F',
+            dark: '#CC295F',
           },
           secondary: {
-            main: '#ff4081',
-            light: '#ff79b0',
-            dark: '#c60055',
+            main: '#4DFFDB',
+            light: '#7BFFE7',
+            dark: '#00D1B2',
           },
           background: {
-            default: '#f5f5f5',
-            paper: '#ffffff',
+            default: '#F0F2F5',
+            paper: '#FFFFFF',
           },
           text: {
-            primary: '#212121',
-            secondary: '#757575',
+            primary: '#1A1B41',
+            secondary: '#666B8D',
+          },
+          // Custom colors for game elements
+          accent1: {
+            main: '#FFD23F',
+            light: '#FFE07B',
+            dark: '#D1B200',
+          },
+          accent2: {
+            main: '#9B5DE5',
+            light: '#B47EFF',
+            dark: '#7B3CC8',
+          },
+          accent3: {
+            main: '#00F5D4',
+            light: '#4DFFDB',
+            dark: '#00D1B2',
           },
         }
       : {
           // Dark mode
           primary: {
-            main: '#bb86fc',
-            light: '#eeb8ff',
-            dark: '#8858c8',
+            main: '#FF3366',
+            light: '#FF6B9F',
+            dark: '#CC295F',
           },
           secondary: {
-            main: '#03dac6',
-            light: '#84ffff',
-            dark: '#00a896',
+            main: '#4DFFDB',
+            light: '#7BFFE7',
+            dark: '#00D1B2',
           },
           background: {
-            default: '#121212',
-            paper: '#1e1e1e',
+            default: '#0A0B1E',
+            paper: '#141539',
           },
           text: {
-            primary: '#e0e0e0',
-            secondary: '#a0a0a0',
+            primary: '#F0F2F5',
+            secondary: '#A0A7B8',
+          },
+          // Custom colors for game elements
+          accent1: {
+            main: '#FFD23F',
+            light: '#FFE07B',
+            dark: '#D1B200',
+          },
+          accent2: {
+            main: '#B47EFF',
+            light: '#C99EFF',
+            dark: '#9B5DE5',
+          },
+          accent3: {
+            main: '#00F5D4',
+            light: '#4DFFDB',
+            dark: '#00D1B2',
           },
         }),
   },
@@ -94,6 +126,22 @@ const getThemeOptions = (mode: PaletteMode): ThemeOptions => ({
           textTransform: 'none',
           fontWeight: 600,
           padding: '8px 16px',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-4px)',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+          },
         },
       },
     },
@@ -101,12 +149,14 @@ const getThemeOptions = (mode: PaletteMode): ThemeOptions => ({
       styleOverrides: {
         paper: {
           borderRadius: '16px 0 0 16px',
+          backgroundImage: 'linear-gradient(145deg, var(--background-paper) 0%, var(--background-default) 100%)',
         },
       },
     },
     MuiAppBar: {
       styleOverrides: {
         root: {
+          backgroundImage: 'linear-gradient(145deg, var(--background-paper) 0%, var(--background-default) 100%)',
           boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
         },
       },
