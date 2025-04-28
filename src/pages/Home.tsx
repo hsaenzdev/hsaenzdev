@@ -11,20 +11,27 @@ export const Home = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        // height: '100vh',
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
         px: 3,
-        background: `linear-gradient(145deg, ${theme.palette.background.default} 0%, ${theme.palette.background.paper} 100%)`,
+        py: 4,
+        // background: `linear-gradient(145deg, ${theme.palette.background.default} 0%, ${theme.palette.background.paper} 100%)`,
+        overflow: 'hidden', // Prevent any potential overflow
       }}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
+        style={{
+          maxWidth: '100%',
+          width: '100%',
+        }}
       >
         <Typography
           variant="h1"
@@ -32,7 +39,7 @@ export const Home = () => {
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
             color: theme.palette.primary.main,
             mb: 2,
-            fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+            fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
           }}
         >
           Your Name
@@ -43,8 +50,8 @@ export const Home = () => {
           sx={{
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
             color: theme.palette.secondary.main,
-            mb: 4,
-            fontSize: { xs: '1.2rem', sm: '1.5rem', md: '2rem' },
+            mb: 3,
+            fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem' },
           }}
         >
           Full Stack Developer
@@ -54,9 +61,10 @@ export const Home = () => {
           variant="h5"
           sx={{
             color: theme.palette.text.secondary,
-            mb: 6,
+            mb: 4,
             maxWidth: '800px',
             mx: 'auto',
+            fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
           }}
         >
           Crafting digital experiences with clean code and creative solutions
@@ -64,25 +72,25 @@ export const Home = () => {
 
         <Stack
           direction="row"
-          spacing={4}
+          spacing={{ xs: 2, sm: 3, md: 4 }}
           justifyContent="center"
-          sx={{ mb: 6 }}
+          sx={{ mb: 4 }}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <CodeIcon sx={{ fontSize: 40, color: theme.palette.accent1.main }} />
-            <Typography variant="body2">Frontend</Typography>
+            <CodeIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent1.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' } }}>Frontend</Typography>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <StorageIcon sx={{ fontSize: 40, color: theme.palette.accent2.main }} />
-            <Typography variant="body2">Backend</Typography>
+            <StorageIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent2.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' } }}>Backend</Typography>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <WebIcon sx={{ fontSize: 40, color: theme.palette.accent3.main }} />
-            <Typography variant="body2">Web</Typography>
+            <WebIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent3.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' } }}>Web</Typography>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <PsychologyIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
-            <Typography variant="body2">AI/ML</Typography>
+            <PsychologyIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.primary.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' } }}>AI/ML</Typography>
           </Box>
         </Stack>
 
@@ -94,6 +102,9 @@ export const Home = () => {
             '&:hover': {
               bgcolor: theme.palette.primary.dark,
             },
+            fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
+            px: { xs: 2, sm: 3, md: 4 },
+            py: { xs: 1, sm: 1.5, md: 2 },
           }}
         >
           Explore My Work
