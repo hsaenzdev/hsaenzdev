@@ -1,5 +1,43 @@
 import { createTheme, PaletteMode, ThemeOptions } from '@mui/material';
 
+// Extend the Palette interface to include our custom colors
+declare module '@mui/material/styles' {
+  interface Palette {
+    accent1: {
+      main: string;
+      light: string;
+      dark: string;
+    };
+    accent2: {
+      main: string;
+      light: string;
+      dark: string;
+    };
+    accent3: {
+      main: string;
+      light: string;
+      dark: string;
+    };
+  }
+  interface PaletteOptions {
+    accent1?: {
+      main: string;
+      light: string;
+      dark: string;
+    };
+    accent2?: {
+      main: string;
+      light: string;
+      dark: string;
+    };
+    accent3?: {
+      main: string;
+      light: string;
+      dark: string;
+    };
+  }
+}
+
 // Create theme options for our retro-modern game style
 const getThemeOptions = (mode: PaletteMode): ThemeOptions => ({
   palette: {
