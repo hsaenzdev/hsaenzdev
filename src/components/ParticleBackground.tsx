@@ -238,16 +238,25 @@ export const ParticleBackground = () => {
             const distance = Math.sqrt(dx * dx + dy * dy);
             
             if (distance < 100) {
+              // Add a subtle glow to the connection lines
+              const lineOpacity = 0.25 * (1 - distance / 100);
+              
+              // Add subtle glow to the lines for a more visible constellation effect
+              ctx.shadowBlur = 1.5;
+              ctx.shadowColor = p.color;
+              
               // Draw a line between them with opacity based on distance
               ctx.beginPath();
               ctx.moveTo(p.x, p.y);
               ctx.lineTo(p2.x, p2.y);
               
               // Parse the color to get its RGB values for transparency
-              const opacity = 0.15 * (1 - distance / 100);
-              ctx.strokeStyle = `rgba(${hexToRgb(p.color)}, ${opacity})`;
-              ctx.lineWidth = 0.5;
+              ctx.strokeStyle = `rgba(${hexToRgb(p.color)}, ${lineOpacity})`;
+              ctx.lineWidth = 0.7; // Slightly thicker lines for better visibility
               ctx.stroke();
+              
+              // Reset shadow for performance
+              ctx.shadowBlur = 0;
               
               connections++;
             }
