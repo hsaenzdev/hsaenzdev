@@ -39,7 +39,7 @@ export const Home = () => {
           top: { xs: 32, md: 40 },
           left: { xs: 16, sm: 24, md: 40 },
           zIndex: 10,
-          maxWidth: { xs: '100%', sm: '50%', md: '40%' }
+          maxWidth: { xs: '95%', sm: '60%', md: '50%' }
         }}
       >
         <motion.div
@@ -49,91 +49,132 @@ export const Home = () => {
         >
           <GlowingText 
             text="Hi there!"
-            variant="h1"
+            variant="h2"
             color="#ffffff"
             glowColor={theme.palette.secondary.main}
             glowIntensity={12}
             sx={{ 
-              fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+              fontSize: { xs: '1.7rem', sm: '2rem', md: '2.3rem' },
               letterSpacing: '0.05em',
               textAlign: { xs: 'center', sm: 'left' }
             }}
           />
         </motion.div>
         
-        <Typography
-          variant="h2"
-          component={motion.h2}
+        <Box
+          component={motion.div}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           sx={{
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            color: theme.palette.primary.main,
-            fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
-            textAlign: { xs: 'center', sm: 'left' },
-            mt: 2
+            mt: 2,
+            whiteSpace: 'nowrap',
+            overflow: 'visible'
           }}
         >
-          I am Hector Saenz
-        </Typography>
+          <Typography
+            variant="h1"
+            component="span"
+            sx={{
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.8rem' },
+              textAlign: { xs: 'center', sm: 'left' },
+              letterSpacing: '0.02em',
+              textShadow: `0 0 10px ${theme.palette.primary.main}60`,
+              display: 'block'
+            }}
+          >
+            <Box component="span" sx={{ color: '#9c27b0', textShadow: '0 0 8px rgba(156, 39, 176, 0.6)' }}>I am</Box>{' '}
+            <Box component="span" sx={{ color: theme.palette.primary.main }}>Hector Saenz</Box>
+          </Typography>
+        </Box>
+
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          sx={{
+            mt: 2,
+            mb: 3,
+            whiteSpace: 'nowrap',
+            overflow: 'visible'
+          }}
+        >
+          <Typography
+            variant="h3"
+            component="span"
+            sx={{
+              color: '#66bb6a', // More vibrant Material UI green
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: { xs: '0.9rem', sm: '1.1rem', md: '1.3rem' },
+              textAlign: { xs: 'center', sm: 'left' },
+              textShadow: '0 0 10px rgba(102, 187, 106, 0.7)',
+              display: 'block',
+              letterSpacing: '0.03em',
+              fontWeight: 400
+            }}
+          >
+            Full Stack Developer
+          </Typography>
+        </Box>
 
         <Typography
           variant="h5"
           component={motion.h5}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           sx={{
             color: theme.palette.text.secondary,
             maxWidth: '600px',
             fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
             textAlign: { xs: 'center', sm: 'left' },
-            mt: 2
           }}
         >
           Crafting digital experiences with clean code and creative solutions
         </Typography>
       </Box>
 
-      {/* Main Grid Container for layout */}
-      <Grid 
-        container
+      {/* Main Container */}
+      <Box 
         sx={{ 
           minHeight: '100vh',
-          pt: { xs: 20, md: 0 }, // Extra top padding on mobile to make space for the greeting text
-          pb: { xs: 12, md: 10 }, // Space for skills at bottom
-          px: { xs: 2, sm: 4, md: 6 }
+          pt: { xs: 20, md: 0 },
+          pb: { xs: 12, md: 10 },
+          position: 'relative',
         }}
       >
-        {/* Terminal */}
+        {/* Terminal Container - Positioned to the right and vertically centered */}
         <Box 
           sx={{ 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
+            position: 'fixed',
+            right: { xs: 20, sm: 30, md: 50 },
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: { xs: '350px', sm: '400px', md: '450px' },
+            height: { xs: '450px', sm: '500px', md: '550px' },
+            zIndex: 1,
+            display: 'flex',
             alignItems: 'center',
-            width: '100%',
-            height: '100%',
-            pt: { xs: 4, md: '20vh' } // Add top padding to push terminal down a bit
           }}
         >
           {/* Terminal with Glowing Border and Floating Animation */}
           <motion.div
             animate={{ 
-              y: [0, -8, 0], 
+              y: [0, -10, 0], 
               x: [0, 5, 0, -5, 0],
-              rotateZ: [0, 0.5, 0, -0.5, 0] 
+              rotateZ: [0, 0.7, 0, -0.7, 0] 
             }}
             transition={{ 
-              duration: 10, 
+              duration: 12, 
               repeat: Infinity, 
               repeatType: "loop",
               ease: "easeInOut"
             }}
             style={{
               width: '100%',
-              maxWidth: '600px',
-              height: '400px',
+              height: '100%',
               position: 'relative'
             }}
           >
@@ -147,7 +188,7 @@ export const Home = () => {
                 bottom: -3,
                 borderRadius: '12px',
                 background: `radial-gradient(ellipse at center, ${theme.palette.primary.main}00 0%, ${theme.palette.primary.main}10 40%, ${theme.palette.primary.main}50 100%)`,
-                filter: `blur(15px)`,
+                filter: `blur(18px)`,
                 opacity: 0.9,
                 zIndex: -1,
               }}
@@ -194,7 +235,7 @@ export const Home = () => {
             </Box>
           </motion.div>
         </Box>
-      </Grid>
+      </Box>
 
       {/* Bottom Fixed Skills Bar - Position fixed to stay at bottom */}
       <Box
