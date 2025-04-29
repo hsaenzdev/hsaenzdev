@@ -82,7 +82,7 @@ export const ParticleBackground = () => {
   const generateParticles = useCallback(() => {
     const colors = colorsRef.current;
     const newParticles: Particle[] = [];
-    const particleCount = window.innerWidth < 768 ? 50 : 100;
+    const particleCount = window.innerWidth < 768 ? 45 : 85;
     
     for (let i = 0; i < particleCount; i++) {
       const size = 1 + Math.random() * 2;
@@ -210,10 +210,6 @@ export const ParticleBackground = () => {
         // Add subtle pulsing effect
         p.size = p.baseSize * (1 + Math.sin(time * 0.002 * p.speed) * 0.2);
         
-        // Modulate glow intensity with time for a subtle breathing effect
-        const glowPulse = 0.3 * Math.sin(time * 0.001 * p.speed) + 0.7; // Value between 0.4 and 1.0
-        const currentGlowIntensity = p.glowIntensity * glowPulse;
-        
         // Occasionally change target color
         if (Math.random() < 0.001) {
           p.targetColor = colors[Math.floor(Math.random() * colors.length)];
@@ -262,11 +258,12 @@ export const ParticleBackground = () => {
       // Second pass: draw particles with glow
       particles.forEach(p => {
         const time = Date.now() * 0.001;
-        const glowPulse = 0.3 * Math.sin(time * 0.001 * p.speed) + 0.7;
+        // Enhanced glow pulse with more dynamic range for a more interesting effect
+        const glowPulse = 0.4 * Math.sin(time * 0.001 * p.speed) + 0.8; // Value between 0.4 and 1.2
         const currentGlowIntensity = p.glowIntensity * glowPulse;
         
-        // Draw glow (shadow)
-        ctx.shadowBlur = p.size * (3 + currentGlowIntensity * 5); // Size-proportional glow
+        // Enhanced glow effect with dynamic size and intensity
+        ctx.shadowBlur = p.size * (4 + currentGlowIntensity * 6); // Increased base glow and intensity multiplier
         ctx.shadowColor = p.color;
         
         // Draw particle
