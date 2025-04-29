@@ -34,7 +34,7 @@ export const Home = () => {
         overflow: 'hidden', // Prevent any potential overflow
       }}
     >
-      <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center' }}>
+      <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         {/* Top Section - Greeting text moved to top left */}
         <Box sx={{ mb: 6, pl: { xs: 0, md: 1 }, alignSelf: { xs: 'center', md: 'flex-start' }, width: '100%' }}>
           <motion.div
@@ -93,16 +93,15 @@ export const Home = () => {
           </Typography>
         </Box>
 
-        {/* Main Content Area - Centered Terminal */}
+        {/* Main Content Area - Terminal positioned to the right */}
         <Box 
           sx={{ 
-            display: 'flex', 
-            flexDirection: 'column',
+            display: 'flex',
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: { xs: 'center', md: 'flex-end' },
             width: '100%',
             position: 'relative',
+            mb: { xs: 10, md: 8 }, // Add bottom margin to create space for skills
           }}
         >
           {/* Terminal with Glowing Border and Floating Animation */}
@@ -184,45 +183,55 @@ export const Home = () => {
           </motion.div>
         </Box>
         
-        {/* Tech Icons at bottom center */}
-        <Stack
-          direction="row"
-          spacing={{ xs: 3, sm: 4, md: 5 }}
-          justifyContent="center"
-          sx={{ 
+        {/* Tech Icons at bottom center - fixed position */}
+        <Box
+          sx={{
             position: 'absolute',
-            bottom: 20,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            px: 2,
-            py: 1,
-            borderRadius: 2,
-            backgroundColor: 'rgba(0,0,0,0.2)',
-            backdropFilter: 'blur(5px)',
-            width: 'auto',
+            bottom: { xs: 20, md: 30 },
+            left: 0,
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-          component={motion.div}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <CodeIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent1.main }} />
-            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Frontend</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <StorageIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent2.main }} />
-            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Backend</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <WebIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent3.main }} />
-            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Web</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <PsychologyIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.primary.main }} />
-            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>AI/ML</Typography>
-          </Box>
-        </Stack>
+          <Stack
+            direction="row"
+            spacing={{ xs: 4, sm: 5, md: 6 }}
+            justifyContent="center"
+            sx={{ 
+              px: 3,
+              py: 1.5,
+              borderRadius: 2,
+              backgroundColor: 'rgba(0,0,0,0.2)',
+              backdropFilter: 'blur(5px)',
+              boxShadow: '0 0 20px rgba(0,0,0,0.2)',
+              width: 'auto',
+              mx: 'auto',
+            }}
+            component={motion.div}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <CodeIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent1.main }} />
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Frontend</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <StorageIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent2.main }} />
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Backend</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <WebIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent3.main }} />
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Web</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <PsychologyIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.primary.main }} />
+              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>AI/ML</Typography>
+            </Box>
+          </Stack>
+        </Box>
       </Container>
     </Box>
   );
