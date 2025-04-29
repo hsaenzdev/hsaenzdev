@@ -22,8 +22,7 @@ export const Portfolio = () => {
       <SideNav />
       
       <Box 
-        flex={1} 
-        p={0} 
+        flex={1}  
         sx={{ 
           overflow: 'auto',
           position: 'relative',
