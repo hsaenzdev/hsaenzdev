@@ -13,6 +13,7 @@ interface Particle {
   transitionSpeed: number;
   originalX: number; // Remember original position
   originalY: number;
+  glowIntensity: number; // Controls the intensity of the glow effect
 }
 
 export const ParticleBackground = () => {
@@ -99,7 +100,8 @@ export const ParticleBackground = () => {
         color: color,
         targetColor: colors[Math.floor(Math.random() * colors.length)],
         speed: 0.2 + Math.random() * 0.3,
-        transitionSpeed: 0.01 + Math.random() * 0.02
+        transitionSpeed: 0.01 + Math.random() * 0.02,
+        glowIntensity: 0.4 + Math.random() * 0.6 // Random glow intensity between 0.4 and 1.0
       });
     }
     
@@ -208,6 +210,10 @@ export const ParticleBackground = () => {
         // Add subtle pulsing effect
         p.size = p.baseSize * (1 + Math.sin(time * 0.002 * p.speed) * 0.2);
         
+        // Modulate glow intensity with time for a subtle breathing effect
+        const glowPulse = 0.3 * Math.sin(time * 0.001 * p.speed) + 0.7; // Value between 0.4 and 1.0
+        const currentGlowIntensity = p.glowIntensity * glowPulse;
+        
         // Occasionally change target color
         if (Math.random() < 0.001) {
           p.targetColor = colors[Math.floor(Math.random() * colors.length)];
@@ -253,12 +259,24 @@ export const ParticleBackground = () => {
         }
       }
       
-      // Second pass: draw particles
+      // Second pass: draw particles with glow
       particles.forEach(p => {
+        const time = Date.now() * 0.001;
+        const glowPulse = 0.3 * Math.sin(time * 0.001 * p.speed) + 0.7;
+        const currentGlowIntensity = p.glowIntensity * glowPulse;
+        
+        // Draw glow (shadow)
+        ctx.shadowBlur = p.size * (3 + currentGlowIntensity * 5); // Size-proportional glow
+        ctx.shadowColor = p.color;
+        
+        // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.fill();
+        
+        // Reset shadow for performance
+        ctx.shadowBlur = 0;
       });
       
       animationFrameRef.current = requestAnimationFrame(animate);
