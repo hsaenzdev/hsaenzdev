@@ -1,13 +1,10 @@
-import { Box, useTheme, Typography } from '@mui/material';
-import { motion } from 'framer-motion';
-import { TypeWriter } from './TypeWriter';
+import { Box, useTheme, Typography, Tooltip } from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
 
 interface RetroTerminalProps {
   texts: string[];
   typingSpeed?: number;
-  deletingSpeed?: number;
-  delayBetweenTexts?: number;
   terminalTitle?: string;
 }
 
@@ -36,285 +33,386 @@ const TerminalClock = memo(() => {
   );
 });
 
-// Memoize the static content
-const TerminalHistory = memo(({ date }: { date: string }) => {
+// Cursor component with blinking animation
+const Cursor = memo(() => {
   const theme = useTheme();
   
   return (
-    <Box sx={{ mb: 2, opacity: 0.7 }}>
-      <Typography component="div" variant="caption" sx={{ color: theme.palette.accent3.main, mb: 0.5, fontSize: '0.7rem' }}>
-        // System loaded - {date}
-      </Typography>
-      <Typography component="div" variant="caption" sx={{ color: theme.palette.accent1.main, mb: 0.5, fontSize: '0.7rem' }}>
-        $ initializing skills module
-      </Typography>
-      <Typography component="div" variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', mb: 1, fontSize: '0.7rem' }}>
-        &gt; Ready. Type 'list-skills' for commands
-      </Typography>
-    </Box>
+    <motion.span
+      animate={{ opacity: [1, 0, 1] }}
+      transition={{ duration: 0.8, repeat: Infinity }}
+      style={{ 
+        display: 'inline-block',
+        width: '8px',
+        height: '16px',
+        backgroundColor: theme.palette.primary.main,
+        marginLeft: '2px'
+      }}
+    />
   );
 });
 
-// Command line component with typing animation
-const CommandLine = memo(({ onCommandComplete }: { onCommandComplete: () => void }) => {
-  const theme = useTheme();
-  const [showCommand, setShowCommand] = useState(true);
-  const [commandText, setCommandText] = useState('');
-  const commandRef = useRef<any>(null);
+// Typing animation for commands
+const TypedLine = ({ text, duration = 1.5, onComplete }: { text: string; duration?: number; onComplete?: () => void }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const intervalRef = useRef<number | null>(null);
   
   useEffect(() => {
-    // Simulate typing "list-skills" command
-    const command = 'list-skills';
     let currentIndex = 0;
+    const charTime = duration * 1000 / text.length;
     
-    const typeCommand = () => {
-      if (currentIndex <= command.length) {
-        setCommandText(command.substring(0, currentIndex));
+    intervalRef.current = window.setInterval(() => {
+      if (currentIndex <= text.length) {
+        setDisplayedText(text.substring(0, currentIndex));
         currentIndex++;
-        commandRef.current = setTimeout(typeCommand, 100);
-      } else {
-        // Command completed, wait a bit then trigger callback
-        commandRef.current = setTimeout(() => {
-          setShowCommand(false);
-          onCommandComplete();
-        }, 500);
+        
+        if (currentIndex > text.length && onComplete) {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          setTimeout(onComplete, 300);
+        }
       }
-    };
-    
-    // Start typing after a short delay
-    commandRef.current = setTimeout(typeCommand, 1000);
+    }, charTime);
     
     return () => {
-      if (commandRef.current) {
-        clearTimeout(commandRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [onCommandComplete]);
+  }, [text, duration, onComplete]);
   
-  if (!showCommand) return null;
+  return <>{displayedText}</>;
+};
+
+// ASCII art components
+const AsciiLogo = memo(() => {
+  const theme = useTheme();
   
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, position: 'relative', zIndex: 2 }}>
-      <Box sx={{ color: theme.palette.accent1.main, mr: 1, fontWeight: 'bold' }}>
-        $
-      </Box>
-      <Box component="span" sx={{ color: theme.palette.accent2.main, mr: 1, fontSize: '0.8rem' }}>
-        user@portfolio:~
-      </Box>
-      <Box 
-        sx={{ 
-          position: 'relative',
-          '&::after': {
-            content: '"|"',
-            color: theme.palette.primary.main,
-            fontWeight: 'bold',
-            marginLeft: '2px',
-            animation: 'blink 0.7s infinite',
-            '@keyframes blink': {
-              '0%': { opacity: 1 },
-              '50%': { opacity: 0 },
-              '100%': { opacity: 1 }
-            }
-          }
-        }}
-      >
-        {commandText}
+    <Box sx={{ fontFamily: 'monospace', fontSize: '0.85rem', mb: 2, color: theme.palette.primary.main, lineHeight: 1.2 }}>
+      <pre style={{ margin: 0 }}>{`
+ ██╗  ██╗███████╗ ██████╗████████╗ ██████╗ ██████╗
+ ██║  ██║██╔════╝██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗
+ ███████║█████╗  ██║        ██║   ██║   ██║██████╔╝
+ ██╔══██║██╔══╝  ██║        ██║   ██║   ██║██╔══██╗
+ ██║  ██║███████╗╚██████╗   ██║   ╚██████╔╝██║  ██║
+ ╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+      `}</pre>
+    </Box>
+  );
+});
+
+// Matrix-like raining code effect for background
+const MatrixRain = memo(() => {
+  const theme = useTheme();
+  const characters = useMemo(() => 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワ', []);
+  const [columns, setColumns] = useState<string[]>([]);
+  
+  useEffect(() => {
+    // Create 20 columns of random characters
+    const newColumns = [];
+    for (let i = 0; i < 20; i++) {
+      let column = '';
+      const length = 5 + Math.floor(Math.random() * 10);
+      for (let j = 0; j < length; j++) {
+        column += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      newColumns.push(column);
+    }
+    setColumns(newColumns);
+    
+    // Update the matrix rain periodically
+    const interval = setInterval(() => {
+      setColumns(prev => 
+        prev.map(column => {
+          // Shift characters and add a new one at the beginning
+          const newChar = characters.charAt(Math.floor(Math.random() * characters.length));
+          return newChar + column.substring(0, column.length - 1);
+        })
+      );
+    }, 300);
+    
+    return () => clearInterval(interval);
+  }, [characters]);
+  
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        pointerEvents: 'none',
+        opacity: 0.07,
+        overflow: 'hidden',
+        zIndex: 0,
+      }}
+    >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', height: '100%' }}>
+        {columns.map((column, i) => (
+          <Box key={i} sx={{ display: 'flex', flexDirection: 'column', color: theme.palette.primary.main, fontSize: '10px' }}>
+            {column.split('').map((char, j) => (
+              <Box 
+                key={`${i}-${j}`} 
+                component="span" 
+                sx={{ 
+                  opacity: j === 0 ? 1 : 1 - (j / column.length),
+                }}
+              >
+                {char}
+              </Box>
+            ))}
+          </Box>
+        ))}
       </Box>
     </Box>
   );
 });
 
-// Maximum number of lines to keep in the terminal
-const MAX_TERMINAL_LINES = 20;
+// Skills visualization
+interface Skill {
+  name: string;
+  level: number;
+  category: string;
+}
 
-// Optimized scrolling output that displays each skill one by one with a limit on stored history
-const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive: boolean }) => {
+// Visualize a single skill with a progress bar
+const SkillBar = memo(({ skill }: { skill: Skill }) => {
   const theme = useTheme();
-  const [displayedSkills, setDisplayedSkills] = useState<string[]>([]);
-  const [commandActive, setCommandActive] = useState(true);
-  const [cycleCount, setCycleCount] = useState(0);
-  const outputRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<any>(null);
-  const skillIndexRef = useRef(0);
+  const [show, setShow] = useState(false);
   
-  // Auto-scroll effect whenever displayed skills change
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(true);
+    }, 200);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
+  const getColor = (category: string) => {
+    switch(category) {
+      case 'frontend':
+        return theme.palette.accent1.main;
+      case 'backend':
+        return theme.palette.accent2.main;
+      case 'tools':
+        return theme.palette.accent3.main;
+      default:
+        return theme.palette.primary.main;
+    }
+  };
+  
+  return (
+    <Tooltip title={`${skill.level}%`} placement="right" arrow>
+      <Box sx={{ mb: 1.5, width: '100%' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              color: 'rgba(255,255,255,0.9)', 
+              fontSize: '0.75rem',
+              fontFamily: 'monospace',
+              fontWeight: 'bold',
+            }}
+          >
+            {skill.name}
+          </Typography>
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              color: getColor(skill.category), 
+              fontSize: '0.7rem',
+              fontFamily: 'monospace',
+            }}
+          >
+            {skill.category}
+          </Typography>
+        </Box>
+        <Box sx={{ width: '100%', height: '8px', bgcolor: 'rgba(0,0,0,0.4)', borderRadius: '4px', overflow: 'hidden' }}>
+          <motion.div 
+            initial={{ width: 0 }}
+            animate={{ width: show ? `${skill.level}%` : 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            style={{
+              height: '100%',
+              backgroundColor: getColor(skill.category),
+              borderRadius: '4px',
+              boxShadow: `0 0 5px ${getColor(skill.category)}`,
+            }}
+          />
+        </Box>
+      </Box>
+    </Tooltip>
+  );
+});
+
+// Interactive Terminal Component
+export const RetroTerminal = ({
+  texts,
+  typingSpeed = 80,
+  terminalTitle = 'portfolio.exe'
+}: RetroTerminalProps) => {
+  const theme = useTheme();
+  const [currentState, setCurrentState] = useState<'intro' | 'menu' | 'skills' | 'projects' | 'contact'>('intro');
+  const [introComplete, setIntroComplete] = useState(false);
+  const [command, setCommand] = useState('');
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [commandIndex, setCommandIndex] = useState(-1);
+  const [showCursor, setShowCursor] = useState(true);
+  const outputRef = useRef<HTMLDivElement>(null);
+  
+  // Transform text skills into structured data
+  const skills: Skill[] = useMemo(() => [
+    { name: "React", level: 95, category: "frontend" },
+    { name: "TypeScript", level: 90, category: "frontend" },
+    { name: "JavaScript", level: 95, category: "frontend" },
+    { name: "HTML/CSS", level: 90, category: "frontend" },
+    { name: "ThreeJS", level: 85, category: "frontend" },
+    { name: "Node.js", level: 88, category: "backend" },
+    { name: "Express", level: 85, category: "backend" },
+    { name: "MongoDB", level: 82, category: "backend" },
+    { name: "Git", level: 90, category: "tools" },
+    { name: "Docker", level: 80, category: "tools" },
+  ], []);
+  
+  // Available commands
+  const commands = useMemo(() => ({
+    help: "Display available commands",
+    skills: "View my technical skills",
+    clear: "Clear the terminal",
+    about: "Learn about me",
+    contact: "Get my contact information",
+    projects: "View my recent projects",
+    github: "Visit my GitHub profile",
+    resume: "Download my resume",
+    exit: "Close the terminal (not really)"
+  }), []);
+  
+  // Auto-scroll effect whenever content changes
   useEffect(() => {
     if (outputRef.current) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
     }
-  }, [displayedSkills]);
+  }, [currentState, commandHistory]);
   
-  // Reset the terminal content periodically to prevent memory issues
-  const resetTerminal = () => {
-    setCycleCount(prev => prev + 1);
-    setDisplayedSkills([
-      '> New session started.',
-      '> Running list-skills...',
-      '> Found ' + skills.length + ' skills:',
-      ''
-    ]);
-    skillIndexRef.current = 0;
-  };
-  
-  // Add new line with memory management
-  const addLine = (line: string) => {
-    setDisplayedSkills(prev => {
-      // If we exceed the maximum lines, remove oldest lines
-      if (prev.length >= MAX_TERMINAL_LINES) {
-        return [...prev.slice(prev.length - MAX_TERMINAL_LINES + 1), line];
-      } 
-      return [...prev, line];
-    });
-  };
-  
+  // Handle the intro sequence
   useEffect(() => {
-    if (!isActive || !skills.length) return;
-    
-    // Reset state when component activates
-    skillIndexRef.current = 0;
-    setCommandActive(true);
-    setCycleCount(0);
-    
-    // First, show the command result header
-    setDisplayedSkills([
-      '> Running list-skills...',
-      '> Found ' + skills.length + ' skills:',
-      ''
-    ]);
-    
-    // Start displaying skills one by one
-    const addSkill = () => {
-      if (skillIndexRef.current < skills.length) {
-        addLine('- ' + skills[skillIndexRef.current]);
-        skillIndexRef.current++;
-      } else {
-        // When all skills are displayed, end the command
-        addLine('');
-        addLine('> Command completed.');
-        
-        // Clear the interval to stop adding skills
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
+    if (currentState === 'intro') {
+      const timer = setTimeout(() => {
+        setIntroComplete(true);
+        setCurrentState('menu');
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentState]);
+  
+  // Handle key presses for terminal input
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (currentState !== 'menu') return;
+      
+      if (e.key === 'Enter') {
+        // Process command
+        processCommand(command);
+        // Add to history and reset
+        if (command.trim()) {
+          setCommandHistory(prev => [...prev, command]);
         }
-        
-        // Set command as inactive
-        setCommandActive(false);
-        
-        // Setup to restart the command after a pause
-        setTimeout(() => {
-          // Check if we need to reset the terminal
-          if (cycleCount >= 2) {
-            resetTerminal();
-          } else {
-            // Add a new prompt without clearing old content
-            addLine('');
-            addLine('$ list-skills');
-            addLine('> Running list-skills...');
-            addLine('> Found ' + skills.length + ' skills:');
-            addLine('');
-          }
-          
-          // Start displaying skills again after a short delay
-          setTimeout(() => {
-            skillIndexRef.current = 0;
-            setCommandActive(true);
-            intervalRef.current = setInterval(addSkill, 800);
-          }, 500);
-        }, 3000); // 3 second pause before restarting
+        setCommand('');
+        setCommandIndex(-1);
+      } else if (e.key === 'Backspace') {
+        setCommand(prev => prev.slice(0, -1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        // Navigate command history
+        if (commandHistory.length > 0 && commandIndex < commandHistory.length - 1) {
+          const newIndex = commandIndex + 1;
+          setCommandIndex(newIndex);
+          setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
+        }
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        // Navigate command history
+        if (commandIndex > 0) {
+          const newIndex = commandIndex - 1;
+          setCommandIndex(newIndex);
+          setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
+        } else if (commandIndex === 0) {
+          setCommandIndex(-1);
+          setCommand('');
+        }
+      } else if (e.key === 'Tab') {
+        e.preventDefault();
+        // Auto-complete command
+        const matchingCommands = Object.keys(commands).filter(cmd => cmd.startsWith(command));
+        if (matchingCommands.length === 1) {
+          setCommand(matchingCommands[0]);
+        }
+      } else if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        // Add to command if it's a single character and not a control key
+        setCommand(prev => prev + e.key);
       }
     };
     
-    // Start adding skills after a delay
-    setTimeout(() => {
-      // Add a skill every 800ms
-      intervalRef.current = setInterval(addSkill, 800);
-    }, 500);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [command, commandHistory, commandIndex, commands, currentState]);
+  
+  // Process command input
+  const processCommand = (cmd: string) => {
+    const cleanedCmd = cmd.trim().toLowerCase();
     
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isActive, skills, cycleCount]);
-  
-  if (!isActive) return null;
-  
-  return (
-    <Box 
-      ref={outputRef}
-      sx={{ 
-        height: '250px',
-        width: '100%',
-        overflowY: 'auto',
-        scrollBehavior: 'smooth',
-        pointerEvents: 'none', // Disable manual scrolling
-        msOverflowStyle: 'none', // Hide scrollbar in IE/Edge
-        scrollbarWidth: 'none', // Hide scrollbar in Firefox
-        '&::-webkit-scrollbar': {
-          display: 'none', // Hide scrollbar in Chrome/Safari
-        },
-      }}
-    >
-      {displayedSkills.map((skill, index) => (
-        <Typography 
-          key={`${cycleCount}-${index}`}
-          component="div"
-          variant="caption" 
-          sx={{ 
-            color: skill.startsWith('$') 
-              ? theme.palette.accent2.main
-              : skill.startsWith('>') 
-                ? theme.palette.accent3.main 
-                : skill.startsWith('-') 
-                  ? theme.palette.accent1.main 
-                  : 'rgba(255,255,255,0.7)', 
-            mb: 0.5, 
-            fontSize: '0.75rem',
-            fontFamily: 'monospace',
-          }}
-        >
-          {skill}
-        </Typography>
-      ))}
-      {/* Blinking cursor at the end - only show when command is active */}
-      {commandActive && (
-        <Box
-          component={motion.div}
-          animate={{ opacity: [1, 0, 1] }}
-          transition={{ duration: 1, repeat: Infinity }}
-          sx={{ 
-            height: '2px', 
-            width: '8px', 
-            backgroundColor: theme.palette.primary.main,
-            mt: 1,
-            ml: 2
-          }}
-        />
-      )}
-    </Box>
-  );
-});
-
-export const RetroTerminal = ({
-  texts,
-  typingSpeed = 80,
-  deletingSpeed = 50,
-  delayBetweenTexts = 1500,
-  terminalTitle = 'skills.exe'
-}: RetroTerminalProps) => {
-  const theme = useTheme();
-  const [commandComplete, setCommandComplete] = useState(false);
+    switch (cleanedCmd) {
+      case 'skills':
+        setCurrentState('skills');
+        setTimeout(() => setCurrentState('menu'), 10000); // Return to menu after 10 seconds
+        break;
+      case 'clear':
+        // Just reset to menu state
+        setCurrentState('menu');
+        break;
+      case 'about':
+        setCommandHistory(prev => [...prev, "> I'm a passionate full-stack developer with a love for creating beautiful, functional web applications."]);
+        setCommandHistory(prev => [...prev, "> I specialize in React, TypeScript, and modern web technologies."]);
+        break;
+      case 'contact':
+        setCommandHistory(prev => [...prev, "> Email: contact@hectorsaenz.dev"]);
+        setCommandHistory(prev => [...prev, "> LinkedIn: linkedin.com/in/hectorsaenz"]);
+        break;
+      case 'github':
+        setCommandHistory(prev => [...prev, "> Opening GitHub profile..."]);
+        window.open('https://github.com/yourusername', '_blank');
+        break;
+      case 'projects':
+        setCommandHistory(prev => [...prev, "> Personal Portfolio - A React-based portfolio with retro terminal aesthetics"]);
+        setCommandHistory(prev => [...prev, "> Project Alpha - A full-stack e-commerce platform with real-time inventory"]);
+        setCommandHistory(prev => [...prev, "> Data Visualizer - An interactive dashboard for complex data visualization"]);
+        break;
+      case 'resume':
+        setCommandHistory(prev => [...prev, "> Downloading resume..."]);
+        // You can add actual download logic here
+        break;
+      case 'exit':
+        setCommandHistory(prev => [...prev, "> Nice try! You can't escape that easily 😊"]);
+        break;
+      case 'help':
+        setCommandHistory(prev => [...prev, "> Available commands:"]);
+        Object.entries(commands).forEach(([cmd, desc]) => {
+          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(10)} - ${desc}`]);
+        });
+        break;
+      case '':
+        // Just add a new line for empty command
+        break;
+      default:
+        setCommandHistory(prev => [...prev, `> Command not found: ${cleanedCmd}. Type 'help' for available commands.`]);
+    }
+  };
   
   // Current date for the terminal header
   const currentDate = useMemo(() => {
     const date = new Date();
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   }, []);
-  
-  const handleCommandComplete = () => {
-    setCommandComplete(true);
-  };
   
   return (
     <Box 
@@ -326,8 +424,12 @@ export const RetroTerminal = ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* Matrix-like background effect */}
+      <MatrixRain />
+      
       {/* Terminal Header */}
       <Box 
         sx={{ 
@@ -336,7 +438,9 @@ export const RetroTerminal = ({
           justifyContent: 'space-between',
           mb: 1,
           pb: 1,
-          borderBottom: '1px solid rgba(255,255,255,0.1)'
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         {/* Traffic lights */}
@@ -363,10 +467,214 @@ export const RetroTerminal = ({
       </Box>
       
       {/* Terminal Content Area */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: '300px' }}>
-        <TerminalHistory date={currentDate} />
-        <CommandLine onCommandComplete={handleCommandComplete} />
-        <ScrollingOutput skills={texts} isActive={commandComplete} />
+      <Box 
+        ref={outputRef}
+        sx={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column',
+          overflow: 'auto',
+          position: 'relative',
+          zIndex: 1,
+          scrollBehavior: 'smooth',
+          msOverflowStyle: 'none', // Hide scrollbar in IE/Edge
+          scrollbarWidth: 'none', // Hide scrollbar in Firefox
+          '&::-webkit-scrollbar': {
+            display: 'none', // Hide scrollbar in Chrome/Safari
+          },
+        }}
+      >
+        <AnimatePresence mode="wait">
+          {currentState === 'intro' && (
+            <motion.div
+              key="intro"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Box sx={{ color: theme.palette.accent3.main, my: 1, fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                <TypedLine 
+                  text="// System initializing..." 
+                  onComplete={() => {}}
+                />
+              </Box>
+              <Box sx={{ my: 2 }}>
+                <AsciiLogo />
+              </Box>
+              <Box sx={{ color: theme.palette.accent2.main, my: 1, fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                <TypedLine 
+                  text="// Loading portfolio data..." 
+                  duration={1.5}
+                  onComplete={() => {}}
+                />
+              </Box>
+              <Box sx={{ color: theme.palette.accent1.main, my: 1, fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                <TypedLine 
+                  text="// Calibrating skills database..." 
+                  duration={1.5}
+                  onComplete={() => {}}
+                />
+              </Box>
+              <Box sx={{ color: 'rgba(255,255,255,0.7)', my: 1, fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                <TypedLine 
+                  text="// System ready. Welcome to my interactive portfolio!" 
+                  duration={2}
+                  onComplete={() => {}}
+                />
+              </Box>
+            </motion.div>
+          )}
+          
+          {currentState === 'menu' && (
+            <motion.div
+              key="menu"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {introComplete && (
+                <Box sx={{ mb: 2 }}>
+                  <Typography 
+                    variant="caption" 
+                    sx={{ 
+                      color: theme.palette.accent3.main, 
+                      fontSize: '0.8rem',
+                      fontFamily: 'monospace',
+                      display: 'block',
+                      mb: 0.5
+                    }}
+                  >
+                    // System loaded - {currentDate}
+                  </Typography>
+                  <Typography 
+                    variant="caption" 
+                    sx={{ 
+                      color: 'rgba(255,255,255,0.7)', 
+                      fontSize: '0.8rem',
+                      fontFamily: 'monospace',
+                      display: 'block',
+                      mb: 1
+                    }}
+                  >
+                    Welcome to my interactive terminal. Type 'help' for available commands.
+                  </Typography>
+                </Box>
+              )}
+              
+              {/* Command history output */}
+              {commandHistory.map((line, i) => (
+                <Typography 
+                  key={i}
+                  variant="caption" 
+                  sx={{ 
+                    color: line.startsWith('>') ? theme.palette.accent3.main : theme.palette.accent1.main,
+                    fontSize: '0.8rem',
+                    fontFamily: 'monospace',
+                    display: 'block',
+                    mb: 0.5,
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {line.startsWith('>') ? line : `$ ${line}`}
+                </Typography>
+              ))}
+              
+              {/* Command prompt */}
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    color: theme.palette.accent1.main,
+                    fontSize: '0.8rem',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    mr: 0.5
+                  }}
+                >
+                  $
+                </Typography>
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    color: theme.palette.accent2.main,
+                    fontSize: '0.8rem',
+                    fontFamily: 'monospace',
+                    mr: 0.5
+                  }}
+                >
+                  guest@hectorsaenz:~
+                </Typography>
+                <Typography 
+                  variant="caption" 
+                  component="span" 
+                  sx={{ 
+                    color: 'white',
+                    fontSize: '0.8rem',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  {command}
+                </Typography>
+                {showCursor && <Cursor />}
+              </Box>
+            </motion.div>
+          )}
+          
+          {currentState === 'skills' && (
+            <motion.div
+              key="skills"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  color: theme.palette.primary.main,
+                  fontFamily: 'monospace',
+                  fontSize: '1rem',
+                  mb: 2,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  textShadow: `0 0 5px ${theme.palette.primary.main}`,
+                }}
+              >
+                SKILL PROFICIENCY ANALYSIS
+              </Typography>
+              
+              <Box sx={{ mb: 2 }}>
+                {skills.map((skill, index) => (
+                  <motion.div
+                    key={skill.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <SkillBar skill={skill} />
+                  </motion.div>
+                ))}
+              </Box>
+              
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  color: 'rgba(255,255,255,0.6)',
+                  fontSize: '0.75rem',
+                  fontFamily: 'monospace',
+                  display: 'block',
+                  textAlign: 'center',
+                  mt: 2,
+                  fontStyle: 'italic',
+                }}
+              >
+                Returning to terminal in a few seconds...
+              </Typography>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Box>
     </Box>
   );

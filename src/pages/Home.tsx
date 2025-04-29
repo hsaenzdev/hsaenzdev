@@ -237,7 +237,7 @@ export const Home = () => {
         </Box>
       </Box>
 
-      {/* Bottom Fixed Skills Bar - Position fixed to stay at bottom */}
+      {/* Technology Icons at Bottom Center */}
       <Box
         sx={{
           position: 'fixed',
