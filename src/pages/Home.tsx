@@ -1,4 +1,4 @@
-import { Box, Typography, Stack, useTheme, Container } from "@mui/material";
+import { Box, Typography, Stack, Grid, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import CodeIcon from '@mui/icons-material/Code';
 import WebIcon from '@mui/icons-material/Web';
@@ -29,79 +29,92 @@ export const Home = () => {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        pt: { xs: 8, md: 6 },
-        pb: 4,
-        overflow: 'hidden', // Prevent any potential overflow
+        overflow: 'hidden',
       }}
     >
-      <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        {/* Top Section - Greeting text moved to top left */}
-        <Box sx={{ mb: 6, pl: { xs: 0, md: 1 }, alignSelf: { xs: 'center', md: 'flex-start' }, width: '100%' }}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <GlowingText 
-              text="Hi there!"
-              variant="h1"
-              color="#ffffff"
-              glowColor={theme.palette.secondary.main}
-              glowIntensity={12}
-              sx={{ 
-                mb: 2,
-                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-                letterSpacing: '0.05em',
-                textAlign: { xs: 'center', md: 'left' }
-              }}
-            />
-          </motion.div>
-          
-          <Typography
-            variant="h2"
-            component={motion.h2}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            sx={{
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              color: theme.palette.primary.main,
-              mb: 2,
-              fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
-              textAlign: { xs: 'center', md: 'left' }
+      {/* Top left greeting text */}
+      <Box 
+        sx={{ 
+          position: 'absolute',
+          top: { xs: 32, md: 40 },
+          left: { xs: 16, sm: 24, md: 40 },
+          zIndex: 10,
+          maxWidth: { xs: '100%', sm: '50%', md: '40%' }
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <GlowingText 
+            text="Hi there!"
+            variant="h1"
+            color="#ffffff"
+            glowColor={theme.palette.secondary.main}
+            glowIntensity={12}
+            sx={{ 
+              fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+              letterSpacing: '0.05em',
+              textAlign: { xs: 'center', sm: 'left' }
             }}
-          >
-            I am Hector Saenz
-          </Typography>
+          />
+        </motion.div>
+        
+        <Typography
+          variant="h2"
+          component={motion.h2}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          sx={{
+            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+            color: theme.palette.primary.main,
+            fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
+            textAlign: { xs: 'center', sm: 'left' },
+            mt: 2
+          }}
+        >
+          I am Hector Saenz
+        </Typography>
 
-          <Typography
-            variant="h5"
-            component={motion.h5}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            sx={{
-              color: theme.palette.text.secondary,
-              mb: 0,
-              maxWidth: '600px',
-              fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
-              mx: { xs: 'auto', md: 0 },
-              textAlign: { xs: 'center', md: 'left' }
-            }}
-          >
-            Crafting digital experiences with clean code and creative solutions
-          </Typography>
-        </Box>
+        <Typography
+          variant="h5"
+          component={motion.h5}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          sx={{
+            color: theme.palette.text.secondary,
+            maxWidth: '600px',
+            fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+            textAlign: { xs: 'center', sm: 'left' },
+            mt: 2
+          }}
+        >
+          Crafting digital experiences with clean code and creative solutions
+        </Typography>
+      </Box>
 
-        {/* Main Content Area - Terminal positioned to the right */}
+      {/* Main Grid Container for layout */}
+      <Grid 
+        container
+        sx={{ 
+          minHeight: '100vh',
+          pt: { xs: 20, md: 0 }, // Extra top padding on mobile to make space for the greeting text
+          pb: { xs: 12, md: 10 }, // Space for skills at bottom
+          px: { xs: 2, sm: 4, md: 6 }
+        }}
+      >
+        {/* Terminal */}
         <Box 
           sx={{ 
-            display: 'flex',
-            flex: 1,
-            justifyContent: { xs: 'center', md: 'flex-end' },
+            display: 'flex', 
+            justifyContent: 'flex-end', 
+            alignItems: 'center',
             width: '100%',
-            position: 'relative',
-            mb: { xs: 10, md: 8 }, // Add bottom margin to create space for skills
+            height: '100%',
+            pt: { xs: 4, md: '20vh' } // Add top padding to push terminal down a bit
           }}
         >
           {/* Terminal with Glowing Border and Floating Animation */}
@@ -162,7 +175,6 @@ export const Home = () => {
                   zIndex: 1,
                   borderRadius: '8px',
                 },
-                // Add subtle scanlines effect
                 '&::after': {
                   content: '""',
                   position: 'absolute',
@@ -182,57 +194,55 @@ export const Home = () => {
             </Box>
           </motion.div>
         </Box>
-        
-        {/* Tech Icons at bottom center - fixed position */}
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: { xs: 20, md: 30 },
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+      </Grid>
+
+      {/* Bottom Fixed Skills Bar - Position fixed to stay at bottom */}
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          display: 'flex',
+          justifyContent: 'center',
+          pb: { xs: 2, md: 3 },
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={{ xs: 4, sm: 5, md: 6 }}
+          sx={{ 
+            px: 3,
+            py: 1.5,
+            borderRadius: 2,
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            backdropFilter: 'blur(5px)',
+            boxShadow: '0 0 20px rgba(0,0,0,0.2)',
           }}
+          component={motion.div}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Stack
-            direction="row"
-            spacing={{ xs: 4, sm: 5, md: 6 }}
-            justifyContent="center"
-            sx={{ 
-              px: 3,
-              py: 1.5,
-              borderRadius: 2,
-              backgroundColor: 'rgba(0,0,0,0.2)',
-              backdropFilter: 'blur(5px)',
-              boxShadow: '0 0 20px rgba(0,0,0,0.2)',
-              width: 'auto',
-              mx: 'auto',
-            }}
-            component={motion.div}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <CodeIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent1.main }} />
-              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Frontend</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <StorageIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent2.main }} />
-              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Backend</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <WebIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent3.main }} />
-              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Web</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <PsychologyIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.primary.main }} />
-              <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>AI/ML</Typography>
-            </Box>
+          <Stack direction="column" alignItems="center">
+            <CodeIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent1.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Frontend</Typography>
           </Stack>
-        </Box>
-      </Container>
+          <Stack direction="column" alignItems="center">
+            <StorageIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent2.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Backend</Typography>
+          </Stack>
+          <Stack direction="column" alignItems="center">
+            <WebIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.accent3.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>Web</Typography>
+          </Stack>
+          <Stack direction="column" alignItems="center">
+            <PsychologyIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 }, color: theme.palette.primary.main }} />
+            <Typography variant="body2" sx={{ fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' }, color: '#fff' }}>AI/ML</Typography>
+          </Stack>
+        </Stack>
+      </Box>
     </Box>
   );
 }; 

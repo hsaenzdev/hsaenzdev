@@ -124,11 +124,15 @@ const CommandLine = memo(({ onCommandComplete }: { onCommandComplete: () => void
   );
 });
 
-// Scrolling output that displays each skill one by one
+// Maximum number of lines to keep in the terminal
+const MAX_TERMINAL_LINES = 20;
+
+// Optimized scrolling output that displays each skill one by one with a limit on stored history
 const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive: boolean }) => {
   const theme = useTheme();
   const [displayedSkills, setDisplayedSkills] = useState<string[]>([]);
   const [commandActive, setCommandActive] = useState(true);
+  const [cycleCount, setCycleCount] = useState(0);
   const outputRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<any>(null);
   const skillIndexRef = useRef(0);
@@ -140,12 +144,36 @@ const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive
     }
   }, [displayedSkills]);
   
+  // Reset the terminal content periodically to prevent memory issues
+  const resetTerminal = () => {
+    setCycleCount(prev => prev + 1);
+    setDisplayedSkills([
+      '> New session started.',
+      '> Running list-skills...',
+      '> Found ' + skills.length + ' skills:',
+      ''
+    ]);
+    skillIndexRef.current = 0;
+  };
+  
+  // Add new line with memory management
+  const addLine = (line: string) => {
+    setDisplayedSkills(prev => {
+      // If we exceed the maximum lines, remove oldest lines
+      if (prev.length >= MAX_TERMINAL_LINES) {
+        return [...prev.slice(prev.length - MAX_TERMINAL_LINES + 1), line];
+      } 
+      return [...prev, line];
+    });
+  };
+  
   useEffect(() => {
     if (!isActive || !skills.length) return;
     
     // Reset state when component activates
     skillIndexRef.current = 0;
     setCommandActive(true);
+    setCycleCount(0);
     
     // First, show the command result header
     setDisplayedSkills([
@@ -157,16 +185,12 @@ const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive
     // Start displaying skills one by one
     const addSkill = () => {
       if (skillIndexRef.current < skills.length) {
-        setDisplayedSkills(prev => [...prev, '- ' + skills[skillIndexRef.current]]);
+        addLine('- ' + skills[skillIndexRef.current]);
         skillIndexRef.current++;
       } else {
         // When all skills are displayed, end the command
-        setDisplayedSkills(prev => [
-          ...prev, 
-          '',
-          '> Command completed.',
-          '> Session ended.'
-        ]);
+        addLine('');
+        addLine('> Command completed.');
         
         // Clear the interval to stop adding skills
         if (intervalRef.current) {
@@ -179,15 +203,17 @@ const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive
         
         // Setup to restart the command after a pause
         setTimeout(() => {
-          // Add a new prompt without clearing old content
-          setDisplayedSkills(prev => [
-            ...prev,
-            '',
-            '$ list-skills',
-            '> Running list-skills...',
-            '> Found ' + skills.length + ' skills:',
-            ''
-          ]);
+          // Check if we need to reset the terminal
+          if (cycleCount >= 2) {
+            resetTerminal();
+          } else {
+            // Add a new prompt without clearing old content
+            addLine('');
+            addLine('$ list-skills');
+            addLine('> Running list-skills...');
+            addLine('> Found ' + skills.length + ' skills:');
+            addLine('');
+          }
           
           // Start displaying skills again after a short delay
           setTimeout(() => {
@@ -195,7 +221,7 @@ const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive
             setCommandActive(true);
             intervalRef.current = setInterval(addSkill, 800);
           }, 500);
-        }, 4000); // 4 second pause before restarting
+        }, 3000); // 3 second pause before restarting
       }
     };
     
@@ -210,7 +236,7 @@ const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive
         clearInterval(intervalRef.current);
       }
     };
-  }, [isActive, skills]);
+  }, [isActive, skills, cycleCount]);
   
   if (!isActive) return null;
   
@@ -232,7 +258,7 @@ const ScrollingOutput = memo(({ skills, isActive }: { skills: string[], isActive
     >
       {displayedSkills.map((skill, index) => (
         <Typography 
-          key={index}
+          key={`${cycleCount}-${index}`}
           component="div"
           variant="caption" 
           sx={{ 
