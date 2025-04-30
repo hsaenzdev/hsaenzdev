@@ -1,42 +1,116 @@
-import { Box, Typography, Paper, useTheme, LinearProgress } from "@mui/material";
+import { Box, Typography, Paper, useTheme, LinearProgress, Tooltip, Button } from "@mui/material";
 import CodeIcon from '@mui/icons-material/Code';
 import StorageIcon from '@mui/icons-material/Storage';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import CloudIcon from '@mui/icons-material/Cloud';
-import { ReactNode } from "react";
+import BuildIcon from '@mui/icons-material/Build';
+import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
+import { ReactNode, useState } from "react";
+import { motion } from "framer-motion";
+import { GlowingText } from "../components/GlowingText";
 
 interface SkillItemProps {
   name: string;
   level: number;
   color: string;
+  isUnlocked: boolean;
+  handleUnlock?: () => void;
 }
 
-const SkillItem = ({ name, level, color }: SkillItemProps) => {  
+const SkillItem = ({ name, level, color, isUnlocked, handleUnlock }: SkillItemProps) => {  
   return (
     <Box sx={{ mb: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-        <Typography variant="body2">{name}</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {!isUnlocked && (
+            <Box 
+              component="span" 
+              sx={{ 
+                display: 'inline-block',
+                width: 16, 
+                height: 16, 
+                mr: 1, 
+                bgcolor: 'rgba(0,0,0,0.5)',
+                borderRadius: '50%',
+                position: 'relative',
+                '&::after': {
+                  content: '"?"',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  color: '#fff',
+                  fontSize: '10px',
+                }
+              }} 
+            />
+          )}
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              opacity: isUnlocked ? 1 : 0.6, 
+              textDecoration: !isUnlocked ? 'line-through' : 'none',
+              fontWeight: isUnlocked ? 'bold' : 'normal',
+            }}
+          >
+            {name}
+          </Typography>
+        </Box>
         <Typography 
           variant="caption" 
           sx={{ 
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.6rem'
+            fontSize: '0.6rem',
+            opacity: isUnlocked ? 1 : 0.6,
           }}
         >
-          LVL {level}
+          LVL {isUnlocked ? level : '??'}
         </Typography>
       </Box>
-      <LinearProgress 
-        variant="determinate" 
-        value={level * 10} 
-        sx={{ 
-          height: 10, 
-          borderRadius: 1,
-          '& .MuiLinearProgress-bar': {
-            backgroundColor: color
-          }
-        }} 
-      />
+      <Box sx={{ position: 'relative' }}>
+        <LinearProgress 
+          variant="determinate" 
+          value={isUnlocked ? level * 10 : 0} 
+          sx={{ 
+            height: 12, 
+            borderRadius: 1,
+            border: '1px solid rgba(255,255,255,0.1)',
+            bgcolor: 'rgba(0,0,0,0.2)',
+            '& .MuiLinearProgress-bar': {
+              backgroundColor: isUnlocked ? color : 'grey',
+              backgroundImage: isUnlocked ? 
+                `repeating-linear-gradient(45deg, ${color} 0%, ${color} 10%, ${color}cc 10%, ${color}cc 20%)` : 
+                'none',
+              transition: 'transform 1s ease-in-out',
+            }
+          }} 
+        />
+        {!isUnlocked && (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleUnlock}
+            sx={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              height: '100%',
+              minWidth: 0,
+              padding: '0 8px',
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: '0.5rem',
+              borderColor: color,
+              color: color,
+              '&:hover': {
+                borderColor: color,
+                backgroundColor: `${color}20`,
+              }
+            }}
+          >
+            UNLOCK
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 };
@@ -55,53 +129,93 @@ interface SkillCategoryProps {
 
 const SkillCategory = ({ title, skills, icon, color }: SkillCategoryProps) => {
   const theme = useTheme();
+  const [unlockedSkills, setUnlockedSkills] = useState<{ [key: string]: boolean }>(
+    Object.fromEntries(skills.slice(0, 2).map(skill => [skill.name, true]))
+  );
+  
+  const handleUnlock = (skillName: string) => {
+    setUnlockedSkills(prev => ({
+      ...prev,
+      [skillName]: true
+    }));
+  };
   
   return (
-    <Paper
-      elevation={3}
+    <Box
       sx={{
         width: { xs: '100%', sm: 'calc(50% - 16px)', md: 'calc(50% - 16px)' },
-        p: 3,
-        mb: 3,
-        border: `2px solid ${color}`,
-        background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-        <Box 
-          sx={{ 
-            mr: 2, 
-            width: 50, 
-            height: 50, 
-            borderRadius: '50%', 
-            bgcolor: color,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{
+          width: '100%',
+        }}
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            p: 3,
+            mb: 3,
+            border: `2px solid ${color}`,
+            background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: 80,
+              height: 80,
+              backgroundImage: `radial-gradient(circle at top right, ${color}30 0%, transparent 70%)`,
+              pointerEvents: 'none',
+              zIndex: 0,
+            }
           }}
         >
-          {icon}
-        </Box>
-        <Typography 
-          variant="h6" 
-          sx={{ 
-            color: color,
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '1rem'
-          }}
-        >
-          {title}
-        </Typography>
-      </Box>
-      {skills.map((skill: Skill, index: number) => (
-        <SkillItem 
-          key={index} 
-          name={skill.name} 
-          level={skill.level} 
-          color={color} 
-        />
-      ))}
-    </Paper>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+            <Box 
+              sx={{ 
+                mr: 2, 
+                width: 50, 
+                height: 50, 
+                borderRadius: '50%', 
+                bgcolor: color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: `0 0 10px ${color}80`,
+              }}
+            >
+              {icon}
+            </Box>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                color: color,
+                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize: '1rem'
+              }}
+            >
+              {title}
+            </Typography>
+          </Box>
+          {skills.map((skill: Skill, index: number) => (
+            <SkillItem 
+              key={index} 
+              name={skill.name} 
+              level={skill.level} 
+              color={color}
+              isUnlocked={!!unlockedSkills[skill.name]}
+              handleUnlock={() => handleUnlock(skill.name)}
+            />
+          ))}
+        </Paper>
+      </motion.div>
+    </Box>
   );
 };
 
@@ -122,9 +236,12 @@ export const Skills = () => {
       icon: <CodeIcon sx={{ color: 'white' }} />,
       skills: [
         { name: "React", level: 9 },
-        { name: "TypeScript", level: 8 },
-        { name: "HTML/CSS", level: 9 },
-        { name: "Next.js", level: 7 },
+        { name: "TypeScript", level: 9 },
+        { name: "JavaScript", level: 9 },
+        { name: "Material UI", level: 8 },
+        { name: "Vue.js", level: 7 },
+        { name: "GraphQL", level: 7 },
+        { name: "Three.js", level: 6 },
       ]
     },
     {
@@ -133,20 +250,22 @@ export const Skills = () => {
       icon: <StorageIcon sx={{ color: 'white' }} />,
       skills: [
         { name: "Node.js", level: 8 },
-        { name: "Express", level: 7 },
-        { name: "MongoDB", level: 7 },
-        { name: "PostgreSQL", level: 6 },
+        { name: "Express.js", level: 8 },
+        { name: "Phoenix (Elixir)", level: 7 },
+        { name: "Python", level: 7 },
+        { name: "PHP", level: 7 },
+        { name: "C#", level: 6 },
       ]
     },
     {
-      title: "UI/UX",
+      title: "Databases",
       color: theme.palette.accent3.main,
-      icon: <DesignServicesIcon sx={{ color: 'white' }} />,
+      icon: <StorageOutlinedIcon sx={{ color: 'white' }} />,
       skills: [
-        { name: "Material UI", level: 8 },
-        { name: "Responsive Design", level: 9 },
-        { name: "Figma", level: 7 },
-        { name: "Three.js", level: 6 },
+        { name: "PostgreSQL", level: 8 },
+        { name: "Snowflake", level: 7 },
+        { name: "ClickHouse", level: 7 },
+        { name: "SQL/NoSQL", level: 8 },
       ]
     },
     {
@@ -154,10 +273,11 @@ export const Skills = () => {
       color: theme.palette.primary.main,
       icon: <CloudIcon sx={{ color: 'white' }} />,
       skills: [
-        { name: "Git", level: 8 },
-        { name: "Docker", level: 6 },
-        { name: "AWS", level: 7 },
-        { name: "CI/CD", level: 7 },
+        { name: "AWS", level: 8 },
+        { name: "Docker", level: 7 },
+        { name: "Git (GitLab CI/CD)", level: 8 },
+        { name: "Linux", level: 7 },
+        { name: "LaunchDarkly", level: 7 },
       ]
     }
   ];
@@ -165,14 +285,32 @@ export const Skills = () => {
   return (
     <Box
       sx={{
-        // minHeight: '100vh',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         padding: theme.spacing(4),
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <Typography 
+      {/* Background game elements */}
+      <Box 
+        sx={{ 
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '100%',
+          height: '100%',
+          opacity: 0.03,
+          backgroundImage: `url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M30 0l30 30-30 30L0 30z" fill="${theme.palette.primary.main}" fill-opacity="1" fill-rule="evenodd"/%3E%3C/svg%3E')`,
+          backgroundSize: '60px 60px',
+          pointerEvents: 'none',
+          zIndex: -1,
+        }}
+      />
+      
+      <GlowingText 
+        text="Skill Tree" 
         variant="h3" 
         sx={{ 
           fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
@@ -180,9 +318,38 @@ export const Skills = () => {
           mb: 4,
           textAlign: 'center'
         }}
+        glowColor={theme.palette.primary.main}
+      />
+      
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          mb: 4,
+        }}
       >
-        Skill Tree
-      </Typography>
+        <Paper
+          elevation={3}
+          sx={{
+            p: 2,
+            borderRadius: 2,
+            maxWidth: 'fit-content',
+            backgroundColor: theme.palette.background.paper,
+            border: `1px dashed ${theme.palette.primary.main}`,
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: '0.7rem',
+              color: theme.palette.primary.main,
+            }}
+          >
+            Skill points available: 3
+          </Typography>
+        </Paper>
+      </Box>
       
       <Box 
         sx={{
