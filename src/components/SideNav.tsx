@@ -2,7 +2,6 @@ import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typogr
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
 import CodeIcon from '@mui/icons-material/Code';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
@@ -17,7 +16,6 @@ import { useThemeContext } from "../context/ThemeContext";
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
-  { text: 'About Me', icon: <PersonIcon />, path: '/about' },
   { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
   { text: 'Skills', icon: <CodeIcon />, path: '/skills' },
   { text: 'Experience', icon: <BusinessCenterIcon />, path: '/experience' },
