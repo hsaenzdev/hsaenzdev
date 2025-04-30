@@ -1,7 +1,23 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, styled } from "@mui/material";
 import { motion } from "framer-motion";
 import { GlowingText } from "../../components/GlowingText";
+import { TypeWriter } from "../../components/TypeWriter";
 import { GREETING } from "./constants";
+
+// Styled TypeWriter component with custom styling
+const StyledTypeWriter = styled(TypeWriter)(({ theme }) => ({
+  color: '#00F5D4 !important',
+  fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+  letterSpacing: '0.03em',
+  textShadow: '0 0 10px rgba(0, 245, 212, 0.7)',
+  fontSize: '1.1rem',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '0.9rem',
+  },
+  [theme.breakpoints.between('sm', 'md')]: {
+    fontSize: '1.1rem',
+  },
+}));
 
 interface GreetingSectionProps {
   // Optional props for customization
@@ -11,6 +27,17 @@ interface GreetingSectionProps {
 export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
   const theme = useTheme();
   const greeting = customGreeting || GREETING;
+  
+  // Array of roles for the typing effect
+  const roles = [
+    "Full Stack Developer",
+    "Frontend Specialist",
+    "Backend Engineer",
+    "UI/UX Enthusiast",
+    "React Developer",
+    "TypeScript Expert",
+    "AWS Solutions Architect"
+  ];
 
   return (
     <Box
@@ -77,25 +104,18 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
           mt: 2,
           mb: 3,
           whiteSpace: 'nowrap',
-          overflow: 'visible'
+          overflow: 'visible',
+          height: { xs: '1.5rem', sm: '1.8rem', md: '2rem' },
+          display: 'flex',
+          alignItems: 'center'
         }}
       >
-        <Typography
-          variant="h3"
-          component="span"
-          sx={{
-            color: '#66bb6a', // More vibrant Material UI green
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: { xs: '0.9rem', sm: '1.1rem', md: '1.3rem' },
-            textAlign: { xs: 'center', sm: 'left' },
-            textShadow: '0 0 10px rgba(102, 187, 106, 0.7)',
-            display: 'block',
-            letterSpacing: '0.03em',
-            fontWeight: 400
-          }}
-        >
-          {greeting.role}
-        </Typography>
+        <StyledTypeWriter
+          texts={roles}
+          typingSpeed={80}
+          deletingSpeed={40}
+          delayBetweenTexts={2000}
+        />
       </Box>
 
       <Typography

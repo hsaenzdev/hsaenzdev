@@ -1,57 +1,62 @@
 import { Box, Typography, useTheme, Tooltip } from "@mui/material";
 import { motion } from "framer-motion";
-import CodeIcon from '@mui/icons-material/Code';
-import StorageIcon from '@mui/icons-material/Storage';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
-import CloudIcon from '@mui/icons-material/Cloud';
 import BuildIcon from '@mui/icons-material/Build';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import GroupsIcon from '@mui/icons-material/Groups';
+import SchoolIcon from '@mui/icons-material/School';
 
 export const DevStatsSection = () => {
   const theme = useTheme();
   
-  // Developer stats as retro game attributes
+  // Developer stats as retro game attributes focused on recruiter-valued qualities
   const devStats = [
     { 
       icon: <WorkHistoryIcon />, 
       label: "Experience", 
       value: "10+", 
       unit: "YRS", 
-      color: theme.palette.accent1.main 
-    },
-    { 
-      icon: <CodeIcon />, 
-      label: "Frontend", 
-      value: "97", 
-      unit: "%", 
-      color: theme.palette.primary.main 
+      color: theme.palette.accent1.main,
+      tooltip: "Over a decade of professional development experience"
     },
     { 
       icon: <BuildIcon />, 
-      label: "Backend", 
-      value: "92", 
-      unit: "%", 
-      color: theme.palette.accent2.main 
+      label: "Projects", 
+      value: "8+", 
+      unit: "MAJOR", 
+      color: theme.palette.primary.main,
+      tooltip: "Led and delivered 8+ major enterprise projects"
     },
     { 
-      icon: <StorageIcon />, 
-      label: "Database", 
-      value: "88", 
+      icon: <PsychologyIcon />, 
+      label: "Problem Solving", 
+      value: "98", 
       unit: "%", 
-      color: theme.palette.accent3.main 
+      color: "#00F5D4",
+      tooltip: "Strong analytical and problem-solving abilities"
     },
     { 
-      icon: <CloudIcon />, 
-      label: "Cloud", 
-      value: "AWS", 
-      unit: "Cert", 
-      color: theme.palette.accent1.dark 
+      icon: <GroupsIcon />, 
+      label: "Team Leadership", 
+      value: "7+", 
+      unit: "YRS", 
+      color: theme.palette.accent2.main,
+      tooltip: "Led development teams for 7+ years with proven success"
+    },
+    { 
+      icon: <SchoolIcon />, 
+      label: "Adaptability", 
+      value: "99", 
+      unit: "%", 
+      color: theme.palette.accent3.main,
+      tooltip: "Quick to master new technologies and frameworks"
     },
   ];
 
   return (
     <Box
       component={motion.div}
-      initial={{ opacity: 0, x: 20 }}
+      initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6 }}
       sx={{
@@ -101,7 +106,7 @@ export const DevStatsSection = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Tooltip title={`${stat.label}: ${stat.value} ${stat.unit}`} placement="left">
+            <Tooltip title={stat.tooltip} placement="right">
               <Box
                 sx={{
                   display: 'flex',
@@ -117,7 +122,7 @@ export const DevStatsSection = () => {
                   '&:hover': {
                     background: `linear-gradient(to right, ${stat.color}25, transparent)`,
                     boxShadow: `0 0 8px ${stat.color}30`,
-                    transform: 'translateX(-3px)',
+                    transform: 'translateX(3px)',
                   },
                 }}
               >
