@@ -12,6 +12,7 @@ import { Skills } from "./pages/Skills";
 import { Experience } from "./pages/Experience";
 import { Achievements } from "./pages/Achievements";
 import { Contact } from "./pages/Contact";
+import { GameProvider } from "./context/GameContext";
 
 function AppContent() {
   const { mode } = useThemeContext();
@@ -41,7 +42,9 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <AppContent />
+        <GameProvider>
+          <AppContent />
+        </GameProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

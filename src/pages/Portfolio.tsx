@@ -2,9 +2,20 @@ import { Box, useTheme } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { SideNav } from "../components/SideNav";
 import { ParticleBackground } from "../components/ParticleBackground";
+import { InputFocusHandler } from "../components/InputFocusHandler";
+import { GameScoreDisplay } from "../components/GameScoreDisplay";
+import { EasterEggHint } from "../components/EasterEggHint";
+import { useGameContext } from "../context/GameContext";
+import { useEffect } from "react";
 
 export const Portfolio = () => {
   const theme = useTheme();
+  const { enableGame } = useGameContext();
+  
+  // Enable the game by default when the portfolio loads
+  useEffect(() => {
+    enableGame();
+  }, [enableGame]);
   
   return (
     <Box 
@@ -16,8 +27,17 @@ export const Portfolio = () => {
         overflow: 'hidden'
       }}
     >
-      {/* Animated background particles */}
+      {/* Track input focus to prevent game activation when typing */}
+      <InputFocusHandler />
+      
+      {/* Animated background particles and snake game */}
       <ParticleBackground />
+      
+      {/* Display score when game is active */}
+      <GameScoreDisplay />
+      
+      {/* Subtle hint about the easter egg */}
+      <EasterEggHint />
       
       <SideNav />
       

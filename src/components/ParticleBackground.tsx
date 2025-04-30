@@ -1,6 +1,8 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
+import { createSnakeGame } from './SnakeGame';
+import { useGameContext } from '../context/GameContext';
 
 interface Particle {
   x: number;
@@ -25,6 +27,8 @@ export const ParticleBackground = () => {
   const frameCount = useRef(0);
   const colorsRef = useRef<string[]>([]);
   const isInitializedRef = useRef(false);
+  const snakeGameRef = useRef<ReturnType<typeof createSnakeGame> | null>(null);
+  const { isGameEnabled, isInputFocused, setScore } = useGameContext();
   
   // Memoize color-related functions
   const hexToRgb = useCallback((hex: string): string => {
@@ -108,6 +112,28 @@ export const ParticleBackground = () => {
     particlesRef.current = newParticles;
   }, []);
   
+  // Function to handle when a particle is eaten by the snake
+  const handleParticleEaten = useCallback((index: number) => {
+    if (index < 0 || index >= particlesRef.current.length) return;
+    
+    // Instead of removing the particle, regenerate it at a new position
+    const particle = particlesRef.current[index];
+    const colors = colorsRef.current;
+    
+    // Regenerate the particle at a random position
+    particle.x = Math.random() * window.innerWidth;
+    particle.y = Math.random() * window.innerHeight;
+    particle.originalX = particle.x;
+    particle.originalY = particle.y;
+    particle.color = colors[Math.floor(Math.random() * colors.length)];
+    particle.targetColor = colors[Math.floor(Math.random() * colors.length)];
+    
+    // Update the score in the game context
+    if (snakeGameRef.current) {
+      setScore(snakeGameRef.current.getScore());
+    }
+  }, [setScore]);
+  
   // Track mouse position - but with heavy throttling to prevent rapid changes
   useEffect(() => {
     let lastUpdate = 0;
@@ -127,6 +153,49 @@ export const ParticleBackground = () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  // Handle keyboard events for controlling the snake game
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Skip if input is focused to prevent game activation when typing
+      if (isInputFocused) return;
+      
+      if (!snakeGameRef.current) return;
+      
+      // Enable the game when arrow keys are pressed and game is inactive
+      if (
+        ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key) &&
+        snakeGameRef.current.getGameState() === 'INACTIVE' &&
+        isGameEnabled
+      ) {
+        snakeGameRef.current.startGame();
+      }
+      
+      // Change snake direction when arrow keys are pressed
+      if (snakeGameRef.current.getGameState() === 'ACTIVE') {
+        switch (e.key) {
+          case 'ArrowUp':
+            snakeGameRef.current.changeDirection('UP');
+            break;
+          case 'ArrowDown':
+            snakeGameRef.current.changeDirection('DOWN');
+            break;
+          case 'ArrowLeft':
+            snakeGameRef.current.changeDirection('LEFT');
+            break;
+          case 'ArrowRight':
+            snakeGameRef.current.changeDirection('RIGHT');
+            break;
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isGameEnabled, isInputFocused]);
   
   // Draw particles on canvas
   useEffect(() => {
@@ -135,6 +204,16 @@ export const ParticleBackground = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    
+    // Initialize snake game
+    snakeGameRef.current = createSnakeGame({
+      particles: particlesRef.current,
+      onEatParticle: handleParticleEaten,
+      canvasWidth: canvas.width,
+      canvasHeight: canvas.height,
+      ctx,
+      theme
+    });
     
     // Handle resize
     const handleResize = () => {
@@ -285,6 +364,11 @@ export const ParticleBackground = () => {
         ctx.shadowBlur = 0;
       });
       
+      // Update snake game if it's enabled
+      if (isGameEnabled && snakeGameRef.current) {
+        snakeGameRef.current.updateGame();
+      }
+      
       animationFrameRef.current = requestAnimationFrame(animate);
     };
     
@@ -297,7 +381,7 @@ export const ParticleBackground = () => {
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, [hexToRgb, lerpColor]); // Removed mousePosition from dependencies
+  }, [hexToRgb, lerpColor, handleParticleEaten, isGameEnabled, theme]); // Dependencies updated
   
   return (
     <motion.canvas
