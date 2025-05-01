@@ -5,7 +5,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import WorkIcon from '@mui/icons-material/Work';
 import CodeIcon from '@mui/icons-material/Code';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -19,7 +18,6 @@ const menuItems = [
   { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
   { text: 'Skills', icon: <CodeIcon />, path: '/skills' },
   { text: 'Experience', icon: <BusinessCenterIcon />, path: '/experience' },
-  { text: 'Achievements', icon: <EmojiEventsIcon />, path: '/achievements' },
   { text: 'Contact', icon: <ContactMailIcon />, path: '/contact' },
 ];
 

@@ -9,7 +9,6 @@ import { Home } from "./pages/Home";
 import { Projects } from "./pages/Projects";
 import { Skills } from "./pages/Skills";
 import { Experience } from "./pages/Experience";
-import { Achievements } from "./pages/Achievements";
 import { Contact } from "./pages/Contact";
 import { GameProvider } from "./context/GameContext";
 
@@ -27,7 +26,6 @@ function AppContent() {
             <Route path="projects" element={<Projects />} />
             <Route path="skills" element={<Skills />} />
             <Route path="experience" element={<Experience />} />
-            <Route path="achievements" element={<Achievements />} />
             <Route path="contact" element={<Contact />} />
           </Route>
         </Routes>
