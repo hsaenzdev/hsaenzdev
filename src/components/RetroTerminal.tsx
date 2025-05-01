@@ -252,7 +252,7 @@ export const RetroTerminal = ({
   const [command, setCommand] = useState('');
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [commandIndex, setCommandIndex] = useState(-1);
-  const [showCursor, setShowCursor] = useState(true);
+  const [showCursor] = useState(true);
   const outputRef = useRef<HTMLDivElement>(null);
   
   // Transform text skills into structured data
