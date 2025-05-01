@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, useTheme } from '@mui/material';
 
 interface TypeWriterProps {
@@ -11,87 +11,82 @@ interface TypeWriterProps {
 
 export const TypeWriter = ({
   texts,
-  typingSpeed = 100,
-  deletingSpeed = 50,
+  typingSpeed = 10, // Much faster default speed
+  deletingSpeed = 5, // Much faster default deletion
   delayBetweenTexts = 1500,
   className
 }: TypeWriterProps) => {
   const theme = useTheme();
-  const [currentText, setCurrentText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopNum, setLoopNum] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const [textIndex, setTextIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
   
-  // Use refs for values that should not trigger re-renders when they change
-  const textsRef = useRef(texts);
-  const typingSpeedRef = useRef(typingSpeed);
-  const deletingSpeedRef = useRef(deletingSpeed);
-  const delayBetweenTextsRef = useRef(delayBetweenTexts);
-  const cursorRef = useRef<any>(null);
-  const currentIndexRef = useRef(0);
+  const timerRef = useRef<number | null>(null);
   
-  // Update refs when props change
+  // Clear timer on unmount
   useEffect(() => {
-    textsRef.current = texts;
-    typingSpeedRef.current = typingSpeed;
-    deletingSpeedRef.current = deletingSpeed;
-    delayBetweenTextsRef.current = delayBetweenTexts;
-  }, [texts, typingSpeed, deletingSpeed, delayBetweenTexts]);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
   
-  // Memoized typing function to maintain stable reference
-  const tick = useCallback(() => {
-    if (!textsRef.current.length) return;
+  // Initialize with first text immediately
+  useEffect(() => {
+    if (texts.length > 0) {
+      setDisplayText(texts[0]);
+      setTextIndex(0);
+      setCharIndex(texts[0].length);
+      // Start deleting after delay
+      timerRef.current = window.setTimeout(() => {
+        setIsTyping(false);
+      }, delayBetweenTexts);
+    }
+  }, [texts, delayBetweenTexts]);
+  
+  // Handle the typing/deleting animation
+  useEffect(() => {
+    if (!texts.length) return;
     
-    const i = currentIndexRef.current % textsRef.current.length;
-    const fullText = textsRef.current[i];
+    // Clear existing timer
+    if (timerRef.current) clearTimeout(timerRef.current);
     
-    // Calculate delay for next tick
-    let delay = typingSpeedRef.current;
-    
-    if (isDeleting) {
-      setCurrentText(text => text.substring(0, text.length - 1));
-      delay = deletingSpeedRef.current;
-      
-      // When done deleting
-      if (currentText.length === 1) {
-        currentIndexRef.current = (currentIndexRef.current + 1) % textsRef.current.length;
-        delay = 500; // Brief pause before starting the next word
-        setIsDeleting(false);
+    if (isTyping) {
+      // Typing animation
+      if (charIndex < texts[textIndex].length) {
+        timerRef.current = window.setTimeout(() => {
+          setDisplayText(texts[textIndex].substring(0, charIndex + 1));
+          setCharIndex(charIndex + 1);
+        }, typingSpeed);
+      } else {
+        // Finished typing a word, pause before deleting
+        timerRef.current = window.setTimeout(() => {
+          setIsTyping(false);
+        }, delayBetweenTexts);
       }
     } else {
-      setCurrentText(text => fullText.substring(0, text.length + 1));
-      
-      // When done typing
-      if (currentText.length === fullText.length - 1) {
-        delay = delayBetweenTextsRef.current;
-        setIsDeleting(true);
+      // Deleting animation
+      if (charIndex > 0) {
+        timerRef.current = window.setTimeout(() => {
+          setDisplayText(texts[textIndex].substring(0, charIndex - 1));
+          setCharIndex(charIndex - 1);
+        }, deletingSpeed);
+      } else {
+        // Finished deleting, move to next word
+        const nextIndex = (textIndex + 1) % texts.length;
+        setTextIndex(nextIndex);
+        setIsTyping(true);
       }
     }
-    
-    cursorRef.current = setTimeout(tick, delay);
-  }, [currentText, isDeleting]);
+  }, [texts, textIndex, charIndex, isTyping, typingSpeed, deletingSpeed, delayBetweenTexts]);
   
-  // Start/restart typing animation
-  useEffect(() => {
-    if (!textsRef.current.length) return;
-    
-    // Initial timeout
-    cursorRef.current = setTimeout(tick, 1000);
-    
-    // Cleanup function
-    return () => {
-      if (cursorRef.current) {
-        clearTimeout(cursorRef.current);
-      }
-    };
-  }, [tick]);
-
   return (
     <Box 
       className={className} 
       sx={{ 
         display: 'inline-block',
         position: 'relative',
-        minWidth: '10ch', // Ensure the box has some width even when empty
+        minWidth: '10ch',
         '&::after': {
           content: '"|"',
           color: theme.palette.primary.main,
@@ -106,7 +101,7 @@ export const TypeWriter = ({
         }
       }}
     >
-      {currentText}
+      {displayText}
     </Box>
   );
 }; 

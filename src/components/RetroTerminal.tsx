@@ -310,6 +310,9 @@ export const RetroTerminal = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (currentState !== 'menu') return;
       
+      // Check if the event is already handled elsewhere (e.g. by the game)
+      if (e.defaultPrevented) return;
+      
       if (e.key === 'Enter') {
         // Process command
         processCommand(command);
@@ -322,23 +325,33 @@ export const RetroTerminal = ({
       } else if (e.key === 'Backspace') {
         setCommand(prev => prev.slice(0, -1));
       } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        // Navigate command history
-        if (commandHistory.length > 0 && commandIndex < commandHistory.length - 1) {
-          const newIndex = commandIndex + 1;
-          setCommandIndex(newIndex);
-          setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
+        // Only handle arrow keys if we're focused on the terminal
+        const terminalFocused = document.activeElement?.closest('.terminal-container') !== null;
+        
+        if (terminalFocused) {
+          e.preventDefault();
+          // Navigate command history
+          if (commandHistory.length > 0 && commandIndex < commandHistory.length - 1) {
+            const newIndex = commandIndex + 1;
+            setCommandIndex(newIndex);
+            setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
+          }
         }
       } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        // Navigate command history
-        if (commandIndex > 0) {
-          const newIndex = commandIndex - 1;
-          setCommandIndex(newIndex);
-          setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
-        } else if (commandIndex === 0) {
-          setCommandIndex(-1);
-          setCommand('');
+        // Only handle arrow keys if we're focused on the terminal
+        const terminalFocused = document.activeElement?.closest('.terminal-container') !== null;
+        
+        if (terminalFocused) {
+          e.preventDefault();
+          // Navigate command history
+          if (commandIndex > 0) {
+            const newIndex = commandIndex - 1;
+            setCommandIndex(newIndex);
+            setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
+          } else if (commandIndex === 0) {
+            setCommandIndex(-1);
+            setCommand('');
+          }
         }
       } else if (e.key === 'Tab') {
         e.preventDefault();
@@ -416,6 +429,7 @@ export const RetroTerminal = ({
   
   return (
     <Box 
+      className="terminal-container"
       sx={{
         bgcolor: 'rgba(0, 0, 0, 0.9)',
         borderRadius: '8px',

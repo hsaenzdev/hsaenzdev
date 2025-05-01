@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { GlowingText } from "../../components/GlowingText";
 import { TypeWriter } from "../../components/TypeWriter";
 import { GREETING } from "./constants";
+import { useState, useEffect } from "react";
 
 // Styled TypeWriter component with custom styling
 const StyledTypeWriter = styled(TypeWriter)(({ theme }) => ({
@@ -19,6 +20,23 @@ const StyledTypeWriter = styled(TypeWriter)(({ theme }) => ({
   },
 }));
 
+// Custom glowing name component with letter hover effect
+const GlowingName = styled(Box)(({ theme }) => ({
+  display: 'inline-flex',
+  fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+  color: theme.palette.primary.main,
+  textShadow: `0 0 15px ${theme.palette.primary.main}, 0 0 20px ${theme.palette.primary.main}70`,
+  '& .letter': {
+    display: 'inline-block',
+    transition: 'all 0.2s ease',
+    '&:hover': {
+      color: theme.palette.primary.light,
+      textShadow: `0 0 20px ${theme.palette.primary.main}`,
+      transform: 'translateY(-3px)'
+    }
+  }
+}));
+
 interface GreetingSectionProps {
   // Optional props for customization
   customGreeting?: typeof GREETING;
@@ -28,16 +46,19 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
   const theme = useTheme();
   const greeting = customGreeting || GREETING;
   
-  // Array of roles for the typing effect
+  // Enhanced roles based on resume
   const roles = [
     "Full Stack Developer",
-    "Frontend Specialist",
-    "Backend Engineer",
-    "UI/UX Enthusiast",
+    "JavaScript/TypeScript Expert",
     "React Developer",
-    "TypeScript Expert",
-    "AWS Solutions Architect"
+    "AWS Certified Developer",
+    "Node.js Engineer",
+    "UI/Material Design Specialist",
+    "DevOps Engineer"
   ];
+
+  // Split name into individual letters for hover effect
+  const nameLetters = greeting.name.split('');
 
   return (
     <Box
@@ -75,7 +96,10 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
         sx={{
           mt: 2,
           whiteSpace: 'nowrap',
-          overflow: 'visible'
+          overflow: 'visible',
+          display: 'flex',
+          flexWrap: 'nowrap',
+          alignItems: 'center'
         }}
       >
         <Typography
@@ -83,15 +107,39 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
           component="span"
           sx={{
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.8rem' },
-            textAlign: { xs: 'center', sm: 'left' },
+            fontSize: { xs: '2.2rem', sm: '2.6rem', md: '3.2rem' },
             letterSpacing: '0.02em',
-            textShadow: `0 0 10px ${theme.palette.primary.main}60`,
-            display: 'block'
+            display: 'flex',
+            alignItems: 'center',
+            gap: { xs: '0.5rem', sm: '0.75rem' }
           }}
         >
-          <Box component="span" sx={{ color: '#9c27b0', textShadow: '0 0 8px rgba(156, 39, 176, 0.6)' }}>I am</Box>{' '}
-          <Box component="span" sx={{ color: theme.palette.primary.main }}>{greeting.name}</Box>
+          <GlowingText 
+            text="I am"
+            variant="h1"
+            color="#9c27b0"
+            glowColor="#9c27b0"
+            glowIntensity={15}
+            sx={{ 
+              display: 'inline',
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: 'inherit',
+              fontWeight: 'bold',
+            }}
+          />
+          <GlowingName>
+            {nameLetters.map((letter, index) => (
+              <motion.span 
+                key={index} 
+                className="letter"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 + (index * 0.05) }}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </GlowingName>
         </Typography>
       </Box>
 
@@ -112,28 +160,35 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
       >
         <StyledTypeWriter
           texts={roles}
-          typingSpeed={80}
-          deletingSpeed={40}
-          delayBetweenTexts={2000}
+          typingSpeed={8}  // Extremely fast typing
+          deletingSpeed={5} // Fast deleting
+          delayBetweenTexts={2500} // Longer pause between role changes
         />
       </Box>
 
-      <Typography
-        variant="h5"
+      <Box
         component={motion.h5}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        sx={{
-          color: theme.palette.text.secondary,
-          maxWidth: '600px',
-          fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
-          textAlign: { xs: 'center', sm: 'left' },
-          mb: 4
-        }}
       >
-        {greeting.tagline}
-      </Typography>
+        <GlowingText
+          text={greeting.tagline}
+          variant="h5"
+          color={theme.palette.text.secondary}
+          glowColor={theme.palette.primary.main}
+          glowIntensity={6}
+          sx={{
+            fontFamily: '"Press Start 2P", monospace',
+            maxWidth: '600px',
+            fontSize: { xs: '0.7rem', sm: '0.8rem', md: '0.9rem' },
+            textAlign: { xs: 'center', sm: 'left' },
+            mb: 4,
+            lineHeight: 1.8,
+            letterSpacing: '0.02em'
+          }}
+        />
+      </Box>
     </Box>
   );
 }; 

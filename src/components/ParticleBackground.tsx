@@ -367,6 +367,16 @@ export const ParticleBackground = () => {
       // Update snake game if it's enabled
       if (isGameEnabled && snakeGameRef.current) {
         snakeGameRef.current.updateGame();
+        
+        // Update score in game context based on current game state
+        const currentGameState = snakeGameRef.current.getGameState();
+        if (currentGameState === 'INACTIVE') {
+          // Reset score to 0 when game is inactive
+          setScore(0);
+        } else {
+          // Update score when game is active or game over
+          setScore(snakeGameRef.current.getScore());
+        }
       }
       
       animationFrameRef.current = requestAnimationFrame(animate);
@@ -381,7 +391,7 @@ export const ParticleBackground = () => {
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, [hexToRgb, lerpColor, handleParticleEaten, isGameEnabled, theme]); // Dependencies updated
+  }, [hexToRgb, lerpColor, handleParticleEaten, isGameEnabled, theme, setScore]); // Dependencies updated
   
   return (
     <motion.canvas
