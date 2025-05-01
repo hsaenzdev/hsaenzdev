@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
 
 interface RetroTerminalProps {
-  texts: string[];
-  typingSpeed?: number;
   terminalTitle?: string;
 }
 
@@ -246,8 +244,6 @@ const SkillBar = memo(({ skill }: { skill: Skill }) => {
 
 // Interactive Terminal Component
 export const RetroTerminal = ({
-  texts,
-  typingSpeed = 80,
   terminalTitle = 'portfolio.exe'
 }: RetroTerminalProps) => {
   const theme = useTheme();

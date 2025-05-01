@@ -1,14 +1,3 @@
-// Skills for the typing effect in the RetroTerminal
-export const SKILLS = [
-  "Full Stack Developer",
-  "React Specialist",
-  "TypeScript Expert",
-  "Game Enthusiast",
-  "Problem Solver",
-  "UI/UX Designer",
-  "ThreeJS Developer"
-];
-
 // Text for the game objective section
 export const GAME_OBJECTIVE = {
   title: "GAME OBJECTIVE:",

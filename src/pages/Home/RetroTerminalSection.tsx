@@ -1,13 +1,8 @@
 import { Box, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import { RetroTerminal } from "../../components/RetroTerminal";
-import { SKILLS } from "./constants";
 
-interface RetroTerminalSectionProps {
-  skills?: string[];
-}
-
-export const RetroTerminalSection = ({ skills = SKILLS }: RetroTerminalSectionProps) => {
+export const RetroTerminalSection = () => {
   const theme = useTheme();
 
   return (
@@ -93,7 +88,7 @@ export const RetroTerminalSection = ({ skills = SKILLS }: RetroTerminalSectionPr
             },
           }}
         >
-          <RetroTerminal texts={skills} />
+          <RetroTerminal />
         </Box>
       </motion.div>
     </Box>

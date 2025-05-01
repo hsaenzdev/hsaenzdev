@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 // Define Snake segment structure
 interface SnakeSegment {
   x: number;
