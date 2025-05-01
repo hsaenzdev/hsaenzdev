@@ -1,24 +1,32 @@
-import { Box, Typography, Paper, useTheme, Divider, Button } from "@mui/material";
-import WorkIcon from '@mui/icons-material/Work';
-import SchoolIcon from '@mui/icons-material/School';
-import { ReactNode, useState } from "react";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { GlowingText } from "../components/GlowingText";
+import { useState } from "react";
+import { 
+  Box, 
+  Typography, 
+  Paper, 
+  useTheme, 
+  Divider, 
+  Chip, 
+  Collapse,
+  Button 
+} from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { motion } from "framer-motion";
+import { GlowingText } from "../components/GlowingText";
+import { experienceItems, experienceTimeline, experienceLevelIcons, getExperienceLevelTitle } from "../config/experience";
+import { sectionHeaderStyles, gridBackground, retroCardStyles } from "../config/theme";
 
-interface ExperienceItemProps {
-  title: string;
-  company: string;
-  period: string;
-  description: string[];
-  icon: ReactNode;
-  color: string;
-  rewards?: string[];
-}
-
-const ExperienceItem = ({ title, company, period, description, icon, color, rewards = [] }: ExperienceItemProps) => {
+// Component for a single experience item in the quest log
+const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) => {
   const theme = useTheme();
   const [expanded, setExpanded] = useState(false);
+  
+  const toggleExpand = () => {
+    setExpanded(!expanded);
+  };
+  
+  const Icon = experience.icon;
   
   return (
     <motion.div
@@ -29,250 +37,421 @@ const ExperienceItem = ({ title, company, period, description, icon, color, rewa
       <Paper
         elevation={3}
         sx={{
-          p: 3,
-          mb: 3,
-          border: `2px solid ${color}`,
-          background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
           position: 'relative',
+          mb: 4,
           overflow: 'hidden',
-          transition: 'all 0.3s ease',
-          '&:hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: `0 10px 20px rgba(0,0,0,0.2), 0 0 0 1px ${color}`,
-          },
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '4px',
-            background: `linear-gradient(90deg, ${color}, ${theme.palette.background.default})`,
-          }
+          ...retroCardStyles(experience.color),
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Box 
-            sx={{ 
-              mr: 2, 
-              width: 50, 
-              height: 50, 
-              borderRadius: '50%', 
-              bgcolor: color,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: `0 0 10px ${color}80`,
-            }}
-          >
-            {icon}
-          </Box>
-          <Box>
-            <Typography 
-              variant="h6" 
+        {/* Quest header */}
+        <Box 
+          sx={{ 
+            p: 3,
+            background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Box 
               sx={{ 
-                color,
-                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                fontSize: '0.9rem'
+                position: 'relative',
+                mr: 2, 
+                width: 56, 
+                height: 56, 
+                borderRadius: '12px', 
+                bgcolor: experience.color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: `0 0 10px ${experience.color}80`,
               }}
             >
-              {title}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ color: theme.palette.text.secondary }}>
-              {company}
-            </Typography>
-          </Box>
-        </Box>
-        
-        <Box 
-          sx={{ 
-            display: 'inline-block',
-            px: 1.5,
-            py: 0.5,
-            mb: 2,
-            bgcolor: `${color}20`,
-            border: `1px solid ${color}`,
-            borderRadius: 1,
-          }}
-        >
-          <Typography variant="caption" sx={{ fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif', fontSize: '0.6rem' }}>
-            QUEST DURATION: {period}
-          </Typography>
-        </Box>
-        
-        <Divider sx={{ mb: 2 }} />
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <Box 
-            sx={{ 
-              width: 20, 
-              height: 20, 
-              borderRadius: '50%', 
-              bgcolor: expanded ? theme.palette.accent2.main : theme.palette.primary.main,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mr: 1,
-              transition: 'all 0.3s ease',
-            }}
-          >
-            <ArrowForwardIosIcon 
-              sx={{ 
-                fontSize: 12, 
-                color: 'white',
-                transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                transition: 'transform 0.3s ease',
-              }} 
-            />
-          </Box>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.6rem',
-              color: expanded ? theme.palette.accent2.main : theme.palette.primary.main,
-              transition: 'color 0.3s ease',
-            }}
-          >
-            Mission Objectives:
-          </Typography>
-        </Box>
-        
-        <Box 
-          component="ul" 
-          sx={{ 
-            pl: 2, 
-            mt: 0,
-            maxHeight: expanded ? '1000px' : '100px',
-            overflow: expanded ? 'visible' : 'hidden',
-            transition: 'max-height 0.5s ease',
-            position: 'relative',
-            '&::after': !expanded ? {
-              content: '""',
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '50px',
-              background: `linear-gradient(to top, ${theme.palette.background.paper}, transparent)`,
-            } : {},
-          }}
-        >
-          {description.map((item, index) => (
-            <Box component="li" key={index} sx={{ mb: 1 }}>
-              <Typography variant="body2">
-                {item}
+              <Icon sx={{ color: 'white', fontSize: 30 }} />
+              
+              {/* Level indicator */}
+              {experience.level && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: -8,
+                    right: -8,
+                    bgcolor: theme.palette.background.paper,
+                    border: `2px solid ${experience.color}`,
+                    borderRadius: '50%',
+                    width: 30,
+                    height: 30,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1rem',
+                  }}
+                >
+                  {experienceLevelIcons[experience.level as keyof typeof experienceLevelIcons]}
+                </Box>
+              )}
+            </Box>
+            
+            <Box sx={{ flex: 1 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  color: experience.color,
+                  fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                  fontSize: '0.9rem',
+                  mb: 0.5,
+                }}
+              >
+                {experience.title}
+              </Typography>
+              
+              <Typography 
+                variant="subtitle1" 
+                sx={{ 
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.9rem',
+                }}
+              >
+                {experience.company}
               </Typography>
             </Box>
-          ))}
-        </Box>
-        
-        {description.length > 3 && (
-          <Button 
-            variant="text" 
-            size="small"
-            onClick={() => setExpanded(!expanded)}
-            sx={{
-              mt: 1,
-              color: expanded ? theme.palette.accent2.main : theme.palette.primary.main,
-              fontSize: '0.7rem',
+            
+            {/* Experience level title */}
+            {experience.level && (
+              <Chip
+                label={getExperienceLevelTitle(experience.level)}
+                size="small"
+                sx={{
+                  fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                  fontSize: '0.6rem',
+                  bgcolor: `${experience.color}30`,
+                  color: experience.color,
+                  border: `1px solid ${experience.color}50`,
+                  height: 24,
+                  ml: 1,
+                }}
+              />
+            )}
+          </Box>
+          
+          {/* Quest duration */}
+          <Box 
+            sx={{ 
+              display: 'inline-block',
+              px: 1.5,
+              py: 0.5,
+              mb: 2,
+              bgcolor: `${experience.color}15`,
+              border: `1px solid ${experience.color}30`,
+              borderRadius: 1,
+            }}
+          >
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif', 
+                fontSize: '0.6rem',
+                color: experience.color,
+              }}
+            >
+              QUEST DURATION: {experience.period}
+            </Typography>
+          </Box>
+          
+          {/* Mission objectives toggle */}
+          <Box 
+            onClick={toggleExpand}
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
               '&:hover': {
-                backgroundColor: expanded ? `${theme.palette.accent2.main}10` : `${theme.palette.primary.main}10`,
+                color: experience.color,
               }
             }}
           >
-            {expanded ? "CLOSE QUEST LOG" : "VIEW FULL QUEST LOG"}
-          </Button>
-        )}
+            <Box 
+              sx={{ 
+                width: 24, 
+                height: 24, 
+                borderRadius: '4px', 
+                bgcolor: expanded ? experience.color : `${experience.color}40`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mr: 1,
+                transition: 'all 0.3s ease',
+              }}
+            >
+              {expanded ? 
+                <KeyboardArrowUpIcon sx={{ fontSize: 18, color: 'white' }} /> : 
+                <KeyboardArrowDownIcon sx={{ fontSize: 18, color: 'white' }} />
+              }
+            </Box>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize: '0.6rem',
+                color: expanded ? experience.color : theme.palette.text.primary,
+                transition: 'color 0.3s ease',
+              }}
+            >
+              {expanded ? 'HIDE QUEST DETAILS' : 'VIEW QUEST DETAILS'}
+            </Typography>
+          </Box>
+        </Box>
         
-        {rewards.length > 0 && (
-          <>
-            <Divider sx={{ my: 2 }} />
-            <Box sx={{ mb: 1 }}>
+        {/* Quest details */}
+        <Collapse in={expanded}>
+          <Divider />
+          <Box 
+            sx={{ 
+              p: 3, 
+              bgcolor: `${experience.color}05`,
+              position: 'relative',
+            }}
+          >
+            {/* Background pixel pattern */}
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                opacity: 0.03,
+                zIndex: 0,
+                backgroundImage: `url('data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="4" height="4" fill="${experience.color.replace('#', '%23')}" /%3E%3C/svg%3E')`,
+              }}
+            />
+            
+            {/* Mission objectives */}
+            <Box sx={{ position: 'relative', zIndex: 1 }}>
               <Typography 
-                variant="body2" 
+                variant="subtitle2" 
                 sx={{ 
                   fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                  fontSize: '0.6rem',
-                  color: theme.palette.accent1.main,
+                  fontSize: '0.7rem',
+                  mb: 2,
+                  color: experience.color,
                 }}
               >
-                Quest Rewards:
+                MISSION OBJECTIVES:
               </Typography>
+              
+              <Box component="ul" sx={{ pl: 0, mt: 0, listStyleType: 'none' }}>
+                {experience.description.map((item, index) => (
+                  <Box 
+                    component="li" 
+                    key={index} 
+                    sx={{ 
+                      mb: 1.5,
+                      display: 'flex',
+                    }}
+                  >
+                    <Box 
+                      sx={{ 
+                        minWidth: 20,
+                        height: 20,
+                        mr: 2,
+                        mt: 0.2,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: `linear-gradient(135deg, ${experience.color} 0%, ${experience.color}99 100%)`,
+                        borderRadius: '4px',
+                        fontSize: '0.8rem',
+                        color: '#fff',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      {index + 1}
+                    </Box>
+                    <Typography variant="body2">{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+              
+              {/* Skills gained */}
+              {experience.skills && experience.skills.length > 0 && (
+                <>
+                  <Typography 
+                    variant="subtitle2" 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                      fontSize: '0.7rem',
+                      mt: 3,
+                      mb: 2,
+                      color: experience.color,
+                    }}
+                  >
+                    SKILLS GAINED:
+                  </Typography>
+                  
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {experience.skills.map((skill, index) => (
+                      <Chip
+                        key={index}
+                        label={skill}
+                        size="small"
+                        sx={{
+                          bgcolor: `${experience.color}20`,
+                          color: experience.color,
+                          border: `1px solid ${experience.color}40`,
+                          fontSize: '0.7rem',
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </>
+              )}
+              
+              {/* Quest rewards */}
+              {experience.rewards && experience.rewards.length > 0 && (
+                <>
+                  <Typography 
+                    variant="subtitle2" 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                      fontSize: '0.7rem',
+                      mt: 3,
+                      mb: 2,
+                      color: theme.palette.accent1.main,
+                    }}
+                  >
+                    QUEST REWARDS:
+                  </Typography>
+                  
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    {experience.rewards.map((reward, index) => (
+                      <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <EmojiEventsIcon 
+                          sx={{ 
+                            color: theme.palette.accent1.main, 
+                            mr: 1, 
+                            fontSize: '1rem' 
+                          }} 
+                        />
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            color: theme.palette.accent1.main,
+                            fontWeight: 'medium',
+                          }}
+                        >
+                          {reward}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </>
+              )}
             </Box>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {rewards.map((reward, index) => (
-                <Box 
-                  key={index}
-                  sx={{
-                    px: 1,
-                    py: 0.5,
-                    bgcolor: `${theme.palette.accent1.main}20`,
-                    border: `1px solid ${theme.palette.accent1.main}`,
-                    borderRadius: '4px',
-                    fontSize: '0.7rem',
-                  }}
-                >
-                  {reward}
-                </Box>
-              ))}
-            </Box>
-          </>
-        )}
+          </Box>
+        </Collapse>
       </Paper>
     </motion.div>
   );
 };
 
+// Quest timeline component - shows periods on the timeline
+const QuestTimeline = () => {
+  const theme = useTheme();
+  
+  return (
+    <Box sx={{ position: 'relative', mb: 4 }}>
+      {/* Timeline line */}
+      <Box
+        sx={{
+          position: 'absolute',
+          left: { xs: 20, sm: 40 },
+          top: 0,
+          bottom: 0,
+          width: 4,
+          bgcolor: `${theme.palette.primary.main}50`,
+          zIndex: 0,
+        }}
+      />
+      
+      {/* Timeline entries */}
+      {experienceTimeline.map((timeEntry, index) => (
+        <Box key={index} sx={{ position: 'relative', mb: 5 }}>
+          {/* Year marker */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              mb: 2,
+              position: 'relative',
+            }}
+          >
+            {/* Timeline dot */}
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                bgcolor: theme.palette.primary.main,
+                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: `0 0 0 4px ${theme.palette.background.default}, 0 0 0 8px ${theme.palette.primary.main}40`,
+                fontSize: '0.8rem',
+                fontWeight: 'bold',
+                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                zIndex: 2,
+                ml: { xs: 0, sm: 20 },
+                mr: 2,
+              }}
+            >
+              {index + 1}
+            </Box>
+            
+            <Typography
+              variant="h6"
+              sx={{
+                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize: '0.9rem',
+                color: theme.palette.primary.main,
+              }}
+            >
+              {timeEntry.year}
+            </Typography>
+          </Box>
+          
+          {/* Quest entries for this timeline period */}
+          <Box sx={{ pl: { xs: 5, sm: 10 } }}>
+            {timeEntry.events.map((event, i) => (
+              <QuestCard key={i} experience={event} />
+            ))}
+          </Box>
+        </Box>
+      ))}
+      
+      {/* End of timeline marker */}
+      <Box
+        sx={{
+          position: 'absolute',
+          left: { xs: 20, sm: 40 },
+          bottom: -20,
+          transform: 'translateX(-50%)',
+          width: 0,
+          height: 0,
+          borderLeft: '10px solid transparent',
+          borderRight: '10px solid transparent',
+          borderTop: `20px solid ${theme.palette.primary.main}50`,
+          zIndex: 0,
+        }}
+      />
+    </Box>
+  );
+};
+
+// Main Experience component
 export const Experience = () => {
   const theme = useTheme();
   
-  const experiences = [
-    {
-      title: "Full Stack Developer",
-      company: "Sonatafy Technology",
-      period: "Jun 2022 - Present",
-      description: [
-        "Developed interactive data visualization dashboards using amCharts",
-        "Collaborated on full-stack features using TypeScript/React, Material UI, Elixir/Phoenix, and Java",
-        "Implemented feature flags with Launch Darkly",
-        "Improved platform performance through caching, memoization, and workflow optimizations",
-        "Recommended and implemented key architectural changes for platform V3",
-        "Streamlined development processes by improving CI/CD pipelines",
-        "Participated in QA/UX reviews"
-      ],
-      icon: <WorkIcon sx={{ color: 'white' }} />,
-      color: theme.palette.primary.main,
-      rewards: ["TypeScript Master", "React Champion", "Performance Guru"]
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Classifile de México",
-      period: "2014 - 2021",
-      description: [
-        "Led the development of a document management platform",
-        "Developed a secure cloud storage and sync service",
-        "Created an intuitive file classification system",
-        "Built custom integrations using C#",
-        "Led all aspects of development, from design and implementation to testing and deployment, using PHP, JavaScript, and C#"
-      ],
-      icon: <WorkIcon sx={{ color: 'white' }} />,
-      color: theme.palette.accent1.main,
-      rewards: ["Cloud Storage Expert", "Full-Stack Specialist"]
-    },
-    {
-      title: "Computer Science Student",
-      company: "Universidad Autónoma de Tamaulipas",
-      period: "2010 - 2015",
-      description: [
-        "Built a student database system for the university library",
-        "Completed coursework in Computer Science"
-      ],
-      icon: <SchoolIcon sx={{ color: 'white' }} />,
-      color: theme.palette.accent2.main
-    }
-  ];
-
   return (
     <Box
       sx={{
@@ -281,107 +460,38 @@ export const Experience = () => {
         flexDirection: 'column',
         padding: theme.spacing(4),
         position: 'relative',
-        overflow: 'hidden',
+        minHeight: 'calc(100vh - 80px)',
       }}
     >
-      {/* Background decorative elements */}
-      <Box 
-        sx={{ 
-          position: 'absolute',
-          top: '5%',
-          left: '5%',
-          width: '90%',
-          height: '90%',
-          opacity: 0.03,
-          border: '2px solid',
-          borderColor: theme.palette.primary.main,
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Background grid */}
+      <Box sx={gridBackground(theme.palette.primary.main)} />
       
-      <Box 
-        sx={{ 
-          position: 'absolute',
-          top: '10%',
-          left: '10%',
-          width: '80%',
-          height: '80%',
-          opacity: 0.02,
-          border: '2px solid',
-          borderColor: theme.palette.secondary.main,
-          pointerEvents: 'none',
-        }}
-      />
-      
-      <GlowingText 
-        text="Quest Journal"
-        variant="h3"
-        sx={{ 
-          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-          color: theme.palette.primary.main,
-          mb: 4,
-          textAlign: 'center'
-        }}
-        glowColor={theme.palette.primary.main}
-      />
-      
-      <Box 
-        sx={{
-          maxWidth: 800,
-          mx: 'auto',
-          width: '100%',
-          position: 'relative',
-        }}
-      >
-        {/* Experience timeline connector */}
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '25px',
-            top: 0,
-            bottom: 0,
-            width: '2px',
-            background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${theme.palette.accent3.main})`,
-            zIndex: -1,
-          }}
+      {/* Page title */}
+      <Box sx={{ textAlign: 'center', mb: 6 }}>
+        <GlowingText 
+          text="Quest Log" 
+          variant="h3" 
+          sx={sectionHeaderStyles}
+          glowColor={theme.palette.primary.main}
         />
         
-        {experiences.map((experience, index) => (
-          <ExperienceItem
-            key={index}
-            title={experience.title}
-            company={experience.company}
-            period={experience.period}
-            description={experience.description}
-            icon={experience.icon}
-            color={experience.color}
-            rewards={experience.rewards}
-          />
-        ))}
-        
-        <Box
-          sx={{
-            p: 2,
-            textAlign: 'center',
-            position: 'relative',
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            maxWidth: '800px', 
+            mx: 'auto',
+            mb: 2,
+            px: 2 
           }}
         >
-          <Typography 
-            variant="body2"
-            sx={{
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.7rem',
-              color: theme.palette.primary.main,
-              display: 'inline-block',
-              px: 2,
-              py: 1,
-              border: `1px dashed ${theme.palette.primary.main}`,
-              borderRadius: 1,
-            }}
-          >
-            More quests available soon...
-          </Typography>
-        </Box>
+          A chronicle of my professional journey and completed quests.
+          Each entry represents a significant adventure in my career path.
+        </Typography>
+      </Box>
+      
+      {/* Career overview */}
+      <Box sx={{ maxWidth: 900, mx: 'auto', width: '100%' }}>
+        <QuestTimeline />
       </Box>
     </Box>
   );

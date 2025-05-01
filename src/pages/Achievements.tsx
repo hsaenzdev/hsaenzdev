@@ -1,332 +1,433 @@
-import { Box, Typography, Paper, useTheme, Button } from "@mui/material";
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
-import SchoolIcon from '@mui/icons-material/School';
-import CloudIcon from '@mui/icons-material/Cloud';
-import LockIcon from '@mui/icons-material/Lock';
-import { ReactNode, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { 
+  Box, 
+  Typography, 
+  useTheme,
+  Paper,
+  Button,
+  ButtonGroup,
+  Tooltip,
+  Zoom,
+  Container
+} from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 import { GlowingText } from "../components/GlowingText";
+import { 
+  achievements, 
+  achievementCategories, 
+  rarityColors, 
+  getRarityDescription,
+  Achievement
+} from "../config/achievements";
+import { sectionHeaderStyles } from "../config/theme";
 
-interface AchievementProps {
-  title: string;
-  date: string;
-  description: string;
-  icon: ReactNode;
-  color: string;
-  isLocked?: boolean;
-  rarity?: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
-  xp?: number;
-}
-
-const RARITY_COLORS = {
-  common: '#9e9e9e',
-  uncommon: '#4caf50',
-  rare: '#2196f3',
-  epic: '#9c27b0',
-  legendary: '#ffc107'
+// Animated 8-bit star
+const PixelStar = ({ color, size = 24, delay = 0 }: { color: string; size?: number; delay?: number }) => {
+  return (
+    <Box
+      component={motion.div}
+      animate={{ 
+        scale: [1, 1.2, 1],
+        rotate: [0, 5, 0, -5, 0],
+        filter: [
+          `drop-shadow(0 0 2px ${color}80)`,
+          `drop-shadow(0 0 8px ${color})`,
+          `drop-shadow(0 0 2px ${color}80)`
+        ]
+      }}
+      transition={{ 
+        duration: 3,
+        repeat: Infinity,
+        repeatType: 'loop',
+        delay: delay
+      }}
+      sx={{
+        width: size,
+        height: size,
+        position: 'relative',
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: '100%',
+          height: '100%',
+          backgroundImage: `
+            linear-gradient(45deg, transparent 40%, ${color} 40%, ${color} 60%, transparent 60%),
+            linear-gradient(135deg, transparent 40%, ${color} 40%, ${color} 60%, transparent 60%),
+            linear-gradient(225deg, transparent 40%, ${color} 40%, ${color} 60%, transparent 60%),
+            linear-gradient(315deg, transparent 40%, ${color} 40%, ${color} 60%, transparent 60%)
+          `,
+          backgroundSize: '100% 100%',
+          transform: 'translate(-50%, -50%)',
+        }
+      }}
+    />
+  );
 };
 
-const Achievement = ({ 
-  title, 
-  date, 
-  description, 
-  icon, 
-  color, 
-  isLocked = false,
-  rarity = 'common',
-  xp = 100
-}: AchievementProps) => {
+// Achievement badge component with 8-bit style
+const AchievementBadge = ({ 
+  achievement, 
+  index 
+}: { 
+  achievement: typeof achievements[0];
+  index: number;
+}) => {
   const theme = useTheme();
-  const [isUnlocking, setIsUnlocking] = useState(false);
-  const [isUnlocked, setIsUnlocked] = useState(!isLocked);
-  
-  // Handle unlocking animation
-  const handleUnlock = () => {
-    if (isLocked && !isUnlocking) {
-      setIsUnlocking(true);
-      setTimeout(() => {
-        setIsUnlocked(true);
-      }, 2000);
-    }
-  };
+  const rarityColor = rarityColors[achievement.rarity];
+  const delay = index * 0.1;
   
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      whileHover={!isLocked ? { 
-        y: -10,
-        boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-        transition: { duration: 0.2 }
-      } : {}}
+    <Box 
+      sx={{ 
+        p: 1, 
+        height: '100%' 
+      }}
     >
-      <Paper
-        elevation={3}
-        sx={{
-          p: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          height: '100%',
-          border: `2px solid ${isLocked ? 'rgba(255,255,255,0.1)' : color}`,
-          background: isLocked 
-            ? `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)` 
-            : `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${color}15 100%)`,
-          filter: isLocked ? 'grayscale(1)' : 'none',
-          opacity: isLocked ? 0.7 : 1,
-          transition: 'all 0.5s ease',
-          position: 'relative',
-          overflow: 'hidden',
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, delay }}
+        whileHover={{ 
+          y: -8, 
+          scale: 1.05,
+          transition: { duration: 0.2 } 
         }}
+        style={{ height: '100%' }}
       >
-        {/* Rarity indicator */}
-        {!isLocked && (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: 0,
-              height: 0,
-              borderStyle: 'solid',
-              borderWidth: '0 40px 40px 0',
-              borderColor: `transparent ${RARITY_COLORS[rarity]} transparent transparent`,
-              filter: 'drop-shadow(0 0 5px ${RARITY_COLORS[rarity]})',
-            }}
-          />
-        )}
-        
-        {/* Unlocking animation effect */}
-        {isUnlocking && (
-          <Box 
-            sx={{ 
+        <Paper
+          elevation={3}
+          sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            borderRadius: '8px',
+            p: 2,
+            
+            // 8-bit pixel border
+            border: '4px solid',
+            borderImageSlice: 2,
+            borderImageSource: `
+              linear-gradient(to right, 
+                ${rarityColor}00, ${rarityColor}cc, ${rarityColor}ff, 
+                ${rarityColor}cc, ${rarityColor}00
+              )
+            `,
+            borderImageWidth: '4px',
+            
+            // Glow effect
+            '&::before': {
+              content: '""',
               position: 'absolute',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              background: `linear-gradient(135deg, ${color}40 0%, transparent 50%, ${color}40 100%)`,
-              backgroundSize: '200% 200%',
-              animation: 'shine 2s ease-in-out',
-              '@keyframes shine': {
-                '0%': { backgroundPosition: '0% 0%' },
-                '50%': { backgroundPosition: '100% 100%' },
-                '100%': { backgroundPosition: '0% 0%' },
-              },
-              zIndex: 1,
+              boxShadow: `inset 0 0 30px ${rarityColor}40`,
               pointerEvents: 'none',
-            }}
-          />
-        )}
-        
-        <Box 
-          sx={{ 
-            width: 70, 
-            height: 70, 
-            borderRadius: '50%', 
-            bgcolor: isLocked ? 'rgba(255,255,255,0.1)' : color,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mb: 2,
-            position: 'relative',
-            boxShadow: isLocked ? 'none' : `0 0 15px ${color}80`,
-            transition: 'all 0.5s ease',
+              zIndex: 1
+            },
           }}
         >
-          {isLocked ? (
-            <LockIcon sx={{ color: 'rgba(255,255,255,0.3)', fontSize: 30 }} />
-          ) : (
-            icon
-          )}
-          
-          {/* XP indicator */}
-          {!isLocked && (
+          {/* Achievement icon with pixel effect */}
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              justifyContent: 'center',
+              position: 'relative',
+              mb: 2
+            }}
+          >
             <Box
               sx={{
-                position: 'absolute',
-                bottom: -5,
-                right: -5,
-                bgcolor: theme.palette.background.paper,
-                border: `2px solid ${color}`,
-                borderRadius: '50%',
-                width: 30,
-                height: 30,
+                width: 64,
+                height: 64,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '0.65rem',
-                fontWeight: 'bold',
-                color: color,
+                bgcolor: 'rgba(0,0,0,0.5)',
+                borderRadius: '8px',
+                border: '2px solid',
+                borderColor: `${rarityColor}50`,
+                position: 'relative',
+                
+                // 8-bit overlay effect
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundImage: `linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.3) 50%)`,
+                  backgroundSize: '100% 4px',
+                  pointerEvents: 'none',
+                  opacity: 0.3,
+                  zIndex: 1
+                }
               }}
             >
-              {xp}
+              {/* Achievement icon */}
+              {achievement.icon && (
+                <achievement.icon 
+                  sx={{ 
+                    color: rarityColor,
+                    fontSize: 32,
+                    filter: `drop-shadow(0 0 8px ${rarityColor}80)`
+                  }} 
+                />
+              )}
+              
+              {/* Decorative stars for rare and legendary */}
+              {(achievement.rarity === 'rare' || achievement.rarity === 'legendary') && (
+                <Box sx={{ position: 'absolute' }}>
+                  <Box
+                    component={motion.div}
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    sx={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      width: 90,
+                      height: 90,
+                      transform: 'translate(-50%, -50%)'
+                    }}
+                  >
+                    {[0, 1, 2, 3].map(i => (
+                      <PixelStar 
+                        key={i}
+                        color={rarityColor}
+                        size={8}
+                        delay={i * 0.5}
+                      />
+                    ))}
+                  </Box>
+                </Box>
+              )}
             </Box>
-          )}
-        </Box>
-        
-        <Typography 
-          variant="h6" 
-          sx={{ 
-            color: isLocked ? 'rgba(255,255,255,0.5)' : color,
-            mb: 1,
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.9rem',
-            height: '2.8rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {isLocked ? "???????????" : title}
-        </Typography>
-        
-        <Typography 
-          variant="caption" 
-          sx={{ 
-            display: 'block',
-            mb: 2,
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.6rem',
-            color: isLocked ? 'rgba(255,255,255,0.3)' : theme.palette.text.secondary,
-          }}
-        >
-          {isLocked ? "LOCKED" : `UNLOCKED: ${date}`}
-        </Typography>
-        
-        <Typography 
-          variant="body2"
-          sx={{
-            color: isLocked ? 'rgba(255,255,255,0.3)' : theme.palette.text.primary,
-            mb: 3,
-            height: isLocked ? '3rem' : 'auto',
-            overflow: 'hidden',
-          }}
-        >
-          {isLocked ? "Complete special challenges to unlock this achievement." : description}
-        </Typography>
-        
-        {isLocked && !isUnlocked && (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={handleUnlock}
-            disabled={isUnlocking}
+            
+            {/* Rarity indicator */}
+            <Box
+              sx={{
+                position: 'absolute',
+                top: -10,
+                right: -10,
+                bgcolor: 'rgba(0,0,0,0.8)',
+                color: rarityColor,
+                px: 1,
+                py: 0.5,
+                borderRadius: '4px',
+                fontSize: '0.6rem',
+                fontFamily: '"Press Start 2P", cursive',
+                border: '1px solid',
+                borderColor: `${rarityColor}50`,
+                boxShadow: `0 0 8px ${rarityColor}50`,
+                textTransform: 'uppercase'
+              }}
+            >
+              {achievement.rarity}
+            </Box>
+          </Box>
+          
+          {/* Title */}
+          <Typography
+            variant="subtitle1"
+            component="h3"
             sx={{
-              borderColor: 'rgba(255,255,255,0.3)',
-              color: 'rgba(255,255,255,0.5)',
-              '&:hover': {
-                borderColor: color,
-                backgroundColor: `${color}20`,
-                color: color,
-              },
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.6rem',
-              padding: '4px 10px',
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.7rem',
+              textAlign: 'center',
+              color: rarityColor,
+              mb: 1.5,
+              lineHeight: 1.5,
+              textShadow: `0 0 8px ${rarityColor}80`
             }}
           >
-            {isUnlocking ? "UNLOCKING..." : "REVEAL"}
-          </Button>
-        )}
-      </Paper>
-    </motion.div>
+            {achievement.title}
+          </Typography>
+          
+          {/* Description */}
+          <Typography
+            variant="body2"
+            sx={{
+              fontSize: '0.8rem',
+              textAlign: 'center',
+              color: 'rgba(255,255,255,0.85)',
+              mb: 'auto'
+            }}
+          >
+            {achievement.description}
+          </Typography>
+          
+          {/* XP or date */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              mt: 2,
+              pt: 1,
+              borderTop: '1px dashed rgba(255,255,255,0.2)'
+            }}
+          >
+            {achievement.xp ? (
+              <Typography
+                variant="caption"
+                sx={{
+                  color: '#ffcc00',
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: '0.6rem',
+                  textShadow: '0 0 5px rgba(255,204,0,0.5)'
+                }}
+              >
+                + {achievement.xp} XP
+              </Typography>
+            ) : achievement.date ? (
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'rgba(255,255,255,0.7)',
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: '0.55rem'
+                }}
+              >
+                {achievement.date}
+              </Typography>
+            ) : null}
+          </Box>
+        </Paper>
+      </motion.div>
+    </Box>
   );
 };
 
+// Pixelated progress bar for level indicator
+const PixelProgressBar = ({ value, maxValue, color }: { value: number; maxValue: number; color: string }) => {
+  const percentage = Math.min(100, Math.max(0, (value / maxValue) * 100));
+  
+  return (
+    <Box sx={{ position: 'relative', height: 20, width: '100%', mb: 1 }}>
+      {/* Background */}
+      <Box
+        sx={{
+          height: '100%',
+          width: '100%',
+          bgcolor: 'rgba(0,0,0,0.5)',
+          border: '2px solid rgba(255,255,255,0.2)',
+          borderRadius: '4px',
+          position: 'relative',
+          overflow: 'hidden',
+          
+          // Pixel pattern
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 100%)',
+            backgroundSize: '8px 100%',
+            opacity: 0.3,
+            zIndex: 1
+          }
+        }}
+      />
+      
+      {/* Progress */}
+      <Box
+        component={motion.div}
+        initial={{ width: 0 }}
+        animate={{ width: `${percentage}%` }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        sx={{
+          position: 'absolute',
+          top: 2,
+          left: 2,
+          height: 'calc(100% - 4px)',
+          borderRadius: '2px',
+          background: `linear-gradient(to right, ${color}aa, ${color}ff)`,
+          
+          // Pixel effect for filled area
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 100%)',
+            backgroundSize: '4px 100%',
+            zIndex: 1
+          }
+        }}
+      />
+      
+      {/* Notches */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '100%',
+          display: 'flex',
+          pointerEvents: 'none',
+          padding: '0 2px',
+        }}
+      >
+        {Array.from({ length: 10 }).map((_, i) => (
+          <Box 
+            key={i} 
+            sx={{ 
+              flex: 1, 
+              borderRight: i < 9 ? '1px solid rgba(255,255,255,0.1)' : 'none',
+              height: '100%'
+            }} 
+          />
+        ))}
+      </Box>
+    </Box>
+  );
+};
+
+// Main Achievements component
 export const Achievements = () => {
   const theme = useTheme();
-  const [showTrophy, setShowTrophy] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowTrophy(true);
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, []);
+  // Filter achievements by category
+  const filteredAchievements = selectedCategory === "all"
+    ? achievements
+    : achievements.filter(a => a.category === selectedCategory as "certification" | "project" | "skill" | "award");
   
-  const achievements: AchievementProps[] = [
-    {
-      title: "AWS Certified Cloud Practitioner",
-      date: "2023",
-      description: "Demonstrated foundational knowledge of AWS Cloud services, architecture, security, and deployment models.",
-      icon: <CloudIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: theme.palette.primary.main,
-      rarity: 'rare',
-      xp: 250
-    },
-    {
-      title: "AWS Certified Developer",
-      date: "2023",
-      description: "Validated expertise in developing, deploying, and debugging cloud-based applications using AWS.",
-      icon: <CloudIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: theme.palette.accent1.main,
-      rarity: 'epic',
-      xp: 500
-    },
-    {
-      title: "Data Visualization Expert",
-      date: "2022",
-      description: "Created interactive data dashboards using amCharts, delivering complex insights through intuitive visualizations.",
-      icon: <WorkspacePremiumIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: theme.palette.accent2.main,
-      rarity: 'uncommon',
-      xp: 150
-    },
-    {
-      title: "Feature Flag Specialist",
-      date: "2022",
-      description: "Mastered the implementation of feature flags with LaunchDarkly, enabling controlled feature rollouts and experimentation.",
-      icon: <MilitaryTechIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: theme.palette.accent3.main,
-      rarity: 'uncommon',
-      xp: 180
-    },
-    {
-      title: "Platform Architecture Master",
-      date: "2023",
-      description: "Designed and implemented key architectural improvements for platform V3, enhancing performance and scalability.",
-      icon: <SchoolIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: theme.palette.secondary.main,
-      rarity: 'rare',
-      xp: 320
-    },
-    {
-      title: "Legendary Full-Stack",
-      date: "????",
-      description: "",
-      icon: <EmojiEventsIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: RARITY_COLORS.legendary,
-      isLocked: true,
-      rarity: 'legendary',
-      xp: 1000
-    },
-    {
-      title: "CI/CD Pipeline Master",
-      date: "????",
-      description: "",
-      icon: <MilitaryTechIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: theme.palette.primary.dark,
-      isLocked: true,
-      rarity: 'rare',
-      xp: 420
-    },
-    {
-      title: "Performance Guru",
-      date: "????",
-      description: "",
-      icon: <EmojiEventsIcon sx={{ color: 'white', fontSize: 30 }} />,
-      color: theme.palette.accent2.dark,
-      isLocked: true,
-      rarity: 'epic',
-      xp: 750
-    }
-  ];
+  // Calculate total XP
+  const totalXP = achievements.reduce((sum, achievement) => sum + (achievement.xp || 0), 0);
+  
+  // Count by rarity
+  const rarityCount = {
+    common: achievements.filter(a => a.rarity === 'common').length,
+    uncommon: achievements.filter(a => a.rarity === 'uncommon').length,
+    rare: achievements.filter(a => a.rarity === 'rare').length,
+    legendary: achievements.filter(a => a.rarity === 'legendary').length
+  };
+  
+  // Calculate current level
+  const level = Math.floor(totalXP / 1000) + 1;
+  const levelProgress = totalXP % 1000;
 
+  // Create category array for buttons
+  const categoryArray = [
+    { id: "certification", name: "CERTIFICATIONS" },
+    { id: "project", name: "PROJECTS" },
+    { id: "skill", name: "SKILLS" },
+    { id: "award", name: "AWARDS" }
+  ];
+  
   return (
     <Box
       sx={{
@@ -335,115 +436,259 @@ export const Achievements = () => {
         flexDirection: 'column',
         padding: theme.spacing(4),
         position: 'relative',
-        overflow: 'hidden',
+        minHeight: 'calc(100vh - 80px)',
+        bgcolor: theme.palette.background.default,
+        backgroundImage: 'linear-gradient(to bottom, rgba(10,10,30,0.8) 0%, rgba(5,5,15,0.8) 100%)',
       }}
     >
-      {/* Background trophy particle effect */}
-      {showTrophy && (
-        <Box
+      {/* Page header with pixelated title */}
+      <Box sx={{ position: 'relative', textAlign: 'center', mb: 5 }}>
+        <GlowingText 
+          text="ACHIEVEMENTS" 
+          variant="h3"
           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: -1,
-            overflow: 'hidden',
+            fontFamily: '"Press Start 2P", cursive',
+            fontSize: { xs: '1.5rem', md: '2rem' },
+            mb: 2
+          }}
+          glowColor={theme.palette.primary.main}
+        />
+        
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            maxWidth: '800px', 
+            mx: 'auto',
+            fontFamily: '"Press Start 2P", cursive',
+            fontSize: '0.65rem',
+            lineHeight: 1.8,
+            color: 'rgba(255,255,255,0.9)',
+            mb: 4
           }}
         >
-          {[...Array(15)].map((_, i) => (
+          CERTIFICATIONS, AWARDS AND PERSONAL MILESTONES
+        </Typography>
+        
+        {/* Level progress indicator */}
+        <Container maxWidth="sm">
+          <Box
+            sx={{
+              borderRadius: '8px',
+              bgcolor: 'rgba(0,0,0,0.6)',
+              p: 3,
+              mb: 4,
+              border: '2px solid',
+              borderColor: `${theme.palette.primary.main}50`,
+              boxShadow: `0 0 20px ${theme.palette.primary.main}30`
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography
+                sx={{
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: '0.7rem',
+                  color: theme.palette.primary.main
+                }}
+              >
+                DEV LEVEL {level}
+              </Typography>
+              
+              <Typography
+                sx={{
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: '0.7rem',
+                  color: '#ffcc00'
+                }}
+              >
+                {levelProgress} / 1000 XP
+              </Typography>
+            </Box>
+            
+            <PixelProgressBar 
+              value={levelProgress}
+              maxValue={1000}
+              color={theme.palette.primary.main}
+            />
+            
             <Box
-              key={i}
-              component={motion.div}
               sx={{
-                position: 'absolute',
-                width: 24,
-                height: 24,
-                opacity: 0.2,
-                color: `hsl(${(i * 40) % 360}, 70%, 50%)`,
-              }}
-              initial={{ 
-                x: Math.random() * 100 + '%', 
-                y: -50, 
-                rotate: Math.random() * 360 
-              }}
-              animate={{ 
-                y: '120%', 
-                rotate: Math.random() * 720,
-                opacity: [0.1, 0.2, 0.1],
-              }}
-              transition={{ 
-                duration: 15 + Math.random() * 20, 
-                repeat: Infinity, 
-                delay: i * 0.8,
-                ease: 'linear'
+                display: 'flex',
+                justifyContent: 'space-between',
+                mt: 2,
+                pt: 2,
+                borderTop: '1px dashed rgba(255,255,255,0.2)'
               }}
             >
-              <EmojiEventsIcon fontSize="small" />
+              <Tooltip
+                title={
+                  <Box>
+                    <Typography fontWeight="bold" gutterBottom>
+                      Rarity Levels
+                    </Typography>
+                    <Typography variant="body2">
+                      {getRarityDescription('common')}
+                    </Typography>
+                    <Typography variant="body2">
+                      {getRarityDescription('uncommon')}
+                    </Typography>
+                    <Typography variant="body2">
+                      {getRarityDescription('rare')}
+                    </Typography>
+                    <Typography variant="body2">
+                      {getRarityDescription('legendary')}
+                    </Typography>
+                  </Box>
+                }
+                arrow
+                placement="top"
+                TransitionComponent={Zoom}
+              >
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  {Object.entries(rarityCount).map(([rarity, count]) => (
+                    <Box 
+                      key={rarity}
+                      sx={{ 
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5
+                      }}
+                    >
+                      <Box 
+                        sx={{ 
+                          width: 8, 
+                          height: 8, 
+                          borderRadius: '2px',
+                          bgcolor: rarityColors[rarity as keyof typeof rarityColors]
+                        }} 
+                      />
+                      <Typography 
+                        variant="caption"
+                        sx={{
+                          fontFamily: '"Press Start 2P", cursive',
+                          fontSize: '0.5rem',
+                          color: 'rgba(255,255,255,0.8)'
+                        }}
+                      >
+                        {count}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Tooltip>
+              
+              <Typography
+                variant="caption"
+                sx={{
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: '0.6rem',
+                  color: '#ffcc00'
+                }}
+              >
+                TOTAL: {totalXP} XP
+              </Typography>
             </Box>
-          ))}
-        </Box>
-      )}
-      
-      <GlowingText 
-        text="Trophy Room" 
-        variant="h3"
-        sx={{ 
-          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-          color: theme.palette.primary.main,
-          mb: 4,
-          textAlign: 'center'
-        }}
-        glowColor={theme.palette.primary.main}
-      />
-      
-      <Box
-        sx={{
-          background: `linear-gradient(to right, transparent, ${theme.palette.primary.main}20, transparent)`,
-          p: 1.5,
-          mb: 4,
-          borderRadius: 1,
-          textAlign: 'center',
-        }}
-      >
-        <Typography 
-          variant="body2"
+          </Box>
+        </Container>
+        
+        {/* Category filters */}
+        <Box
           sx={{
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.7rem',
-            color: theme.palette.secondary.main,
+            display: 'flex',
+            justifyContent: 'center',
+            mb: 4
           }}
         >
-          5 / 8 Achievements Unlocked • Total XP: 1400
-        </Typography>
+          <ButtonGroup variant="outlined" size="small">
+            <Button
+              onClick={() => setSelectedCategory("all")}
+              sx={{
+                px: 2,
+                color: selectedCategory === "all" ? theme.palette.primary.main : 'rgba(255,255,255,0.7)',
+                borderColor: 'rgba(255,255,255,0.2)',
+                backgroundColor: selectedCategory === "all" ? 'rgba(255,255,255,0.05)' : 'transparent',
+                fontFamily: '"Press Start 2P", cursive',
+                fontSize: '0.55rem',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  borderColor: theme.palette.primary.main
+                }
+              }}
+            >
+              ALL
+            </Button>
+            
+            {categoryArray.map((category) => (
+              <Button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                sx={{
+                  px: 2,
+                  color: selectedCategory === category.id ? theme.palette.primary.main : 'rgba(255,255,255,0.7)',
+                  borderColor: 'rgba(255,255,255,0.2)',
+                  backgroundColor: selectedCategory === category.id ? 'rgba(255,255,255,0.05)' : 'transparent',
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: '0.55rem',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255,255,255,0.1)',
+                    borderColor: theme.palette.primary.main
+                  }
+                }}
+              >
+                {category.name}
+              </Button>
+            ))}
+          </ButtonGroup>
+        </Box>
       </Box>
       
-      <Box 
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { 
-            xs: '1fr', 
-            sm: 'repeat(2, 1fr)', 
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(4, 1fr)'
-          },
-          gap: 3,
-          justifyContent: 'center',
-        }}
-      >
-        {achievements.map((achievement, index) => (
-          <Achievement 
-            key={index}
-            title={achievement.title}
-            date={achievement.date}
-            description={achievement.description}
-            icon={achievement.icon}
-            color={achievement.color}
-            isLocked={achievement.isLocked}
-            rarity={achievement.rarity}
-            xp={achievement.xp}
-          />
-        ))}
+      {/* Achievements grid */}
+      <Box sx={{ px: { xs: 0, md: 4 } }}>
+        <AnimatePresence>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { 
+                xs: 'repeat(1, 1fr)', 
+                sm: 'repeat(2, 1fr)', 
+                md: 'repeat(3, 1fr)',
+                lg: 'repeat(4, 1fr)'
+              },
+              gap: 2,
+            }}
+          >
+            {filteredAchievements.map((achievement, index) => (
+              <AchievementBadge
+                key={achievement.id}
+                achievement={achievement}
+                index={index}
+              />
+            ))}
+          </Box>
+        </AnimatePresence>
+        
+        {/* Empty state */}
+        {filteredAchievements.length === 0 && (
+          <Box 
+            sx={{
+              p: 4,
+              textAlign: 'center',
+              color: 'rgba(255,255,255,0.7)',
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.7rem',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              borderRadius: '8px',
+              border: '2px dashed rgba(255,255,255,0.1)',
+            }}
+          >
+            <Box
+              component={motion.div}
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              NO ACHIEVEMENTS IN THIS CATEGORY
+            </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );

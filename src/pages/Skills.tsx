@@ -1,287 +1,296 @@
-import { Box, Typography, Paper, useTheme, LinearProgress, Tooltip, Button } from "@mui/material";
-import CodeIcon from '@mui/icons-material/Code';
-import StorageIcon from '@mui/icons-material/Storage';
-import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import CloudIcon from '@mui/icons-material/Cloud';
-import BuildIcon from '@mui/icons-material/Build';
-import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
-import { ReactNode, useState } from "react";
+import { useState } from "react";
+import { 
+  Box, 
+  Typography, 
+  Paper, 
+  useTheme, 
+  Tabs, 
+  Tab, 
+  Chip,
+  Tooltip,
+  IconButton
+} from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 import { motion } from "framer-motion";
 import { GlowingText } from "../components/GlowingText";
+import { skillCategories, getSkillLevelName, getSkillLevelColor } from "../config/skills";
+import { sectionHeaderStyles } from "../config/theme";
 
-interface SkillItemProps {
-  name: string;
-  level: number;
-  color: string;
-  isUnlocked: boolean;
-  handleUnlock?: () => void;
-}
-
-const SkillItem = ({ name, level, color, isUnlocked, handleUnlock }: SkillItemProps) => {  
+// Enhanced tooltip component
+const EnhancedTooltip = ({ title, children }: { title: string, children: React.ReactElement }) => {
+  const theme = useTheme();
+  
   return (
-    <Box sx={{ mb: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+    <Tooltip
+      title={
+        <Box sx={{ p: 1 }}>
+          <Typography
+            sx={{
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.7rem',
+              color: theme.palette.primary.main,
+              mb: 1
+            }}
+          >
+            INFO
+          </Typography>
+          <Typography variant="body2">{title}</Typography>
+        </Box>
+      }
+      arrow
+      placement="top"
+      componentsProps={{
+        tooltip: {
+          sx: {
+            bgcolor: 'rgba(0,0,0,0.9)',
+            '& .MuiTooltip-arrow': {
+              color: 'rgba(0,0,0,0.9)',
+            },
+            px: 2,
+            py: 1.5,
+            boxShadow: `0 0 15px ${theme.palette.primary.main}40`,
+            border: `1px solid ${theme.palette.primary.main}50`,
+          }
+        }
+      }}
+    >
+      {children}
+    </Tooltip>
+  );
+};
+
+// Component for displaying a single skill with a retro-style progress bar
+const SkillBar = ({ name, level, description, years }: { name: string; level: number; description?: string; years?: number }) => {
+  const theme = useTheme();
+  const levelColor = getSkillLevelColor(level);
+  const levelName = getSkillLevelName(level);
+  
+  return (
+    <Box sx={{ mb: 2.5, width: '100%' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {!isUnlocked && (
-            <Box 
-              component="span" 
-              sx={{ 
-                display: 'inline-block',
-                width: 16, 
-                height: 16, 
-                mr: 1, 
-                bgcolor: 'rgba(0,0,0,0.5)',
-                borderRadius: '50%',
-                position: 'relative',
-                '&::after': {
-                  content: '"?"',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  color: '#fff',
-                  fontSize: '10px',
-                }
-              }} 
-            />
-          )}
           <Typography 
             variant="body2" 
             sx={{ 
-              opacity: isUnlocked ? 1 : 0.6, 
-              textDecoration: !isUnlocked ? 'line-through' : 'none',
-              fontWeight: isUnlocked ? 'bold' : 'normal',
+              fontWeight: 'bold',
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.65rem',
             }}
           >
             {name}
           </Typography>
+          
+          {description && (
+            <EnhancedTooltip title={description}>
+              <IconButton size="small" sx={{ ml: 0.5, p: 0 }}>
+                <InfoIcon sx={{ fontSize: 16, color: theme.palette.text.secondary }} />
+              </IconButton>
+            </EnhancedTooltip>
+          )}
         </Box>
-        <Typography 
-          variant="caption" 
-          sx={{ 
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.6rem',
-            opacity: isUnlocked ? 1 : 0.6,
-          }}
-        >
-          LVL {isUnlocked ? level : '??'}
-        </Typography>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {years && (
+            <Chip 
+              label={`${years} YR${years > 1 ? 'S' : ''}`}
+              size="small"
+              sx={{ 
+                height: 20, 
+                fontSize: '0.55rem', 
+                mr: 1, 
+                backgroundColor: theme.palette.background.paper,
+                border: `1px solid ${levelColor}30`,
+                fontFamily: '"Press Start 2P", cursive',
+              }}
+            />
+          )}
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.55rem',
+              color: levelColor,
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {levelName}
+          </Typography>
+        </Box>
       </Box>
+      
       <Box sx={{ position: 'relative' }}>
-        <LinearProgress 
-          variant="determinate" 
-          value={isUnlocked ? level * 10 : 0} 
-          sx={{ 
-            height: 12, 
+        {/* Pixelated skill bar background */}
+        <Box
+          sx={{
+            height: 12,
             borderRadius: 1,
             border: '1px solid rgba(255,255,255,0.1)',
             bgcolor: 'rgba(0,0,0,0.2)',
-            '& .MuiLinearProgress-bar': {
-              backgroundColor: isUnlocked ? color : 'grey',
-              backgroundImage: isUnlocked ? 
-                `repeating-linear-gradient(45deg, ${color} 0%, ${color} 10%, ${color}cc 10%, ${color}cc 20%)` : 
-                'none',
-              transition: 'transform 1s ease-in-out',
-            }
-          }} 
-        />
-        {!isUnlocked && (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={handleUnlock}
-            sx={{
+            position: 'relative',
+            overflow: 'hidden',
+            
+            '&::before': {
+              content: '""',
               position: 'absolute',
-              right: 0,
               top: 0,
-              height: '100%',
-              minWidth: 0,
-              padding: '0 8px',
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.5rem',
-              borderColor: color,
-              color: color,
-              '&:hover': {
-                borderColor: color,
-                backgroundColor: `${color}20`,
-              }
-            }}
-          >
-            UNLOCK
-          </Button>
-        )}
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 50%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.05) 100%)',
+              backgroundSize: '4px 100%',
+              opacity: 0.5,
+              zIndex: 0,
+            }
+          }}
+        />
+        
+        {/* Animated foreground progress bar */}
+        <Box
+          component={motion.div}
+          initial={{ width: 0 }}
+          animate={{ width: `${level * 10}%` }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: 12,
+            borderRadius: 1,
+            backgroundColor: levelColor,
+            backgroundImage: level >= 8 
+              ? `repeating-linear-gradient(45deg, ${levelColor} 0%, ${levelColor} 10%, ${levelColor}cc 10%, ${levelColor}cc 20%)` 
+              : undefined,
+          }}
+        />
+        
+        {/* Pixel notches along the progress bar */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 12,
+            backgroundImage: 'linear-gradient(to right, transparent 0%, transparent 90%, rgba(255,255,255,0.3) 90%, rgba(255,255,255,0.3) 100%)',
+            backgroundSize: '10% 100%',
+            pointerEvents: 'none',
+            opacity: 0.5,
+            zIndex: 0,
+          }}
+        />
       </Box>
     </Box>
   );
 };
 
-interface Skill {
-  name: string;
-  level: number;
-}
-
-interface SkillCategoryProps {
-  title: string;
-  skills: Skill[];
-  icon: ReactNode;
-  color: string;
-}
-
-const SkillCategory = ({ title, skills, icon, color }: SkillCategoryProps) => {
+// Section for skill category
+const SkillCategorySection = ({ category }: { category: typeof skillCategories[0] }) => {
   const theme = useTheme();
-  const [unlockedSkills, setUnlockedSkills] = useState<{ [key: string]: boolean }>(
-    Object.fromEntries(skills.slice(0, 2).map(skill => [skill.name, true]))
-  );
-  
-  const handleUnlock = (skillName: string) => {
-    setUnlockedSkills(prev => ({
-      ...prev,
-      [skillName]: true
-    }));
-  };
+  const Icon = category.icon;
   
   return (
-    <Box
+    <Paper
+      elevation={4}
       sx={{
-        width: { xs: '100%', sm: 'calc(50% - 16px)', md: 'calc(50% - 16px)' },
+        mb: 4,
+        overflow: 'hidden',
+        background: theme.palette.background.paper,
+        borderRadius: 2,
+        position: 'relative',
+        boxShadow: `0 0 15px ${category.color}40, 0 0 30px ${category.color}20`,
+        border: `2px solid ${category.color}50`,
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: `0 0 20px ${category.color}60, 0 0 40px ${category.color}30`,
+        },
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          width: '100%',
+      {/* Category header with icon */}
+      <Box 
+        sx={{ 
+          p: 2, 
+          bgcolor: `${category.color}15`,
+          borderBottom: `1px solid ${category.color}30`,
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        <Paper
-          elevation={3}
-          sx={{
-            p: 3,
-            mb: 3,
-            border: `2px solid ${color}`,
-            background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
-            position: 'relative',
-            overflow: 'hidden',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: 80,
-              height: 80,
-              backgroundImage: `radial-gradient(circle at top right, ${color}30 0%, transparent 70%)`,
-              pointerEvents: 'none',
-              zIndex: 0,
-            }
+        <Box 
+          sx={{ 
+            mr: 2, 
+            width: 40, 
+            height: 40, 
+            borderRadius: '4px', 
+            bgcolor: category.color,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: `0 0 8px ${category.color}80`,
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+          <Icon sx={{ color: '#fff' }} />
+        </Box>
+        <Box>
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              color: category.color,
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.8rem'
+            }}
+          >
+            {category.title}
+          </Typography>
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: theme.palette.text.secondary,
+              mt: 0.5,
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.55rem',
+              lineHeight: 1.5,
+            }}
+          >
+            {category.description}
+          </Typography>
+        </Box>
+      </Box>
+      
+      {/* Skills list */}
+      <Box sx={{ p: 3 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', mx: -1.5 }}>
+          {category.skills.map((skill, index) => (
             <Box 
+              key={`${category.id}-${index}`} 
               sx={{ 
-                mr: 2, 
-                width: 50, 
-                height: 50, 
-                borderRadius: '50%', 
-                bgcolor: color,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: `0 0 10px ${color}80`,
+                width: { xs: '100%', md: '50%' }, 
+                px: 1.5, 
+                mb: 1 
               }}
             >
-              {icon}
+              <SkillBar 
+                name={skill.name}
+                level={skill.level}
+                description={skill.description}
+                years={skill.years}
+              />
             </Box>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                color: color,
-                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                fontSize: '1rem'
-              }}
-            >
-              {title}
-            </Typography>
-          </Box>
-          {skills.map((skill: Skill, index: number) => (
-            <SkillItem 
-              key={index} 
-              name={skill.name} 
-              level={skill.level} 
-              color={color}
-              isUnlocked={!!unlockedSkills[skill.name]}
-              handleUnlock={() => handleUnlock(skill.name)}
-            />
           ))}
-        </Paper>
-      </motion.div>
-    </Box>
+        </Box>
+      </Box>
+    </Paper>
   );
 };
 
-interface SkillCategory {
-  title: string;
-  color: string;
-  icon: ReactNode;
-  skills: Skill[];
-}
-
+// Main Skills component
 export const Skills = () => {
   const theme = useTheme();
+  const [activeTab, setActiveTab] = useState(0);
   
-  const skillCategories: SkillCategory[] = [
-    {
-      title: "Frontend",
-      color: theme.palette.accent1.main,
-      icon: <CodeIcon sx={{ color: 'white' }} />,
-      skills: [
-        { name: "React", level: 9 },
-        { name: "TypeScript", level: 9 },
-        { name: "JavaScript", level: 9 },
-        { name: "Material UI", level: 8 },
-        { name: "Vue.js", level: 7 },
-        { name: "GraphQL", level: 7 },
-        { name: "Three.js", level: 6 },
-      ]
-    },
-    {
-      title: "Backend",
-      color: theme.palette.accent2.main,
-      icon: <StorageIcon sx={{ color: 'white' }} />,
-      skills: [
-        { name: "Node.js", level: 8 },
-        { name: "Express.js", level: 8 },
-        { name: "Phoenix (Elixir)", level: 7 },
-        { name: "Python", level: 7 },
-        { name: "PHP", level: 7 },
-        { name: "C#", level: 6 },
-      ]
-    },
-    {
-      title: "Databases",
-      color: theme.palette.accent3.main,
-      icon: <StorageOutlinedIcon sx={{ color: 'white' }} />,
-      skills: [
-        { name: "PostgreSQL", level: 8 },
-        { name: "Snowflake", level: 7 },
-        { name: "ClickHouse", level: 7 },
-        { name: "SQL/NoSQL", level: 8 },
-      ]
-    },
-    {
-      title: "DevOps",
-      color: theme.palette.primary.main,
-      icon: <CloudIcon sx={{ color: 'white' }} />,
-      skills: [
-        { name: "AWS", level: 8 },
-        { name: "Docker", level: 7 },
-        { name: "Git (GitLab CI/CD)", level: 8 },
-        { name: "Linux", level: 7 },
-        { name: "LaunchDarkly", level: 7 },
-      ]
-    }
-  ];
-
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
+  
   return (
     <Box
       sx={{
@@ -290,83 +299,81 @@ export const Skills = () => {
         flexDirection: 'column',
         padding: theme.spacing(4),
         position: 'relative',
-        overflow: 'hidden',
+        minHeight: 'calc(100vh - 80px)',
+        background: theme.palette.background.default,
       }}
     >
-      {/* Background game elements */}
-      <Box 
-        sx={{ 
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          width: '100%',
-          height: '100%',
-          opacity: 0.03,
-          backgroundImage: `url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M30 0l30 30-30 30L0 30z" fill="${theme.palette.primary.main}" fill-opacity="1" fill-rule="evenodd"/%3E%3C/svg%3E')`,
-          backgroundSize: '60px 60px',
-          pointerEvents: 'none',
-          zIndex: -1,
-        }}
-      />
-      
-      <GlowingText 
-        text="Skill Tree" 
-        variant="h3" 
-        sx={{ 
-          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-          color: theme.palette.primary.main,
-          mb: 4,
-          textAlign: 'center'
-        }}
-        glowColor={theme.palette.primary.main}
-      />
-      
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          mb: 4,
-        }}
-      >
-        <Paper
-          elevation={3}
+      {/* Page title */}
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
+        <GlowingText 
+          text="Technical Skills" 
+          variant="h3"
           sx={{
-            p: 2,
-            borderRadius: 2,
-            maxWidth: 'fit-content',
-            backgroundColor: theme.palette.background.paper,
-            border: `1px dashed ${theme.palette.primary.main}`,
+            ...sectionHeaderStyles,
+            fontFamily: '"Press Start 2P", cursive',
+          }}
+          glowColor={theme.palette.primary.main}
+        />
+        
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            maxWidth: '800px', 
+            mx: 'auto',
+            mb: 2,
+            px: 2,
+            fontFamily: '"Press Start 2P", cursive',
+            fontSize: '0.7rem',
+            lineHeight: 1.8,
           }}
         >
-          <Typography
-            variant="body2"
-            sx={{
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.7rem',
-              color: theme.palette.primary.main,
-            }}
-          >
-            Skill points available: 3
-          </Typography>
-        </Paper>
+          A comprehensive overview of my technical expertise, developed through years of professional experience.
+        </Typography>
       </Box>
       
-      <Box 
-        sx={{
-          display: 'flex', 
-          flexWrap: 'wrap',
-          gap: 3,
-          justifyContent: 'center',
-        }}
-      >
+      {/* Category tabs for mobile */}
+      <Box sx={{ display: { xs: 'block', md: 'none' }, mb: 3 }}>
+        <Tabs 
+          value={activeTab} 
+          onChange={handleTabChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{
+            '.MuiTabs-indicator': {
+              backgroundColor: theme.palette.primary.main,
+              height: 3,
+            }
+          }}
+        >
+          {skillCategories.map((category, index) => (
+            <Tab 
+              key={category.id} 
+              label={category.title}
+              sx={{
+                fontFamily: '"Press Start 2P", cursive',
+                fontSize: '0.6rem',
+                py: 1,
+                minHeight: 'unset',
+                color: activeTab === index ? category.color : theme.palette.text.primary,
+              }}
+            />
+          ))}
+        </Tabs>
+      </Box>
+      
+      {/* Mobile view - show one category at a time */}
+      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
         {skillCategories.map((category, index) => (
-          <SkillCategory
-            key={index}
-            title={category.title}
-            skills={category.skills}
-            icon={category.icon}
-            color={category.color}
-          />
+          <Box key={category.id} sx={{ display: activeTab === index ? 'block' : 'none' }}>
+            <SkillCategorySection category={category} />
+          </Box>
+        ))}
+      </Box>
+      
+      {/* Desktop view - show all categories */}
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        {skillCategories.map((category) => (
+          <SkillCategorySection key={category.id} category={category} />
         ))}
       </Box>
     </Box>
