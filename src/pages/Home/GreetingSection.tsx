@@ -20,21 +20,13 @@ const StyledTypeWriter = styled(TypeWriter)(({ theme }) => ({
   },
 }));
 
-// Custom glowing name component with letter hover effect
-const GlowingName = styled(Box)(({ theme }) => ({
-  display: 'inline-flex',
+// Simple glowing name component with no hover effects
+const GlowingName = styled(Typography)(({ theme }) => ({
+  display: 'inline-block',
   fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
   color: theme.palette.primary.main,
   textShadow: `0 0 15px ${theme.palette.primary.main}, 0 0 20px ${theme.palette.primary.main}70`,
-  '& .letter': {
-    display: 'inline-block',
-    transition: 'all 0.2s ease',
-    '&:hover': {
-      color: theme.palette.primary.light,
-      textShadow: `0 0 20px ${theme.palette.primary.main}`,
-      transform: 'translateY(-3px)'
-    }
-  }
+  letterSpacing: '0.02em',
 }));
 
 interface GreetingSectionProps {
@@ -57,8 +49,9 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
     "DevOps Engineer"
   ];
 
-  // Split name into individual letters for hover effect
-  const nameLetters = greeting.name.split('');
+  // Use first and last name
+  const firstName = "Hector";
+  const lastName = "Saenz";
 
   return (
     <Box
@@ -81,7 +74,7 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
           glowColor={theme.palette.secondary.main}
           glowIntensity={12}
           sx={{ 
-            fontSize: { xs: '1.7rem', sm: '2rem', md: '2.3rem' },
+            fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2.1rem' },
             letterSpacing: '0.05em',
             textAlign: { xs: 'center', sm: 'left' }
           }}
@@ -102,45 +95,23 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
           alignItems: 'center'
         }}
       >
-        <Typography
-          variant="h1"
-          component="span"
-          sx={{
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: { xs: '2.2rem', sm: '2.6rem', md: '3.2rem' },
-            letterSpacing: '0.02em',
-            display: 'flex',
-            alignItems: 'center',
-            gap: { xs: '0.5rem', sm: '0.75rem' }
-          }}
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          sx={{ display: 'flex', gap: { xs: '0.5rem', sm: '0.75rem' }, alignItems: 'center' }}
         >
-          <GlowingText 
-            text="I am"
-            variant="h1"
-            color="#9c27b0"
-            glowColor="#9c27b0"
-            glowIntensity={15}
-            sx={{ 
-              display: 'inline',
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: 'inherit',
-              fontWeight: 'bold',
-            }}
-          />
-          <GlowingName>
-            {nameLetters.map((letter, index) => (
-              <motion.span 
-                key={index} 
-                className="letter"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 + (index * 0.05) }}
-              >
-                {letter}
-              </motion.span>
-            ))}
+          <GlowingName variant="h1" sx={{ color: '#9c27b0', textShadow: `0 0 15px #9c27b0, 0 0 20px #9c27b070` }}>
+            I'm
           </GlowingName>
-        </Typography>
+          <GlowingName variant="h1">
+            {firstName}
+          </GlowingName>
+          <GlowingName variant="h1">
+            {lastName}
+          </GlowingName>
+        </Box>
       </Box>
 
       <Box
@@ -160,9 +131,12 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
       >
         <StyledTypeWriter
           texts={roles}
-          typingSpeed={8}  // Extremely fast typing
-          deletingSpeed={5} // Fast deleting
+          typingSpeed={18}  // Slightly slower typing
+          deletingSpeed={20} // Slightly slower deleting
           delayBetweenTexts={2500} // Longer pause between role changes
+          initialDelay={1800} // Start the typing effect sooner for better user experience
+          initialText="Full Stack Developer" // Initial text that will be shown immediately
+          stopAfterFullCycle={true} // Stop after going through all texts, ending with "Full Stack Developer"
         />
       </Box>
 

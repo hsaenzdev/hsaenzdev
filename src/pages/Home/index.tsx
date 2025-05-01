@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import { GreetingSection } from "./GreetingSection";
 import { GameObjectiveSection } from "./GameObjectiveSection";
 import { RetroTerminalSection } from "./RetroTerminalSection";
-import { ControlsSection } from "./ControlsSection";
 import { DevStatsSection } from "./DevStatsSection";
 
 export const Home = () => {
@@ -53,7 +52,7 @@ export const Home = () => {
       </Box>
 
       <Box mb={2}>
-        <ControlsSection />
+        <>&nbsp;</>
       </Box>
     </Box>
   );

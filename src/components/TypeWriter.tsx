@@ -1,26 +1,49 @@
 import { useState, useEffect, useRef } from 'react';
 import { Box, useTheme } from '@mui/material';
+import { motion } from 'framer-motion';
 
 interface TypeWriterProps {
   texts: string[];
   typingSpeed?: number;
   deletingSpeed?: number;
   delayBetweenTexts?: number;
+  initialDelay?: number;
+  initialText?: string;
+  stopAfterFullCycle?: boolean;
   className?: string;
 }
 
 export const TypeWriter = ({
   texts,
-  typingSpeed = 10, // Much faster default speed
-  deletingSpeed = 5, // Much faster default deletion
+  typingSpeed = 15,
+  deletingSpeed = 8,
   delayBetweenTexts = 1500,
+  initialDelay = 3000,
+  initialText,
+  stopAfterFullCycle = false,
   className
 }: TypeWriterProps) => {
   const theme = useTheme();
+  const firstText = initialText || (texts.length > 0 ? texts[0] : '');
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const [cycleCount, setCycleCount] = useState(0);
+  const [isInitialTextVisible, setIsInitialTextVisible] = useState(false);
+  
+  const textsWithFinalText = useRef<string[]>([]);
+  
+  useEffect(() => {
+    if (stopAfterFullCycle && initialText) {
+      const filteredTexts = texts.filter(text => text !== initialText);
+      textsWithFinalText.current = filteredTexts;
+    } else {
+      textsWithFinalText.current = [...texts];
+    }
+  }, [texts, initialText, stopAfterFullCycle]);
   
   const timerRef = useRef<number | null>(null);
   
@@ -31,64 +54,99 @@ export const TypeWriter = ({
     };
   }, []);
   
-  // Initialize with first text immediately
+  // Show initial text with a pop-in animation
   useEffect(() => {
-    if (texts.length > 0) {
-      setDisplayText(texts[0]);
-      setTextIndex(0);
-      setCharIndex(texts[0].length);
-      // Start deleting after delay
+    if (firstText && !isInitialTextVisible) {
+      // Add a small delay before showing the initial text
       timerRef.current = window.setTimeout(() => {
-        setIsTyping(false);
-      }, delayBetweenTexts);
+        setDisplayText(firstText);
+        setCharIndex(firstText.length);
+        setIsInitialTextVisible(true);
+        
+        // Start the typing animation after initialDelay
+        if (texts.length > 0 && !hasStarted) {
+          timerRef.current = window.setTimeout(() => {
+            setHasStarted(true);
+            
+            // Start deleting character by character after the delay
+            timerRef.current = window.setTimeout(() => {
+              setIsTyping(false);
+            }, delayBetweenTexts);
+          }, initialDelay);
+        }
+      }, 300); // Small delay for initial text appearance
     }
-  }, [texts, delayBetweenTexts]);
+  }, [texts, delayBetweenTexts, initialDelay, hasStarted, firstText, isInitialTextVisible]);
   
   // Handle the typing/deleting animation
   useEffect(() => {
-    if (!texts.length) return;
+    if (!texts.length || !hasStarted || isComplete) return;
     
     // Clear existing timer
     if (timerRef.current) clearTimeout(timerRef.current);
     
+    const currentTexts = textsWithFinalText.current;
+    
     if (isTyping) {
       // Typing animation
-      if (charIndex < texts[textIndex].length) {
+      if (charIndex < currentTexts[textIndex].length) {
         timerRef.current = window.setTimeout(() => {
-          setDisplayText(texts[textIndex].substring(0, charIndex + 1));
+          setDisplayText(currentTexts[textIndex].substring(0, charIndex + 1));
           setCharIndex(charIndex + 1);
         }, typingSpeed);
       } else {
         // Finished typing a word, pause before deleting
         timerRef.current = window.setTimeout(() => {
-          setIsTyping(false);
+          // If we should stop after cycle and we've completed one cycle
+          if (stopAfterFullCycle && cycleCount >= 1) {
+            // Set the final text (initial text) and mark as complete
+            setDisplayText(initialText || texts[0]);
+            setIsComplete(true);
+          } else {
+            setIsTyping(false);
+          }
         }, delayBetweenTexts);
       }
     } else {
-      // Deleting animation
+      // Deleting animation - For the first deletion after initial display, use firstText
+      const textToDelete = cycleCount === 0 && textIndex === 0 ? firstText : currentTexts[textIndex];
+      
       if (charIndex > 0) {
         timerRef.current = window.setTimeout(() => {
-          setDisplayText(texts[textIndex].substring(0, charIndex - 1));
+          setDisplayText(textToDelete.substring(0, charIndex - 1));
           setCharIndex(charIndex - 1);
         }, deletingSpeed);
       } else {
         // Finished deleting, move to next word
-        const nextIndex = (textIndex + 1) % texts.length;
+        const nextIndex = (textIndex + 1) % currentTexts.length;
+        
+        // If we've reached the start again, increment the cycle count
+        if (nextIndex === 0) {
+          setCycleCount(prev => prev + 1);
+        }
+        
         setTextIndex(nextIndex);
         setIsTyping(true);
       }
     }
-  }, [texts, textIndex, charIndex, isTyping, typingSpeed, deletingSpeed, delayBetweenTexts]);
+  }, [texts, textIndex, charIndex, isTyping, typingSpeed, deletingSpeed, delayBetweenTexts, hasStarted, stopAfterFullCycle, cycleCount, isComplete, initialText]);
   
   return (
-    <Box 
+    <Box
+      component={motion.div}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ 
+        opacity: isInitialTextVisible ? 1 : 0,
+        scale: isInitialTextVisible ? 1 : 0.9,
+      }}
+      transition={{ duration: 0.4, type: "spring" }}
       className={className} 
       sx={{ 
         display: 'inline-block',
         position: 'relative',
         minWidth: '10ch',
         '&::after': {
-          content: '"|"',
+          content: hasStarted && !isComplete ? '"|"' : '""',
           color: theme.palette.primary.main,
           fontWeight: 'bold',
           marginLeft: '2px',
