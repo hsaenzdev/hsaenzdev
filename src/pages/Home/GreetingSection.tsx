@@ -134,7 +134,6 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
           deletingSpeed={20} // Slightly slower deleting
           delayBetweenTexts={2500} // Longer pause between role changes
           initialDelay={1800} // Start the typing effect sooner for better user experience
-          initialText="Full Stack Developer" // Initial text that will be shown immediately
           stopAfterFullCycle={true} // Stop after going through all texts, ending with "Full Stack Developer"
         />
       </Box>
