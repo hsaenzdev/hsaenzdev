@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { GlowingText } from "../../components/GlowingText";
 import { TypeWriter } from "../../components/TypeWriter";
 import { GREETING } from "./constants";
-import { useState, useEffect } from "react";
 
 // Styled TypeWriter component with custom styling
 const StyledTypeWriter = styled(TypeWriter)(({ theme }) => ({
