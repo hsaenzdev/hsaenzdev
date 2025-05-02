@@ -51,7 +51,11 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
   const SkillMeter = ({ skill }: { skill: ProjectSkill }) => {
     return (
       <Box sx={{ mb: 1 }}>
-        <Typography variant="body2" sx={{ mb: 0.5 }}>
+        <Typography variant="body2" sx={{ 
+          mb: 0.5,
+          fontFamily: '"Press Start 2P", cursive',
+          fontSize: '0.6rem'
+        }}>
           {skill.name}
         </Typography>
         <Box 
@@ -84,7 +88,7 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
         position: 'relative',
         overflow: 'visible',
         mb: 4,
-        border: `2px solid ${theme.palette.primary.main}`,
+        border: `2px solid ${alpha(theme.palette.primary.main, 0.7)}`,
         borderRadius: '8px',
         boxShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.5)}`,
         transition: 'all 0.3s ease',
@@ -93,8 +97,8 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
           boxShadow: `0 0 20px ${alpha(theme.palette.primary.main, 0.7)}`,
         },
         background: `linear-gradient(135deg, 
-                     ${alpha(theme.palette.background.paper, 0.9)}, 
-                     ${alpha(theme.palette.background.default, 0.7)})`,
+                     ${alpha(theme.palette.background.paper, 0.6)}, 
+                     ${alpha(theme.palette.background.default, 0.4)})`,
         backdropFilter: 'blur(5px)',
       }}
     >
@@ -130,7 +134,12 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
             }}
           />
           
-          <Typography variant="body1" sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ 
+            mb: 2, 
+            fontFamily: '"Press Start 2P", cursive',
+            fontSize: '0.7rem',
+            lineHeight: '1.6'
+          }}>
             {project.shortDescription}
           </Typography>
           
@@ -141,10 +150,14 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
                 label={tech} 
                 size="small"
                 sx={{
-                  backgroundColor: theme.palette.accent2.main,
+                  backgroundColor: alpha(theme.palette.accent2.main, 0.8),
                   color: theme.palette.background.paper,
                   fontWeight: 'bold',
                   border: `1px solid ${theme.palette.accent2.dark}`,
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: '0.6rem',
+                  height: 'auto',
+                  padding: '4px 0'
                 }}
               />
             ))}
@@ -214,11 +227,17 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
                 fontFamily: '"Press Start 2P", cursive',
                 fontSize: '0.9rem',
                 mb: 1,
-                color: theme.palette.secondary.main
+                color: theme.palette.secondary.main,
+                textShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.8)}`
               }}>
                 PROJECT DETAILS
               </Typography>
-              <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+              <Typography variant="body2" sx={{ 
+                whiteSpace: 'pre-line',
+                fontFamily: '"Press Start 2P", cursive',
+                fontSize: '0.65rem',
+                lineHeight: '1.6'
+              }}>
                 {project.fullDescription}
               </Typography>
             </Box>
@@ -228,7 +247,8 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
                 fontFamily: '"Press Start 2P", cursive',
                 fontSize: '0.9rem',
                 mb: 1,
-                color: theme.palette.secondary.main
+                color: theme.palette.secondary.main,
+                textShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.8)}`
               }}>
                 SKILLS GAINED
               </Typography>
@@ -244,7 +264,8 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
                 fontFamily: '"Press Start 2P", cursive',
                 fontSize: '0.9rem',
                 mb: 1,
-                color: theme.palette.secondary.main
+                color: theme.palette.secondary.main,
+                textShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.8)}`
               }}>
                 LEARNINGS
               </Typography>
@@ -253,7 +274,18 @@ export const RetroProjectCard = ({ project }: RetroProjectCardProps) => {
                 borderLeft: `4px solid ${alpha(theme.palette.accent3.main, 0.5)}`
               }}>
                 {project.learnings.map((learning, index) => (
-                  <Typography key={index} variant="body2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                  <Typography 
+                    key={index} 
+                    variant="body2" 
+                    sx={{ 
+                      mb: 1, 
+                      display: 'flex', 
+                      alignItems: 'center',
+                      fontFamily: '"Press Start 2P", cursive',
+                      fontSize: '0.6rem',
+                      lineHeight: '1.6'
+                    }}
+                  >
                     <Box 
                       component="span" 
                       sx={{ 

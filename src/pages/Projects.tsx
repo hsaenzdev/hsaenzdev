@@ -83,7 +83,11 @@ export const Projects = () => {
             sx={{ 
               maxWidth: '800px',
               mb: 1,
-              color: alpha(theme.palette.text.primary, 0.9)
+              color: alpha(theme.palette.text.primary, 0.9),
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: '0.75rem',
+              lineHeight: '1.6',
+              letterSpacing: '0.5px'
             }}
           >
             Explore my portfolio of projects that showcase my skills and experience as a Full-Stack Developer.
@@ -177,56 +181,6 @@ export const Projects = () => {
             </Button>
           </Box>
         )}
-        
-        {/* Retro Corner Decorations - 8-bit style corners */}
-        <Box 
-          sx={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            width: '24px', 
-            height: '24px',
-            borderTop: `4px solid ${theme.palette.primary.main}`,
-            borderLeft: `4px solid ${theme.palette.primary.main}`,
-            zIndex: 1
-          }} 
-        />
-        <Box 
-          sx={{ 
-            position: 'absolute', 
-            top: 0, 
-            right: 0, 
-            width: '24px', 
-            height: '24px',
-            borderTop: `4px solid ${theme.palette.primary.main}`,
-            borderRight: `4px solid ${theme.palette.primary.main}`,
-            zIndex: 1
-          }} 
-        />
-        <Box 
-          sx={{ 
-            position: 'absolute', 
-            bottom: 0, 
-            left: 0, 
-            width: '24px', 
-            height: '24px',
-            borderBottom: `4px solid ${theme.palette.primary.main}`,
-            borderLeft: `4px solid ${theme.palette.primary.main}`,
-            zIndex: 1
-          }} 
-        />
-        <Box 
-          sx={{ 
-            position: 'absolute', 
-            bottom: 0, 
-            right: 0, 
-            width: '24px', 
-            height: '24px',
-            borderBottom: `4px solid ${theme.palette.primary.main}`,
-            borderRight: `4px solid ${theme.palette.primary.main}`,
-            zIndex: 1
-          }} 
-        />
       </Box>
     </Container>
   );

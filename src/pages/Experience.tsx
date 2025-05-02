@@ -7,7 +7,8 @@ import {
   Divider, 
   Chip, 
   Collapse,
-  Button 
+  Button,
+  alpha
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -15,7 +16,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { motion } from "framer-motion";
 import { GlowingText } from "../components/GlowingText";
 import { experienceItems, experienceTimeline, experienceLevelIcons, getExperienceLevelTitle } from "../config/experience";
-import { sectionHeaderStyles, gridBackground, retroCardStyles } from "../config/theme";
+import { sectionHeaderStyles, retroCardStyles } from "../config/theme";
 
 // Component for a single experience item in the quest log
 const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) => {
@@ -40,14 +41,33 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
           position: 'relative',
           mb: 4,
           overflow: 'hidden',
-          ...retroCardStyles(experience.color),
+          border: `2px solid ${alpha(experience.color, 0.7)}`,
+          borderRadius: 2,
+          boxShadow: `0 0 15px ${alpha(experience.color, 0.3)}`,
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-5px)',
+            boxShadow: `0 10px 20px ${alpha(theme.palette.common.black, 0.2)}, 0 0 15px ${alpha(experience.color, 0.5)}`,
+          },
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '4px',
+            background: `linear-gradient(90deg, ${experience.color}, transparent)`,
+          },
+          background: `linear-gradient(135deg, 
+                      ${alpha(theme.palette.background.paper, 0.7)}, 
+                      ${alpha(theme.palette.background.default, 0.5)})`,
+          backdropFilter: 'blur(5px)',
         }}
       >
         {/* Quest header */}
         <Box 
           sx={{ 
             p: 3,
-            background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -58,11 +78,11 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                 width: 56, 
                 height: 56, 
                 borderRadius: '12px', 
-                bgcolor: experience.color,
+                bgcolor: alpha(experience.color, 0.9),
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: `0 0 10px ${experience.color}80`,
+                boxShadow: `0 0 15px ${alpha(experience.color, 0.6)}`,
               }}
             >
               <Icon sx={{ color: 'white', fontSize: 30 }} />
@@ -83,6 +103,7 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '1rem',
+                    boxShadow: `0 0 10px ${alpha(experience.color, 0.5)}`,
                   }}
                 >
                   {experienceLevelIcons[experience.level as keyof typeof experienceLevelIcons]}
@@ -98,6 +119,7 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                   fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
                   fontSize: '0.9rem',
                   mb: 0.5,
+                  textShadow: `0 0 8px ${alpha(experience.color, 0.7)}`,
                 }}
               >
                 {experience.title}
@@ -106,8 +128,9 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
               <Typography 
                 variant="subtitle1" 
                 sx={{ 
+                  fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
                   color: theme.palette.text.secondary,
-                  fontSize: '0.9rem',
+                  fontSize: '0.6rem',
                 }}
               >
                 {experience.company}
@@ -122,11 +145,12 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                 sx={{
                   fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
                   fontSize: '0.6rem',
-                  bgcolor: `${experience.color}30`,
+                  bgcolor: alpha(experience.color, 0.2),
                   color: experience.color,
-                  border: `1px solid ${experience.color}50`,
+                  border: `1px solid ${alpha(experience.color, 0.5)}`,
                   height: 24,
                   ml: 1,
+                  boxShadow: `0 0 8px ${alpha(experience.color, 0.3)}`,
                 }}
               />
             )}
@@ -139,9 +163,10 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
               px: 1.5,
               py: 0.5,
               mb: 2,
-              bgcolor: `${experience.color}15`,
-              border: `1px solid ${experience.color}30`,
+              bgcolor: alpha(experience.color, 0.1),
+              border: `1px solid ${alpha(experience.color, 0.3)}`,
               borderRadius: 1,
+              boxShadow: `0 0 8px ${alpha(experience.color, 0.2)}`,
             }}
           >
             <Typography 
@@ -174,12 +199,13 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                 width: 24, 
                 height: 24, 
                 borderRadius: '4px', 
-                bgcolor: expanded ? experience.color : `${experience.color}40`,
+                bgcolor: expanded ? experience.color : alpha(experience.color, 0.4),
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 mr: 1,
                 transition: 'all 0.3s ease',
+                boxShadow: expanded ? `0 0 10px ${alpha(experience.color, 0.6)}` : 'none',
               }}
             >
               {expanded ? 
@@ -194,6 +220,7 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                 fontSize: '0.6rem',
                 color: expanded ? experience.color : theme.palette.text.primary,
                 transition: 'color 0.3s ease',
+                textShadow: expanded ? `0 0 5px ${alpha(experience.color, 0.5)}` : 'none',
               }}
             >
               {expanded ? 'HIDE QUEST DETAILS' : 'VIEW QUEST DETAILS'}
@@ -203,28 +230,14 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
         
         {/* Quest details */}
         <Collapse in={expanded}>
-          <Divider />
+          <Divider sx={{ opacity: 0.6 }} />
           <Box 
             sx={{ 
               p: 3, 
-              bgcolor: `${experience.color}05`,
+              bgcolor: alpha(experience.color, 0.05),
               position: 'relative',
             }}
           >
-            {/* Background pixel pattern */}
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                opacity: 0.03,
-                zIndex: 0,
-                backgroundImage: `url('data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="4" height="4" fill="${experience.color.replace('#', '%23')}" /%3E%3C/svg%3E')`,
-              }}
-            />
-            
             {/* Mission objectives */}
             <Box sx={{ position: 'relative', zIndex: 1 }}>
               <Typography 
@@ -234,6 +247,7 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                   fontSize: '0.7rem',
                   mb: 2,
                   color: experience.color,
+                  textShadow: `0 0 8px ${alpha(experience.color, 0.7)}`,
                 }}
               >
                 MISSION OBJECTIVES:
@@ -258,16 +272,26 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        background: `linear-gradient(135deg, ${experience.color} 0%, ${experience.color}99 100%)`,
+                        background: `linear-gradient(135deg, ${experience.color} 0%, ${alpha(experience.color, 0.8)} 100%)`,
                         borderRadius: '4px',
                         fontSize: '0.8rem',
                         color: '#fff',
                         fontWeight: 'bold',
+                        boxShadow: `0 0 8px ${alpha(experience.color, 0.5)}`,
                       }}
                     >
                       {index + 1}
                     </Box>
-                    <Typography variant="body2">{item}</Typography>
+                    <Typography 
+                      variant="body2"
+                      sx={{
+                        fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                        fontSize: '0.6rem',
+                        lineHeight: 1.8,
+                      }}
+                    >
+                      {item}
+                    </Typography>
                   </Box>
                 ))}
               </Box>
@@ -283,6 +307,7 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                       mt: 3,
                       mb: 2,
                       color: experience.color,
+                      textShadow: `0 0 8px ${alpha(experience.color, 0.7)}`,
                     }}
                   >
                     SKILLS GAINED:
@@ -295,10 +320,14 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                         label={skill}
                         size="small"
                         sx={{
-                          bgcolor: `${experience.color}20`,
+                          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                          fontSize: '0.55rem',
+                          bgcolor: alpha(experience.color, 0.1),
                           color: experience.color,
-                          border: `1px solid ${experience.color}40`,
-                          fontSize: '0.7rem',
+                          border: `1px solid ${alpha(experience.color, 0.4)}`,
+                          boxShadow: `0 0 5px ${alpha(experience.color, 0.3)}`,
+                          height: 'auto',
+                          py: 0.5
                         }}
                       />
                     ))}
@@ -317,6 +346,7 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                       mt: 3,
                       mb: 2,
                       color: theme.palette.accent1.main,
+                      textShadow: `0 0 8px ${alpha(theme.palette.accent1.main, 0.7)}`,
                     }}
                   >
                     QUEST REWARDS:
@@ -329,7 +359,8 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                           sx={{ 
                             color: theme.palette.accent1.main, 
                             mr: 1, 
-                            fontSize: '1rem' 
+                            fontSize: '1rem',
+                            filter: `drop-shadow(0 0 3px ${alpha(theme.palette.accent1.main, 0.7)})`,
                           }} 
                         />
                         <Typography 
@@ -337,6 +368,8 @@ const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) =>
                           sx={{ 
                             color: theme.palette.accent1.main,
                             fontWeight: 'medium',
+                            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                            fontSize: '0.6rem',
                           }}
                         >
                           {reward}
@@ -360,90 +393,108 @@ const QuestTimeline = () => {
   
   return (
     <Box sx={{ position: 'relative', mb: 4 }}>
-      {/* Timeline line */}
-      <Box
-        sx={{
-          position: 'absolute',
-          left: { xs: 20, sm: 40 },
-          top: 0,
-          bottom: 0,
-          width: 4,
-          bgcolor: `${theme.palette.primary.main}50`,
-          zIndex: 0,
-        }}
-      />
-      
       {/* Timeline entries */}
       {experienceTimeline.map((timeEntry, index) => (
         <Box key={index} sx={{ position: 'relative', mb: 5 }}>
           {/* Year marker */}
           <Box
+            component={motion.div}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
             sx={{
               display: 'flex',
-              alignItems: 'center',
-              mb: 2,
+              justifyContent: 'center',
+              mb: 3,
               position: 'relative',
             }}
           >
-            {/* Timeline dot */}
             <Box
               sx={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                bgcolor: theme.palette.primary.main,
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: `0 0 0 4px ${theme.palette.background.default}, 0 0 0 8px ${theme.palette.primary.main}40`,
-                fontSize: '0.8rem',
-                fontWeight: 'bold',
-                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                zIndex: 2,
-                ml: { xs: 0, sm: 20 },
-                mr: 2,
+                display: 'inline-block',
+                position: 'relative',
+                padding: '8px 16px',
+                background: alpha(theme.palette.primary.main, 0.1),
+                borderRadius: '4px',
+                border: `2px solid ${alpha(theme.palette.primary.main, 0.7)}`,
+                boxShadow: `0 0 12px ${alpha(theme.palette.primary.main, 0.4)}`,
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '2px',
+                  background: `linear-gradient(90deg, transparent, ${theme.palette.primary.main}, transparent)`,
+                  opacity: 0.8,
+                }
               }}
             >
-              {index + 1}
+              <Typography
+                variant="h6"
+                sx={{
+                  fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                  fontSize: '1rem',
+                  color: theme.palette.primary.main,
+                  textShadow: `0 0 8px ${alpha(theme.palette.primary.main, 0.7)}`,
+                  position: 'relative',
+                }}
+              >
+                {timeEntry.year}
+              </Typography>
+              
+              {/* Pixel corners */}
+              <Box sx={{ 
+                width: '4px', 
+                height: '4px', 
+                position: 'absolute', 
+                top: 0, 
+                left: 0, 
+                background: theme.palette.primary.main 
+              }} />
+              <Box sx={{ 
+                width: '4px', 
+                height: '4px', 
+                position: 'absolute', 
+                top: 0, 
+                right: 0, 
+                background: theme.palette.primary.main 
+              }} />
+              <Box sx={{ 
+                width: '4px', 
+                height: '4px', 
+                position: 'absolute', 
+                bottom: 0, 
+                left: 0, 
+                background: theme.palette.primary.main 
+              }} />
+              <Box sx={{ 
+                width: '4px', 
+                height: '4px', 
+                position: 'absolute', 
+                bottom: 0, 
+                right: 0, 
+                background: theme.palette.primary.main 
+              }} />
             </Box>
-            
-            <Typography
-              variant="h6"
-              sx={{
-                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                fontSize: '0.9rem',
-                color: theme.palette.primary.main,
-              }}
-            >
-              {timeEntry.year}
-            </Typography>
           </Box>
           
           {/* Quest entries for this timeline period */}
-          <Box sx={{ pl: { xs: 5, sm: 10 } }}>
+          <Box 
+            sx={{ 
+              width: '100%',
+              maxWidth: 800,
+              mx: 'auto',
+              position: 'relative'
+            }}
+          >
             {timeEntry.events.map((event, i) => (
               <QuestCard key={i} experience={event} />
             ))}
           </Box>
         </Box>
       ))}
-      
-      {/* End of timeline marker */}
-      <Box
-        sx={{
-          position: 'absolute',
-          left: { xs: 20, sm: 40 },
-          bottom: -20,
-          transform: 'translateX(-50%)',
-          width: 0,
-          height: 0,
-          borderLeft: '10px solid transparent',
-          borderRight: '10px solid transparent',
-          borderTop: `20px solid ${theme.palette.primary.main}50`,
-          zIndex: 0,
-        }}
-      />
     </Box>
   );
 };
@@ -463,16 +514,14 @@ export const Experience = () => {
         minHeight: 'calc(100vh - 80px)',
       }}
     >
-      {/* Background grid */}
-      <Box sx={gridBackground(theme.palette.primary.main)} />
-      
       {/* Page title */}
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
+      <Box sx={{ textAlign: 'center', mb: 6, position: 'relative', zIndex: 1 }}>
         <GlowingText 
           text="Quest Log" 
           variant="h3" 
           sx={sectionHeaderStyles}
           glowColor={theme.palette.primary.main}
+          glowIntensity={20}
         />
         
         <Typography 
@@ -481,7 +530,11 @@ export const Experience = () => {
             maxWidth: '800px', 
             mx: 'auto',
             mb: 2,
-            px: 2 
+            px: 2,
+            fontFamily: '"Press Start 2P", cursive',
+            fontSize: '0.75rem',
+            lineHeight: '1.6',
+            letterSpacing: '0.5px'
           }}
         >
           A chronicle of my professional journey and completed quests.
