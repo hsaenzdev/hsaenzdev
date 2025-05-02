@@ -21,7 +21,7 @@ function AppContent() {
       <CssBaseline />
       <ParallaxProvider>
         <Routes>
-          <Route path="/" element={<Portfolio />}>
+          <Route path="/hsaenz-portfolio" element={<Portfolio />}>
             <Route index element={<Home />} />
             <Route path="projects" element={<Projects />} />
             <Route path="skills" element={<Skills />} />

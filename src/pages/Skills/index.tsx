@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Typography, Grid, Paper, useTheme, Chip, alpha } from '@mui/material';
+import { Box, Typography, Grid, Paper, useTheme, alpha } from '@mui/material';
 import { motion } from 'framer-motion';
 import { GlowingText } from '../../components/GlowingText';
 

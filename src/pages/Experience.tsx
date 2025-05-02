@@ -7,7 +7,6 @@ import {
   Divider, 
   Chip, 
   Collapse,
-  Button,
   alpha
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -16,7 +15,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { motion } from "framer-motion";
 import { GlowingText } from "../components/GlowingText";
 import { experienceItems, experienceTimeline, experienceLevelIcons, getExperienceLevelTitle } from "../config/experience";
-import { sectionHeaderStyles, retroCardStyles } from "../config/theme";
+import { sectionHeaderStyles } from "../config/theme";
 
 // Component for a single experience item in the quest log
 const QuestCard = ({ experience }: { experience: typeof experienceItems[0] }) => {

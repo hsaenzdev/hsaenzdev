@@ -1,15 +1,8 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import { GlowingText } from "../../components/GlowingText";
-import { GAME_OBJECTIVE } from "./constants";
 
-interface GameObjectiveSectionProps {
-  gameObjective?: typeof GAME_OBJECTIVE;
-}
-
-export const GameObjectiveSection = ({ 
-  gameObjective = GAME_OBJECTIVE
-}: GameObjectiveSectionProps) => {
+export const GameObjectiveSection = () => {
   const theme = useTheme();
   
   // Enhanced description text that features career highlights

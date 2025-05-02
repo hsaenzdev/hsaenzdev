@@ -28,10 +28,6 @@ export const ExperienceTimeline = ({ firstUsed, years, colorKey }: ExperienceTim
     color = theme.palette.primary.main;
   }
   
-  // Calculate the timespan
-  const timelineStart = 2010; // Set a baseline year for all skills to align
-  const timelineEnd = currentYear;
-  const timelineRange = timelineEnd - timelineStart;
   
   // Generate pixel blocks for the years
   const renderYearBlocks = () => {
