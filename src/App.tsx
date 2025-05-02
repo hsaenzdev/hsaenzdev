@@ -9,7 +9,6 @@ import { Home } from "./pages/Home";
 import { Projects } from "./pages/Projects";
 import { Skills } from "./pages/Skills";
 import { Experience } from "./pages/Experience";
-import { Contact } from "./pages/Contact";
 import { GameProvider } from "./context/GameContext";
 
 function AppContent() {
@@ -26,7 +25,6 @@ function AppContent() {
             <Route path="projects" element={<Projects />} />
             <Route path="skills" element={<Skills />} />
             <Route path="experience" element={<Experience />} />
-            <Route path="contact" element={<Contact />} />
           </Route>
         </Routes>
       </ParallaxProvider>
