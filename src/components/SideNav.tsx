@@ -8,12 +8,12 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/Email';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import GamepadIcon from '@mui/icons-material/Gamepad';
 import DownloadIcon from '@mui/icons-material/Download';
+import ArticleIcon from '@mui/icons-material/Article';
 import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
-import { ThemeToggle } from "./ThemeToggle";
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/hsaenz-portfolio' },
@@ -169,7 +169,7 @@ export const SideNav = () => {
         <Box sx={{ pr: 3 }}>
           <List sx={{ p: 0 }}>
             {menuItems.map((item, index) => (
-              <ListItem key={item.text} disablePadding sx={{ mb: 1.5 }}>
+              <ListItem key={item.text} disablePadding sx={{ mb: 2 }}>
                 <motion.div
                   initial={{ x: 0 }}
                   animate={{ 
@@ -231,162 +231,168 @@ export const SideNav = () => {
         }}
       />
       
-      {/* RESUME Section */}
-      <Box sx={{ px: 2, py: 3 }}>
-        <Typography 
-          variant="subtitle2" 
-          sx={{ 
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.7rem',
-            color: theme.palette.accent1.main,
-            mb: 1.5,
-            pl: 2,
-            letterSpacing: '0.1em'
-          }}
-        >
-          RESUME
-        </Typography>
-        
-        <motion.div 
-          whileHover={{ scale: 1.05 }} 
-          whileTap={{ scale: 0.95 }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            startIcon={<DownloadIcon />}
-            component="a"
-            href="/hsaenz-portfolio/assets/hsaenzresume.pdf"
-            download
-            sx={{ 
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.6rem',
-              py: 1,
-              textTransform: 'uppercase',
-              boxShadow: `0 4px 0 ${theme.palette.primary.dark}`,
-              '&:hover': {
-                boxShadow: `0 2px 0 ${theme.palette.primary.dark}`,
-                transform: 'translateY(2px)',
-              }
-            }}
-          >
-            Download CV
-          </Button>
-        </motion.div>
-      </Box>
-      
-      {/* Divider after RESUME */}
-      <Box 
-        sx={{ 
-          borderBottom: `2px solid ${theme.palette.divider}`,
-        }}
-      />
-      
-      {/* CONTACT Section */}
+      {/* QUEST ITEMS Section (merged Resume and Contact) */}
       <Box sx={{ px: 2, py: 3, flex: 1 }}>
         <Typography 
           variant="subtitle2" 
           sx={{ 
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
             fontSize: '0.7rem',
-            color: theme.palette.accent3.main,
-            mb: 1.5,
+            color: theme.palette.accent1.main,
+            mb: 2,
             pl: 2,
             letterSpacing: '0.1em'
           }}
         >
-          CONTACT
+          QUEST ITEMS
         </Typography>
         
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Tooltip title="Email">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="mailto:hello@hsaenz.dev" 
+        {/* Resource links as a list */}
+        <List sx={{ p: 0 }}>
+          <ListItem disablePadding sx={{ mb: 2 }}>
+            <motion.div
+              style={{ width: '100%' }}
+            >
+              <ListItemButton
+                component="a"
+                href="https://github.com/hsaenzdev"
                 target="_blank"
-                sx={{ 
-                  backgroundColor: theme.palette.primary.main,
-                  color: 'white',
+                sx={{
+                  borderRadius: 1,
+                  border: `2px solid #00FFDD`,
+                  py: 0.8,
+                  px: 2,
+                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                  position: 'relative',
+                  overflow: 'hidden',
                   '&:hover': {
-                    backgroundColor: theme.palette.primary.dark,
-                  },
-                  width: 36,
-                  height: 36,
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  }
                 }}
               >
-                <EmailIcon fontSize="small" />
-              </IconButton>
+                <ListItemIcon 
+                  sx={{ 
+                    color: '#00FFDD',
+                    minWidth: 40,
+                    '& .MuiSvgIcon-root': {
+                      filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                    }
+                  }}
+                >
+                  <GitHubIcon />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="GitHub" 
+                  primaryTypographyProps={{
+                    sx: {
+                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.05em',
+                      color: '#00FFDD'
+                    }
+                  }}
+                />
+              </ListItemButton>
             </motion.div>
-          </Tooltip>
+          </ListItem>
           
-          <Tooltip title="GitHub">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="https://github.com/hsaenzdev" 
-                target="_blank" 
-                sx={{ 
-                  backgroundColor: theme.palette.accent1.main,
-                  color: 'white',
+          <ListItem disablePadding sx={{ mb: 2 }}>
+            <motion.div
+              style={{ width: '100%' }}
+            >
+              <ListItemButton
+                component="a"
+                href="https://www.linkedin.com/in/saenzo"
+                target="_blank"
+                sx={{
+                  borderRadius: 1,
+                  border: `2px solid ${theme.palette.accent2.main}`,
+                  py: 0.8,
+                  px: 2,
+                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                  position: 'relative',
+                  overflow: 'hidden',
                   '&:hover': {
-                    backgroundColor: theme.palette.accent1.dark,
-                  },
-                  width: 36,
-                  height: 36,
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  }
                 }}
               >
-                <GitHubIcon fontSize="small" />
-              </IconButton>
+                <ListItemIcon 
+                  sx={{ 
+                    color: theme.palette.accent2.main,
+                    minWidth: 40,
+                    '& .MuiSvgIcon-root': {
+                      filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                    }
+                  }}
+                >
+                  <LinkedInIcon />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="LinkedIn" 
+                  primaryTypographyProps={{
+                    sx: {
+                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.05em',
+                      color: theme.palette.accent2.main
+                    }
+                  }}
+                />
+              </ListItemButton>
             </motion.div>
-          </Tooltip>
+          </ListItem>
           
-          <Tooltip title="LinkedIn">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="https://www.linkedin.com/in/saenzo" 
-                target="_blank" 
-                sx={{ 
-                  backgroundColor: theme.palette.accent2.main,
-                  color: 'white',
+          <ListItem disablePadding sx={{ mb: 2 }}>
+            <motion.div
+              style={{ width: '100%' }}
+            >
+              <ListItemButton
+                component="a"
+                href="/hsaenz-portfolio/assets/hsaenzresume.pdf"
+                download
+                sx={{
+                  borderRadius: 1,
+                  border: `2px solid #FFFF00`,
+                  py: 0.8,
+                  px: 2,
+                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                  position: 'relative',
+                  overflow: 'hidden',
                   '&:hover': {
-                    backgroundColor: theme.palette.accent2.dark,
-                  },
-                  width: 36,
-                  height: 36,
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  }
                 }}
               >
-                <LinkedInIcon fontSize="small" />
-              </IconButton>
+                <ListItemIcon 
+                  sx={{ 
+                    color: '#FFFF00',
+                    minWidth: 40,
+                    '& .MuiSvgIcon-root': {
+                      filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                    }
+                  }}
+                >
+                  <DownloadIcon />
+                </ListItemIcon>
+                <ListItemText 
+                  primary="Resume" 
+                  primaryTypographyProps={{
+                    sx: {
+                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.05em',
+                      color: '#FFFF00'
+                    }
+                  }}
+                />
+              </ListItemButton>
             </motion.div>
-          </Tooltip>
-          
-          <Tooltip title="Twitter">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="https://twitter.com" 
-                target="_blank" 
-                sx={{ 
-                  backgroundColor: theme.palette.accent3.main,
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: theme.palette.accent3.dark,
-                  },
-                  width: 36,
-                  height: 36,
-                }}
-              >
-                <TwitterIcon fontSize="small" />
-              </IconButton>
-            </motion.div>
-          </Tooltip>
-        </Box>
+          </ListItem>
+        </List>
       </Box>
       
-      {/* Theme Toggle Bottom Section */}
+      {/* Copyright bottom section */}
       <Box 
         sx={{ 
           p: 2,
@@ -394,22 +400,20 @@ export const SideNav = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: 1.5,
         }}
       >
         <Typography
           variant="caption"
           sx={{
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.7rem',
+            fontSize: '0.5rem',
             color: mode === 'dark' ? theme.palette.accent1.main : theme.palette.accent2.main,
             letterSpacing: '0.05em',
+            opacity: 0.7
           }}
         >
-          {mode === 'dark' ? 'LIGHT' : 'DARK'} MODE
+          © 2024 HSAENZ
         </Typography>
-        
-        <ThemeToggle />
       </Box>
     </Paper>
   );
