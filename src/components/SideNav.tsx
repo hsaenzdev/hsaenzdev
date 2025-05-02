@@ -14,6 +14,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import DownloadIcon from '@mui/icons-material/Download';
+import GamepadIcon from '@mui/icons-material/Gamepad';
+import CasinoIcon from '@mui/icons-material/Casino';
+import SportsEsportsOutlinedIcon from '@mui/icons-material/SportsEsportsOutlined';
 import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
 
@@ -49,6 +52,8 @@ export const SideNav = () => {
         background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
         overflow: 'hidden',
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       {/* Pixelated border effect */}
@@ -70,82 +75,81 @@ export const SideNav = () => {
         }}
       />
       
-      {/* Header */}
+      {/* Logo Header */}
       <Box 
         sx={{ 
-          p: 3,
+          py: 5,
+          px: 3,
           display: 'flex', 
-          flexDirection: 'column',
           alignItems: 'center',
-          borderBottom: `2px solid ${theme.palette.divider}`
+          borderBottom: `2px solid ${theme.palette.divider}`,
         }}
       >
-        <motion.div
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ 
-            duration: 1.5, 
-            repeat: Infinity, 
-            repeatType: "reverse" 
-          }}
-        >
-          <SportsEsportsIcon 
-            sx={{ 
-              fontSize: 50, 
-              color: theme.palette.primary.main,
-              mb: 1
-            }} 
-          />
-        </motion.div>
-        
-        <Typography 
-          variant="h5" 
-          sx={{ 
-            textTransform: 'uppercase',
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '1.2rem',
-            textAlign: 'center',
-            mb: 1,
-            color: theme.palette.primary.main
-          }}
-        >
-          Dev Quest
-        </Typography>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <motion.div whileTap={{ scale: 0.9 }}>
-            <IconButton 
-              onClick={toggleTheme} 
-              color="inherit"
-              sx={{ 
-                border: `2px solid ${theme.palette.mode === 'dark' ? theme.palette.accent1.main : theme.palette.accent2.main}`,
-                p: 1
-              }}
-            >
-              {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
-          </motion.div>
-          
-          <Box
+        {/* Name and subtitle with proper alignment */}
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          width: '100%',
+        }}>
+          {/* Main name */}
+          <Typography
+            component="h1"
             sx={{
-              px: 1.5,
-              py: 0.5,
-              border: `2px solid ${theme.palette.accent3.main}`,
-              borderRadius: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: '1.6rem',
+              letterSpacing: '0.05em',
+              mb: 0.7,
+              textShadow: `2px 2px 0px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.15)'}`,
             }}
           >
-            <VideogameAssetIcon fontSize="small" />
-            <Typography
-              variant="caption"
-              sx={{
+            <Box component="span" sx={{ 
+              color: theme.palette.accent2.main,
+              textShadow: `
+                0 0 5px ${theme.palette.accent2.main}60,
+                0 0 10px ${theme.palette.accent2.main}40
+              `,
+              filter: `drop-shadow(0 0 3px ${theme.palette.accent2.main})`,
+              mr: 1
+            }}>
+              &lt;&gt;
+            </Box>
+            <Box component="span" sx={{ 
+              color: theme.palette.primary.main,
+              textShadow: `
+                0 0 5px ${theme.palette.primary.main}60,
+                0 0 10px ${theme.palette.primary.main}40
+              `,
+              filter: `drop-shadow(0 0 3px ${theme.palette.primary.main})`,
+            }}>
+              HSAENZ
+            </Box>
+          </Typography>
+          
+          {/* Subtitle with right alignment to match the image */}
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: 0.6,
+            mt: -0.5,
+            pr: 0.5,
+          }}>
+            <VideogameAssetIcon sx={{ 
+              fontSize: '0.9rem', 
+              color: theme.palette.accent3.main,
+              filter: `drop-shadow(0 0 3px ${theme.palette.accent3.main}70)`,
+            }} />
+            <Typography 
+              component="div" 
+              sx={{ 
                 fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                fontSize: '0.6rem'
+                fontSize: '0.65rem',
+                letterSpacing: '0.1em',
+                color: theme.palette.accent3.main,
+                textShadow: `0 0 3px ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}`,
               }}
             >
-              PLAYER 1
+              DEV QUEST
             </Typography>
           </Box>
         </Box>
@@ -160,7 +164,9 @@ export const SideNav = () => {
             fontSize: '0.7rem',
             color: theme.palette.text.secondary,
             mb: 1,
-            pl: 2
+            pl: 2,
+            textShadow: `0 0 2px ${theme.palette.text.secondary}70`,
+            filter: `drop-shadow(0 0 1px ${theme.palette.text.secondary})`
           }}
         >
           MAIN QUESTS
@@ -222,144 +228,224 @@ export const SideNav = () => {
             ))}
           </List>
         </Box>
+        
+        {/* Divider between sections */}
+        <Box 
+          sx={{ 
+            borderTop: `2px solid ${theme.palette.divider}`,
+            my: 3,
+            mx: 0
+          }}
+        />
+        
+        {/* Contact Section */}
+        <Box sx={{ 
+          mt: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 1.5,
+        }}>
+          <Typography 
+            variant="subtitle2" 
+            sx={{ 
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: '0.7rem',
+              color: theme.palette.text.secondary,
+              mb: 0.5,
+              alignSelf: 'flex-start',
+              pl: 2,
+              textShadow: `0 0 2px ${theme.palette.text.secondary}70`,
+              filter: `drop-shadow(0 0 1px ${theme.palette.text.secondary})`
+            }}
+          >
+            CONTACT
+          </Typography>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+            <Tooltip title="Email">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <IconButton 
+                  component="a" 
+                  href="mailto:hello@hsaenz.dev" 
+                  target="_blank"
+                  sx={{ 
+                    backgroundColor: theme.palette.primary.main,
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: theme.palette.primary.dark,
+                    },
+                    width: 36,
+                    height: 36,
+                  }}
+                >
+                  <EmailIcon fontSize="small" />
+                </IconButton>
+              </motion.div>
+            </Tooltip>
+            
+            <Tooltip title="GitHub">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <IconButton 
+                  component="a" 
+                  href="https://github.com/hsaenzdev" 
+                  target="_blank" 
+                  sx={{ 
+                    backgroundColor: theme.palette.accent1.main,
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: theme.palette.accent1.dark,
+                    },
+                    width: 36,
+                    height: 36,
+                  }}
+                >
+                  <GitHubIcon fontSize="small" />
+                </IconButton>
+              </motion.div>
+            </Tooltip>
+            
+            <Tooltip title="LinkedIn">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <IconButton 
+                  component="a" 
+                  href="https://www.linkedin.com/in/saenzo" 
+                  target="_blank" 
+                  sx={{ 
+                    backgroundColor: theme.palette.accent2.main,
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: theme.palette.accent2.dark,
+                    },
+                    width: 36,
+                    height: 36,
+                  }}
+                >
+                  <LinkedInIcon fontSize="small" />
+                </IconButton>
+              </motion.div>
+            </Tooltip>
+            
+            <Tooltip title="Twitter">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <IconButton 
+                  component="a" 
+                  href="https://twitter.com" 
+                  target="_blank" 
+                  sx={{ 
+                    backgroundColor: theme.palette.accent3.main,
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: theme.palette.accent3.dark,
+                    },
+                    width: 36,
+                    height: 36,
+                  }}
+                >
+                  <TwitterIcon fontSize="small" />
+                </IconButton>
+              </motion.div>
+            </Tooltip>
+          </Box>
+        </Box>
+        
+        {/* Divider between contact and resume */}
+        <Box 
+          sx={{ 
+            borderTop: `2px solid ${theme.palette.divider}`,
+            my: 3,
+            mx: 0
+          }}
+        />
+        
+        {/* Resume Section */}
+        <Box sx={{ 
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 1.5,
+        }}>
+          <Typography 
+            variant="subtitle2" 
+            sx={{ 
+              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: '0.7rem',
+              color: theme.palette.text.secondary,
+              mb: 0.5,
+              alignSelf: 'flex-start',
+              pl: 2,
+              textShadow: `0 0 2px ${theme.palette.text.secondary}70`,
+              filter: `drop-shadow(0 0 1px ${theme.palette.text.secondary})`
+            }}
+          >
+            RESUME
+          </Typography>
+          
+          <motion.div 
+            whileHover={{ scale: 1.05 }} 
+            whileTap={{ scale: 0.95 }}
+            style={{ width: '100%' }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              startIcon={<DownloadIcon />}
+              component="a"
+              href="/hsaenz-portfolio/assets/hsaenzresume.pdf"
+              download
+              sx={{ 
+                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize: '0.6rem',
+                py: 1,
+                textTransform: 'uppercase',
+                boxShadow: `0 4px 0 ${theme.palette.primary.dark}`,
+                '&:hover': {
+                  boxShadow: `0 2px 0 ${theme.palette.primary.dark}`,
+                  transform: 'translateY(2px)',
+                }
+              }}
+            >
+              Download CV
+            </Button>
+          </motion.div>
+        </Box>
       </Box>
       
-      {/* Footer with Contact Links */}
+      {/* Theme Toggle Bottom Section */}
       <Box 
         sx={{ 
           p: 2,
           borderTop: `2px solid ${theme.palette.divider}`,
           display: 'flex',
-          flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
-          gap: 1.5
+          gap: 1,
+          mt: 'auto',
         }}
       >
-        <Typography 
-          variant="subtitle2" 
-          sx={{ 
+        <Typography
+          variant="caption"
+          sx={{
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.7rem',
+            fontSize: '0.5rem',
             color: theme.palette.text.secondary,
-            mb: 0.5
           }}
         >
-          CONTACT
+          {mode === 'dark' ? 'LIGHT' : 'DARK'} MODE
         </Typography>
-        
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Tooltip title="Email">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="mailto:hello@hsaenz.dev" 
-                target="_blank"
-                sx={{ 
-                  backgroundColor: theme.palette.primary.main,
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.dark,
-                  },
-                  width: 36,
-                  height: 36,
-                }}
-              >
-                <EmailIcon fontSize="small" />
-              </IconButton>
-            </motion.div>
-          </Tooltip>
-          
-          <Tooltip title="GitHub">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="https://github.com/hsaenzdev" 
-                target="_blank" 
-                sx={{ 
-                  backgroundColor: theme.palette.accent1.main,
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: theme.palette.accent1.dark,
-                  },
-                  width: 36,
-                  height: 36,
-                }}
-              >
-                <GitHubIcon fontSize="small" />
-              </IconButton>
-            </motion.div>
-          </Tooltip>
-          
-          <Tooltip title="LinkedIn">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="https://www.linkedin.com/in/saenzo" 
-                target="_blank" 
-                sx={{ 
-                  backgroundColor: theme.palette.accent2.main,
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: theme.palette.accent2.dark,
-                  },
-                  width: 36,
-                  height: 36,
-                }}
-              >
-                <LinkedInIcon fontSize="small" />
-              </IconButton>
-            </motion.div>
-          </Tooltip>
-          
-          <Tooltip title="Twitter">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <IconButton 
-                component="a" 
-                href="https://twitter.com" 
-                target="_blank" 
-                sx={{ 
-                  backgroundColor: theme.palette.accent3.main,
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: theme.palette.accent3.dark,
-                  },
-                  width: 36,
-                  height: 36,
-                }}
-              >
-                <TwitterIcon fontSize="small" />
-              </IconButton>
-            </motion.div>
-          </Tooltip>
-        </Box>
-        
-        <motion.div 
-          whileHover={{ scale: 1.05 }} 
-          whileTap={{ scale: 0.95 }}
-          style={{ width: '100%', marginTop: '8px' }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            startIcon={<DownloadIcon />}
-            component="a"
-            href="/hsaenz-portfolio/assets/hsaenzresume.pdf"
-            download
+        <motion.div whileTap={{ scale: 0.9 }}>
+          <IconButton 
+            onClick={toggleTheme} 
+            size="small"
+            color="inherit"
             sx={{ 
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.6rem',
-              py: 1,
-              textTransform: 'uppercase',
-              boxShadow: `0 4px 0 ${theme.palette.primary.dark}`,
-              '&:hover': {
-                boxShadow: `0 2px 0 ${theme.palette.primary.dark}`,
-                transform: 'translateY(2px)',
-              }
+              border: `2px solid ${theme.palette.mode === 'dark' ? theme.palette.accent1.main : theme.palette.accent2.main}`,
+              p: 0.5
             }}
           >
-            Download CV
-          </Button>
+            {mode === 'dark' ? <Brightness7Icon fontSize="small" /> : <Brightness4Icon fontSize="small" />}
+          </IconButton>
         </motion.div>
       </Box>
     </Paper>
