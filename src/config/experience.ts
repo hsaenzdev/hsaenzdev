@@ -1,9 +1,6 @@
 import WorkIcon from '@mui/icons-material/Work';
 import SchoolIcon from '@mui/icons-material/School';
-import CodeIcon from '@mui/icons-material/Code';
 import CloudIcon from '@mui/icons-material/Cloud';
-import StorageIcon from '@mui/icons-material/Storage';
-import PeopleIcon from '@mui/icons-material/People';
 
 export interface ExperienceItem {
   id: string;
