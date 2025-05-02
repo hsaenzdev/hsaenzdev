@@ -4,7 +4,6 @@ import { SideNav } from "../components/SideNav";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { InputFocusHandler } from "../components/InputFocusHandler";
 import { GameScoreDisplay } from "../components/GameScoreDisplay";
-import { EasterEggHint } from "../components/EasterEggHint";
 import { useGameContext } from "../context/GameContext";
 import { useEffect } from "react";
 
@@ -35,9 +34,6 @@ export const Portfolio = () => {
       
       {/* Display score when game is active */}
       <GameScoreDisplay />
-      
-      {/* Subtle hint about the easter egg */}
-      <EasterEggHint />
       
       <SideNav />
       

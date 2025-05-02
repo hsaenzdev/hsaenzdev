@@ -2,8 +2,8 @@ import { Box, Typography, useTheme, alpha } from "@mui/material";
 import { motion } from "framer-motion";
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import BuildIcon from '@mui/icons-material/Build';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import SchoolIcon from '@mui/icons-material/School';
+import CodeIcon from '@mui/icons-material/Code';
+import StorageIcon from '@mui/icons-material/Storage';
 
 export const DevStatsSection = () => {
   const theme = useTheme();
@@ -25,18 +25,18 @@ export const DevStatsSection = () => {
       color: theme.palette.primary.main,
     },
     { 
-      icon: <PsychologyIcon />, 
-      label: "Problem Solving", 
-      value: "MASTER", 
-      unit: "", 
+      icon: <CodeIcon />, 
+      label: "Languages", 
+      value: "5+", 
+      unit: "TECH", 
       color: "#00F5D4",
     },
     { 
-      icon: <SchoolIcon />, 
-      label: "Adaptability", 
-      value: "EXPERT", 
-      unit: "", 
-      color: theme.palette.error.main, // Different color for distinction
+      icon: <StorageIcon />, 
+      label: "Databases", 
+      value: "4+", 
+      unit: "TYPES", 
+      color: theme.palette.error.main,
     },
   ];
 
