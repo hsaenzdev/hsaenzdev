@@ -8,15 +8,11 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import DownloadIcon from '@mui/icons-material/Download';
-import GamepadIcon from '@mui/icons-material/Gamepad';
-import CasinoIcon from '@mui/icons-material/Casino';
-import SportsEsportsOutlinedIcon from '@mui/icons-material/SportsEsportsOutlined';
 import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
 
