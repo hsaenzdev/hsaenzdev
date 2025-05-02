@@ -5,8 +5,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import WorkIcon from '@mui/icons-material/Work';
 import CodeIcon from '@mui/icons-material/Code';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -15,6 +13,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import DownloadIcon from '@mui/icons-material/Download';
 import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
+import { ThemeToggle } from "./ThemeToggle";
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/hsaenz-portfolio' },
@@ -25,7 +24,7 @@ const menuItems = [
 
 export const SideNav = () => {
   const location = useLocation();
-  const { mode, toggleTheme } = useThemeContext();
+  const { mode } = useThemeContext();
   const theme = useTheme();
   
   // Animate active menu item
@@ -151,18 +150,17 @@ export const SideNav = () => {
         </Box>
       </Box>
       
-      {/* Menu */}
-      <Box sx={{ p: 2, flex: 1, overflowY: 'auto' }}>
+      {/* MAIN QUESTS Section */}
+      <Box sx={{ px: 2, py: 3 }}>
         <Typography
           variant="subtitle2"
           sx={{
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
             fontSize: '0.7rem',
-            color: theme.palette.text.secondary,
+            color: '#00BFFF',
             mb: 1,
             pl: 2,
-            textShadow: `0 0 2px ${theme.palette.text.secondary}70`,
-            filter: `drop-shadow(0 0 1px ${theme.palette.text.secondary})`
+            letterSpacing: '0.1em'
           }}
         >
           MAIN QUESTS
@@ -224,187 +222,167 @@ export const SideNav = () => {
             ))}
           </List>
         </Box>
-        
-        {/* Divider between sections */}
-        <Box 
+      </Box>
+      
+      {/* Divider after MAIN QUESTS */}
+      <Box 
+        sx={{ 
+          borderBottom: `2px solid ${theme.palette.divider}`,
+        }}
+      />
+      
+      {/* RESUME Section */}
+      <Box sx={{ px: 2, py: 3 }}>
+        <Typography 
+          variant="subtitle2" 
           sx={{ 
-            borderTop: `2px solid ${theme.palette.divider}`,
-            my: 3,
-            mx: 0
+            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+            fontSize: '0.7rem',
+            color: theme.palette.accent1.main,
+            mb: 1.5,
+            pl: 2,
+            letterSpacing: '0.1em'
           }}
-        />
+        >
+          RESUME
+        </Typography>
         
-        {/* Contact Section */}
-        <Box sx={{ 
-          mt: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 1.5,
-        }}>
-          <Typography 
-            variant="subtitle2" 
+        <motion.div 
+          whileHover={{ scale: 1.05 }} 
+          whileTap={{ scale: 0.95 }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            startIcon={<DownloadIcon />}
+            component="a"
+            href="/hsaenz-portfolio/assets/hsaenzresume.pdf"
+            download
             sx={{ 
               fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.7rem',
-              color: theme.palette.text.secondary,
-              mb: 0.5,
-              alignSelf: 'flex-start',
-              pl: 2,
-              textShadow: `0 0 2px ${theme.palette.text.secondary}70`,
-              filter: `drop-shadow(0 0 1px ${theme.palette.text.secondary})`
+              fontSize: '0.6rem',
+              py: 1,
+              textTransform: 'uppercase',
+              boxShadow: `0 4px 0 ${theme.palette.primary.dark}`,
+              '&:hover': {
+                boxShadow: `0 2px 0 ${theme.palette.primary.dark}`,
+                transform: 'translateY(2px)',
+              }
             }}
           >
-            CONTACT
-          </Typography>
-          
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-            <Tooltip title="Email">
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <IconButton 
-                  component="a" 
-                  href="mailto:hello@hsaenz.dev" 
-                  target="_blank"
-                  sx={{ 
-                    backgroundColor: theme.palette.primary.main,
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: theme.palette.primary.dark,
-                    },
-                    width: 36,
-                    height: 36,
-                  }}
-                >
-                  <EmailIcon fontSize="small" />
-                </IconButton>
-              </motion.div>
-            </Tooltip>
-            
-            <Tooltip title="GitHub">
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <IconButton 
-                  component="a" 
-                  href="https://github.com/hsaenzdev" 
-                  target="_blank" 
-                  sx={{ 
-                    backgroundColor: theme.palette.accent1.main,
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: theme.palette.accent1.dark,
-                    },
-                    width: 36,
-                    height: 36,
-                  }}
-                >
-                  <GitHubIcon fontSize="small" />
-                </IconButton>
-              </motion.div>
-            </Tooltip>
-            
-            <Tooltip title="LinkedIn">
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <IconButton 
-                  component="a" 
-                  href="https://www.linkedin.com/in/saenzo" 
-                  target="_blank" 
-                  sx={{ 
-                    backgroundColor: theme.palette.accent2.main,
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: theme.palette.accent2.dark,
-                    },
-                    width: 36,
-                    height: 36,
-                  }}
-                >
-                  <LinkedInIcon fontSize="small" />
-                </IconButton>
-              </motion.div>
-            </Tooltip>
-            
-            <Tooltip title="Twitter">
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <IconButton 
-                  component="a" 
-                  href="https://twitter.com" 
-                  target="_blank" 
-                  sx={{ 
-                    backgroundColor: theme.palette.accent3.main,
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: theme.palette.accent3.dark,
-                    },
-                    width: 36,
-                    height: 36,
-                  }}
-                >
-                  <TwitterIcon fontSize="small" />
-                </IconButton>
-              </motion.div>
-            </Tooltip>
-          </Box>
-        </Box>
-        
-        {/* Divider between contact and resume */}
-        <Box 
+            Download CV
+          </Button>
+        </motion.div>
+      </Box>
+      
+      {/* Divider after RESUME */}
+      <Box 
+        sx={{ 
+          borderBottom: `2px solid ${theme.palette.divider}`,
+        }}
+      />
+      
+      {/* CONTACT Section */}
+      <Box sx={{ px: 2, py: 3, flex: 1 }}>
+        <Typography 
+          variant="subtitle2" 
           sx={{ 
-            borderTop: `2px solid ${theme.palette.divider}`,
-            my: 3,
-            mx: 0
+            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+            fontSize: '0.7rem',
+            color: theme.palette.accent3.main,
+            mb: 1.5,
+            pl: 2,
+            letterSpacing: '0.1em'
           }}
-        />
+        >
+          CONTACT
+        </Typography>
         
-        {/* Resume Section */}
-        <Box sx={{ 
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 1.5,
-        }}>
-          <Typography 
-            variant="subtitle2" 
-            sx={{ 
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.7rem',
-              color: theme.palette.text.secondary,
-              mb: 0.5,
-              alignSelf: 'flex-start',
-              pl: 2,
-              textShadow: `0 0 2px ${theme.palette.text.secondary}70`,
-              filter: `drop-shadow(0 0 1px ${theme.palette.text.secondary})`
-            }}
-          >
-            RESUME
-          </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+          <Tooltip title="Email">
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <IconButton 
+                component="a" 
+                href="mailto:hello@hsaenz.dev" 
+                target="_blank"
+                sx={{ 
+                  backgroundColor: theme.palette.primary.main,
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: theme.palette.primary.dark,
+                  },
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <EmailIcon fontSize="small" />
+              </IconButton>
+            </motion.div>
+          </Tooltip>
           
-          <motion.div 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }}
-            style={{ width: '100%' }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              startIcon={<DownloadIcon />}
-              component="a"
-              href="/hsaenz-portfolio/assets/hsaenzresume.pdf"
-              download
-              sx={{ 
-                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                fontSize: '0.6rem',
-                py: 1,
-                textTransform: 'uppercase',
-                boxShadow: `0 4px 0 ${theme.palette.primary.dark}`,
-                '&:hover': {
-                  boxShadow: `0 2px 0 ${theme.palette.primary.dark}`,
-                  transform: 'translateY(2px)',
-                }
-              }}
-            >
-              Download CV
-            </Button>
-          </motion.div>
+          <Tooltip title="GitHub">
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <IconButton 
+                component="a" 
+                href="https://github.com/hsaenzdev" 
+                target="_blank" 
+                sx={{ 
+                  backgroundColor: theme.palette.accent1.main,
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: theme.palette.accent1.dark,
+                  },
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <GitHubIcon fontSize="small" />
+              </IconButton>
+            </motion.div>
+          </Tooltip>
+          
+          <Tooltip title="LinkedIn">
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <IconButton 
+                component="a" 
+                href="https://www.linkedin.com/in/saenzo" 
+                target="_blank" 
+                sx={{ 
+                  backgroundColor: theme.palette.accent2.main,
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: theme.palette.accent2.dark,
+                  },
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <LinkedInIcon fontSize="small" />
+              </IconButton>
+            </motion.div>
+          </Tooltip>
+          
+          <Tooltip title="Twitter">
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <IconButton 
+                component="a" 
+                href="https://twitter.com" 
+                target="_blank" 
+                sx={{ 
+                  backgroundColor: theme.palette.accent3.main,
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: theme.palette.accent3.dark,
+                  },
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <TwitterIcon fontSize="small" />
+              </IconButton>
+            </motion.div>
+          </Tooltip>
         </Box>
       </Box>
       
@@ -416,33 +394,22 @@ export const SideNav = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: 1,
-          mt: 'auto',
+          gap: 1.5,
         }}
       >
         <Typography
           variant="caption"
           sx={{
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.5rem',
-            color: theme.palette.text.secondary,
+            fontSize: '0.7rem',
+            color: mode === 'dark' ? theme.palette.accent1.main : theme.palette.accent2.main,
+            letterSpacing: '0.05em',
           }}
         >
           {mode === 'dark' ? 'LIGHT' : 'DARK'} MODE
         </Typography>
-        <motion.div whileTap={{ scale: 0.9 }}>
-          <IconButton 
-            onClick={toggleTheme} 
-            size="small"
-            color="inherit"
-            sx={{ 
-              border: `2px solid ${theme.palette.mode === 'dark' ? theme.palette.accent1.main : theme.palette.accent2.main}`,
-              p: 0.5
-            }}
-          >
-            {mode === 'dark' ? <Brightness7Icon fontSize="small" /> : <Brightness4Icon fontSize="small" />}
-          </IconButton>
-        </motion.div>
+        
+        <ThemeToggle />
       </Box>
     </Paper>
   );
