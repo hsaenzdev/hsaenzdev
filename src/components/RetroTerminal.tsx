@@ -274,7 +274,6 @@ export const RetroTerminal = ({
     help: "Display available commands",
     skills: "View my technical skills",
     clear: "Clear the terminal",
-    about: "Learn about me",
     contact: "Get my contact information",
     projects: "View my recent projects",
     github: "Visit my GitHub profile",
@@ -378,10 +377,6 @@ export const RetroTerminal = ({
       case 'clear':
         // Just reset to menu state
         setCurrentState('menu');
-        break;
-      case 'about':
-        setCommandHistory(prev => [...prev, "> I'm a passionate full-stack developer with a love for creating beautiful, functional web applications."]);
-        setCommandHistory(prev => [...prev, "> I specialize in React, TypeScript, and modern web technologies."]);
         break;
       case 'contact':
         setCommandHistory(prev => [...prev, "> Email: contact@hectorsaenz.dev"]);
