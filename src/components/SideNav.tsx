@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, IconButton, Paper, useTheme, Button, Tooltip } from "@mui/material";
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Paper, useTheme } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import HomeIcon from '@mui/icons-material/Home';
@@ -8,10 +8,7 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import GamepadIcon from '@mui/icons-material/Gamepad';
 import DownloadIcon from '@mui/icons-material/Download';
-import ArticleIcon from '@mui/icons-material/Article';
 import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
 
