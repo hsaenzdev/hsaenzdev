@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Typography, Grid, Paper, useTheme, Chip, alpha, Tooltip } from '@mui/material';
+import { Box, Typography, Grid, Paper, useTheme, Chip, alpha } from '@mui/material';
 import { motion } from 'framer-motion';
 import { GlowingText } from '../../components/GlowingText';
 
@@ -16,55 +16,124 @@ import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import LanguageIcon from '@mui/icons-material/Language';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import StarRateIcon from '@mui/icons-material/StarRate';
+import WebIcon from '@mui/icons-material/Web';
+import ApiIcon from '@mui/icons-material/Api';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
+import DevicesIcon from '@mui/icons-material/Devices';
+import DnsIcon from '@mui/icons-material/Dns';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import CalendarViewWeekIcon from '@mui/icons-material/CalendarViewWeek';
+import BrushIcon from '@mui/icons-material/Brush';
+import BuildIcon from '@mui/icons-material/Build';
+import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
 interface Skill {
   name: string;
   startYear: number;
   years: number;
+  projects: number;
   icon?: React.ReactNode;
+  description?: string;
 }
 
 export const Skills = () => {
   const theme = useTheme();
   const currentYear = new Date().getFullYear();
   
+  // Custom vibrant colors for skill categories
+  const customColors = {
+    frontendColor: '#9B5DE5', // Vibrant purple
+    backendColor: '#00F5D4', // Bright teal
+    databaseColor: '#FFD23F', // Gold
+    devopsColor: '#0496FF', // Azure blue
+    softColor: '#FB5607' // Vibrant orange (changed from green)
+  };
+  
   // Skills categorized by type
   const [skills] = useState({
     frontend: [
-      { name: 'JavaScript/TypeScript', startYear: 2012, years: currentYear - 2012, icon: <JavascriptIcon /> },
-      { name: 'React', startYear: 2016, years: currentYear - 2016, icon: <CodeIcon /> },
-      { name: 'Material UI', startYear: 2018, years: currentYear - 2018, icon: <DataObjectIcon /> },
-      { name: 'Vue.js', startYear: 2017, years: currentYear - 2017, icon: <LanguageIcon /> },
-      { name: 'GraphQL', startYear: 2018, years: currentYear - 2018, icon: <DataObjectIcon /> }
+      { name: 'JavaScript/TypeScript', startYear: 2012, years: currentYear - 2012, projects: 25, icon: <JavascriptIcon /> },
+      { name: 'React', startYear: 2016, years: currentYear - 2016, projects: 18, icon: <WebIcon /> },
+      { name: 'Material UI', startYear: 2018, years: currentYear - 2018, projects: 12, icon: <DevicesIcon /> },
+      { name: 'Vue.js', startYear: 2017, years: currentYear - 2017, projects: 8, icon: <LanguageIcon /> },
+      { name: 'GraphQL', startYear: 2018, years: currentYear - 2018, projects: 6, icon: <ApiIcon /> }
     ],
     backend: [
-      { name: 'Node.js', startYear: 2014, years: currentYear - 2014, icon: <TerminalIcon /> },
-      { name: 'Express.js', startYear: 2015, years: currentYear - 2015, icon: <DataObjectIcon /> },
-      { name: 'Elixir/Phoenix', startYear: 2019, years: currentYear - 2019, icon: <AutoAwesomeIcon /> },
-      { name: 'PHP', startYear: 2010, years: currentYear - 2010, icon: <PhpIcon /> },
-      { name: 'C#', startYear: 2014, years: currentYear - 2014, icon: <CodeIcon /> },
-      { name: 'Python', startYear: 2016, years: currentYear - 2016, icon: <CodeIcon /> }
+      { name: 'Node.js', startYear: 2014, years: currentYear - 2014, projects: 20, icon: <TerminalIcon /> },
+      { name: 'Express.js', startYear: 2015, years: currentYear - 2015, projects: 15, icon: <DataObjectIcon /> },
+      { name: 'Elixir/Phoenix', startYear: 2019, years: currentYear - 2019, projects: 4, icon: <AutoAwesomeIcon /> },
+      { name: 'PHP', startYear: 2010, years: currentYear - 2010, projects: 30, icon: <PhpIcon /> },
+      { name: 'C#', startYear: 2014, years: currentYear - 2014, projects: 10, icon: <CodeIcon /> },
+      { name: 'Python', startYear: 2016, years: currentYear - 2016, projects: 12, icon: <DesignServicesIcon /> }
     ],
     database: [
-      { name: 'PostgreSQL', startYear: 2015, years: currentYear - 2015, icon: <StorageIcon /> },
-      { name: 'Snowflake', startYear: 2020, years: currentYear - 2020, icon: <StorageRoundedIcon /> },
-      { name: 'ClickHouse', startYear: 2021, years: currentYear - 2021, icon: <StorageRoundedIcon /> },
-      { name: 'SQL/NoSQL', startYear: 2012, years: currentYear - 2012, icon: <StorageIcon /> }
+      { name: 'PostgreSQL', startYear: 2015, years: currentYear - 2015, projects: 14, icon: <StorageIcon /> },
+      { name: 'Snowflake', startYear: 2020, years: currentYear - 2020, projects: 3, icon: <StorageRoundedIcon /> },
+      { name: 'ClickHouse', startYear: 2021, years: currentYear - 2021, projects: 2, icon: <DnsIcon /> },
+      { name: 'SQL/NoSQL', startYear: 2012, years: currentYear - 2012, projects: 22, icon: <CalendarViewWeekIcon /> }
     ],
     devops: [
-      { name: 'AWS', startYear: 2018, years: currentYear - 2018, icon: <CloudIcon /> },
-      { name: 'Docker', startYear: 2017, years: currentYear - 2017, icon: <CloudIcon /> },
-      { name: 'Git (GitLab CI/CD)', startYear: 2014, years: currentYear - 2014, icon: <CodeIcon /> },
-      { name: 'Linux', startYear: 2012, years: currentYear - 2012, icon: <TerminalIcon /> },
-      { name: 'Jira', startYear: 2016, years: currentYear - 2016, icon: <CodeIcon /> },
-      { name: 'LaunchDarkly', startYear: 2021, years: currentYear - 2021, icon: <AutoAwesomeIcon /> }
+      { name: 'AWS', startYear: 2018, years: currentYear - 2018, projects: 10, icon: <CloudIcon /> },
+      { name: 'Docker', startYear: 2017, years: currentYear - 2017, projects: 8, icon: <WebIcon /> },
+      { name: 'Git (GitLab CI/CD)', startYear: 2014, years: currentYear - 2014, projects: 30, icon: <GitHubIcon /> },
+      { name: 'Linux', startYear: 2012, years: currentYear - 2012, projects: 25, icon: <TerminalIcon /> },
+      { name: 'Jira', startYear: 2016, years: currentYear - 2016, projects: 15, icon: <DeveloperModeIcon /> },
+      { name: 'LaunchDarkly', startYear: 2021, years: currentYear - 2021, projects: 4, icon: <ApiIcon /> }
     ],
     soft: [
-      { name: 'Team Collaboration', startYear: 2010, years: currentYear - 2010, icon: <EmojiPeopleIcon /> },
-      { name: 'Problem Solving', startYear: 2010, years: currentYear - 2010, icon: <AutoAwesomeIcon /> },
-      { name: 'Communication', startYear: 2010, years: currentYear - 2010, icon: <EmojiPeopleIcon /> },
-      { name: 'Adaptability', startYear: 2010, years: currentYear - 2010, icon: <AutoAwesomeIcon /> },
-      { name: 'Attention to Detail', startYear: 2010, years: currentYear - 2010, icon: <StarRateIcon /> }
+      { 
+        name: 'Team Collaboration', 
+        startYear: 2010, 
+        years: currentYear - 2010, 
+        projects: 40, 
+        icon: <HandshakeIcon />,
+        description: 'Party member synergy +100. Works well in multiplayer mode!'
+      },
+      { 
+        name: 'Problem Solving', 
+        startYear: 2010, 
+        years: currentYear - 2010, 
+        projects: 50, 
+        icon: <PsychologyIcon />,
+        description: 'Can solve puzzles and defeat boss bugs with strategic thinking'
+      },
+      { 
+        name: 'Communication', 
+        startYear: 2010, 
+        years: currentYear - 2010, 
+        projects: 45, 
+        icon: <RecordVoiceOverIcon />,
+        description: 'High charisma stat! Explains complex concepts in simple terms'
+      },
+      { 
+        name: 'Adaptability', 
+        startYear: 2010, 
+        years: currentYear - 2010, 
+        projects: 35, 
+        icon: <AutoFixHighIcon />,
+        description: 'Quick to master new environments and tech skill trees'
+      },
+      { 
+        name: 'Attention to Detail', 
+        startYear: 2010, 
+        years: currentYear - 2010, 
+        projects: 48, 
+        icon: <StarRateIcon />,
+        description: 'Eagle-eyed bug hunter with +10 precision stat'
+      },
+      { 
+        name: 'Creativity', 
+        startYear: 2010, 
+        years: currentYear - 2010, 
+        projects: 30, 
+        icon: <BrushIcon />,
+        description: 'Thinks outside the inventory box for innovative solutions'
+      }
     ]
   });
 
@@ -91,7 +160,7 @@ export const Skills = () => {
 
   // Category icons and animations
   const categoryIcons = {
-    frontend: <CodeIcon fontSize="large" />,
+    frontend: <WebIcon fontSize="large" />,
     backend: <TerminalIcon fontSize="large" />,
     database: <StorageIcon fontSize="large" />,
     devops: <CloudIcon fontSize="large" />,
@@ -103,11 +172,11 @@ export const Skills = () => {
     // Determine color based on category
     const getColor = () => {
       switch(category) {
-        case 'frontend': return theme.palette.primary.main;
-        case 'backend': return theme.palette.secondary.main;
-        case 'database': return theme.palette.accent1.main;
-        case 'devops': return theme.palette.accent2.main;
-        default: return theme.palette.accent3.main;
+        case 'frontend': return customColors.frontendColor;
+        case 'backend': return customColors.backendColor;
+        case 'database': return customColors.databaseColor;
+        case 'devops': return customColors.devopsColor;
+        default: return customColors.softColor;
       }
     };
 
@@ -122,18 +191,19 @@ export const Skills = () => {
             sx={{
               p: 2,
               height: '100%',
-              border: `2px solid ${alpha(color, 0.5)}`,
+              border: `2px solid ${alpha(color, 0.7)}`,
+              borderImageSlice: '2',
+              borderImageWidth: '2px',
               background: alpha(color, 0.05),
               backdropFilter: 'blur(8px)',
               position: 'relative',
               overflow: 'hidden',
               transition: 'all 0.3s',
-              boxShadow: `${glowIntensity} ${alpha(color, 0.15)}`,
-              transform: 'translateY(-3px)',
+              boxShadow: `${glowIntensity} ${alpha(color, 0.2)}`,
               '&:hover': {
                 transform: 'translateY(-5px) scale(1.02)',
                 boxShadow: `${glowIntensity} ${alpha(color, 0.3)}`,
-                border: `2px solid ${alpha(color, 0.7)}`,
+                border: `2px solid ${alpha(color, 0.9)}`,
               },
               '&::after': {
                 content: '""',
@@ -142,16 +212,17 @@ export const Skills = () => {
                 left: 0,
                 width: '100%',
                 height: '5px',
-                background: `linear-gradient(90deg, ${alpha(color, 0.8)}, ${alpha(color, 0.4)})`,
+                background: `linear-gradient(90deg, ${alpha(color, 0.9)}, ${alpha(color, 0.5)})`,
               }
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Box 
                 sx={{ 
                   mr: 1.5, 
                   color: color,
-                  filter: `drop-shadow(0 0 3px ${alpha(color, 0.7)})`
+                  filter: `drop-shadow(0 0 5px ${alpha(color, 0.8)})`,
+                  transform: 'scale(1.2)'
                 }}
               >
                 {skill.icon}
@@ -161,7 +232,7 @@ export const Skills = () => {
                   fontFamily: '"Press Start 2P", cursive',
                   fontSize: '0.85rem',
                   color: color,
-                  textShadow: `0 0 5px ${alpha(color, 0.5)}`,
+                  textShadow: `0 0 7px ${alpha(color, 0.6)}`,
                   flexGrow: 1
                 }}
               >
@@ -169,38 +240,188 @@ export const Skills = () => {
               </Typography>
             </Box>
             
-            <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap' }}>
-              <Tooltip title="Years of experience" arrow>
-                <Chip 
-                  size="small"
-                  icon={<StarRateIcon sx={{ fontSize: '0.7rem !important', color: color }} />}
-                  label={`${skill.years}+ YRS`}
-                  sx={{
+            {/* For character traits (soft skills), don't show the stats */}
+            {category !== 'soft' && (
+              <Box 
+                sx={{ 
+                  mt: 2, 
+                  border: `1px solid ${alpha(color, 0.4)}`,
+                  borderRadius: '4px',
+                  backdropFilter: 'blur(5px)',
+                  background: alpha(color, 0.05),
+                  overflow: 'hidden',
+                  boxShadow: `inset 0 0 10px ${alpha(color, 0.2)}`
+                }}
+              >
+                {/* Stat 1: Experience */}
+                <Box 
+                  sx={{ 
+                    display: 'flex',
+                    alignItems: 'center',
+                    p: 0.8,
+                    gap: 1,
+                    borderBottom: `1px dashed ${alpha(color, 0.3)}`,
+                    '&:hover': {
+                      background: alpha(color, 0.1)
+                    }
+                  }}
+                >
+                  <StarRateIcon 
+                    sx={{ 
+                      fontSize: '0.8rem', 
+                      color: color,
+                      filter: `drop-shadow(0 0 3px ${alpha(color, 0.7)})`
+                    }} 
+                  />
+                  <Typography 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", cursive',
+                      fontSize: '0.5rem',
+                      color: alpha(color, 0.9),
+                      textShadow: `0 0 3px ${alpha(color, 0.3)}`,
+                      flexGrow: 1,
+                      letterSpacing: '-0.5px'
+                    }}
+                  >
+                    EXP
+                  </Typography>
+                  <Typography 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", cursive',
+                      fontSize: '0.5rem',
+                      color: alpha(theme.palette.common.white, 0.9),
+                      textShadow: `0 0 4px ${alpha(color, 0.6)}`,
+                      letterSpacing: '-0.5px'
+                    }}
+                  >
+                    {skill.years}+ YRS
+                  </Typography>
+                </Box>
+
+                {/* Stat 2: Level Up */}
+                <Box 
+                  sx={{ 
+                    display: 'flex',
+                    alignItems: 'center',
+                    p: 0.8,
+                    gap: 1,
+                    borderBottom: `1px dashed ${alpha(color, 0.3)}`,
+                    '&:hover': {
+                      background: alpha(color, 0.1)
+                    }
+                  }}
+                >
+                  <EventNoteIcon 
+                    sx={{ 
+                      fontSize: '0.8rem', 
+                      color: color,
+                      filter: `drop-shadow(0 0 3px ${alpha(color, 0.7)})`
+                    }} 
+                  />
+                  <Typography 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", cursive',
+                      fontSize: '0.5rem',
+                      color: alpha(color, 0.9),
+                      textShadow: `0 0 3px ${alpha(color, 0.3)}`,
+                      flexGrow: 1,
+                      letterSpacing: '-0.5px'
+                    }}
+                  >
+                    SINCE
+                  </Typography>
+                  <Typography 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", cursive',
+                      fontSize: '0.5rem',
+                      color: alpha(theme.palette.common.white, 0.9),
+                      textShadow: `0 0 4px ${alpha(color, 0.6)}`,
+                      letterSpacing: '-0.5px'
+                    }}
+                  >
+                    {skill.startYear}
+                  </Typography>
+                </Box>
+
+                {/* Stat 3: Projects */}
+                <Box 
+                  sx={{ 
+                    display: 'flex',
+                    alignItems: 'center',
+                    p: 0.8,
+                    gap: 1,
+                    '&:hover': {
+                      background: alpha(color, 0.1)
+                    }
+                  }}
+                >
+                  <BuildIcon 
+                    sx={{ 
+                      fontSize: '0.8rem', 
+                      color: color,
+                      filter: `drop-shadow(0 0 3px ${alpha(color, 0.7)})`
+                    }} 
+                  />
+                  <Typography 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", cursive',
+                      fontSize: '0.5rem',
+                      color: alpha(color, 0.9),
+                      textShadow: `0 0 3px ${alpha(color, 0.3)}`,
+                      flexGrow: 1,
+                      letterSpacing: '-0.5px'
+                    }}
+                  >
+                    PROJECTS
+                  </Typography>
+                  <Typography 
+                    sx={{ 
+                      fontFamily: '"Press Start 2P", cursive',
+                      fontSize: '0.5rem',
+                      color: alpha(theme.palette.common.white, 0.9),
+                      textShadow: `0 0 4px ${alpha(color, 0.6)}`,
+                      letterSpacing: '-0.5px'
+                    }}
+                  >
+                    {skill.projects}+
+                  </Typography>
+                </Box>
+              </Box>
+            )}
+            
+            {/* For character traits, show a description instead */}
+            {category === 'soft' && (
+              <Box 
+                sx={{ 
+                  mt: 2, 
+                  p: 1.5,
+                  border: `1px solid ${alpha(color, 0.4)}`,
+                  borderRadius: '4px',
+                  backdropFilter: 'blur(5px)',
+                  background: alpha(color, 0.05),
+                  overflow: 'hidden',
+                  boxShadow: `inset 0 0 10px ${alpha(color, 0.2)}`,
+                  minHeight: '80px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Typography 
+                  sx={{ 
                     fontFamily: '"Press Start 2P", cursive',
                     fontSize: '0.5rem',
-                    backgroundColor: alpha(color, 0.15),
-                    color: color,
-                    border: `1px solid ${alpha(color, 0.4)}`,
-                    boxShadow: `0 0 5px ${alpha(color, 0.3)}`,
-                    textShadow: `0 0 2px ${alpha(color, 0.2)}`,
+                    color: alpha(theme.palette.common.white, 0.9),
+                    textShadow: `0 0 4px ${alpha(color, 0.6)}`,
+                    textAlign: 'center',
+                    lineHeight: 1.8,
+                    letterSpacing: '-0.5px'
                   }}
-                />
-              </Tooltip>
-              <Tooltip title="Started learning in" arrow>
-                <Chip 
-                  size="small"
-                  label={`SINCE ${skill.startYear}`}
-                  sx={{
-                    fontFamily: '"Press Start 2P", cursive',
-                    fontSize: '0.5rem',
-                    backgroundColor: alpha(theme.palette.background.paper, 0.5),
-                    color: theme.palette.text.secondary,
-                    border: `1px solid ${alpha(theme.palette.divider, 0.3)}`,
-                    boxShadow: `0 0 5px ${alpha(theme.palette.divider, 0.2)}`,
-                  }}
-                />
-              </Tooltip>
-            </Box>
+                >
+                  {skill.description}
+                </Typography>
+              </Box>
+            )}
           </Paper>
         </motion.div>
       </Grid>
@@ -211,11 +432,11 @@ export const Skills = () => {
   const renderCategory = (title: string, categoryKey: keyof typeof skills) => {
     const categoryColor = (() => {
       switch(categoryKey) {
-        case 'frontend': return theme.palette.primary.main;
-        case 'backend': return theme.palette.secondary.main;
-        case 'database': return theme.palette.accent1.main;
-        case 'devops': return theme.palette.accent2.main;
-        default: return theme.palette.accent3.main;
+        case 'frontend': return customColors.frontendColor;
+        case 'backend': return customColors.backendColor;
+        case 'database': return customColors.databaseColor;
+        case 'devops': return customColors.devopsColor;
+        default: return customColors.softColor;
       }
     })();
 
@@ -227,7 +448,9 @@ export const Skills = () => {
           sx={{ 
             display: 'flex', 
             alignItems: 'center', 
-            mb: 2
+            mb: 2,
+            pb: 1,
+            borderBottom: `2px dashed ${alpha(categoryColor, 0.3)}`
           }}
         >
           <motion.div
@@ -239,11 +462,12 @@ export const Skills = () => {
               sx={{ 
                 mr: 2, 
                 color: categoryColor,
-                textShadow: `0 0 8px ${alpha(categoryColor, 0.7)}`,
-                filter: `drop-shadow(0 0 5px ${alpha(categoryColor, 0.5)})`,
+                textShadow: `0 0 10px ${alpha(categoryColor, 0.8)}`,
+                filter: `drop-shadow(0 0 8px ${alpha(categoryColor, 0.6)})`,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                transform: 'scale(1.2)'
               }}
             >
               {icon}
@@ -256,15 +480,15 @@ export const Skills = () => {
               fontFamily: '"Press Start 2P", cursive',
               fontSize: { xs: '1rem', md: '1.2rem' },
               color: categoryColor,
-              textShadow: `0 0 5px ${alpha(categoryColor, 0.7)}`,
+              textShadow: `0 0 8px ${alpha(categoryColor, 0.8)}`,
               display: 'inline-block',
               '&::before': {
                 content: '"[ "',
-                opacity: 0.7,
+                opacity: 0.8,
               },
               '&::after': {
                 content: '" ]"',
-                opacity: 0.7,
+                opacity: 0.8,
               }
             }}
           >
@@ -304,7 +528,7 @@ export const Skills = () => {
           text="SKILL INVENTORY"
           variant="h2"
           glowIntensity={12}
-          glowColor={theme.palette.secondary.main}
+          glowColor={customColors.backendColor}
           sx={{ 
             mb: 2,
             fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }
@@ -315,7 +539,7 @@ export const Skills = () => {
           text="Throughout my journey as a developer, I've leveled up across multiple tech stacks and domains. Each skill represents experience points gained through real-world quests and challenges. This is my character sheet - built from over a decade of coding adventures!"
           variant="h6"
           glowIntensity={4}
-          glowColor={theme.palette.secondary.main}
+          glowColor={customColors.backendColor}
           sx={{ 
             maxWidth: '800px', 
             mx: 'auto',
@@ -334,7 +558,7 @@ export const Skills = () => {
       {renderCategory('BACKEND', 'backend')}
       {renderCategory('DATABASE', 'database')}
       {renderCategory('DEVOPS & TOOLS', 'devops')}
-      {renderCategory('SOFT SKILLS', 'soft')}
+      {renderCategory('CHARACTER TRAITS', 'soft')}
 
       {/* More skills coming soon message */}
       <Box 
@@ -366,19 +590,19 @@ export const Skills = () => {
               text="SKILL TREE EXPANDING..."
               variant="h6"
               glowIntensity={8}
-              glowColor={theme.palette.primary.main}
+              glowColor="#FF3366"
               sx={{
                 fontFamily: '"Press Start 2P", cursive',
                 fontSize: '0.9rem',
-                color: theme.palette.primary.main,
+                color: "#FF3366",
                 mb: 1,
                 px: 3,
                 py: 2,
                 borderRadius: 2,
                 backgroundColor: alpha(theme.palette.background.paper, 0.3),
                 backdropFilter: 'blur(5px)',
-                border: `1px solid ${alpha(theme.palette.primary.main, 0.3)}`,
-                boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.2)}`,
+                border: `1px solid ${alpha("#FF3366", 0.3)}`,
+                boxShadow: `0 0 15px ${alpha("#FF3366", 0.2)}`,
                 display: 'inline-block'
               }}
             />
@@ -401,7 +625,7 @@ export const Skills = () => {
               bottom: 0,
               borderRadius: '8px',
               zIndex: -1,
-              backgroundColor: alpha(theme.palette.primary.main, 0.05)
+              backgroundColor: alpha("#FF3366", 0.05)
             }}
           />
         </Box>
