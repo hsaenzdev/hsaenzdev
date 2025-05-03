@@ -99,7 +99,7 @@ const AsciiLogo = memo(() => {
 });
 
 // Matrix-like raining code effect for background
-const MatrixRain = memo(() => {
+const MatrixRain = memo(({ enhanced = false }: { enhanced?: boolean }) => {
   const theme = useTheme();
   const characters = useMemo(() => 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワ', []);
   const [columns, setColumns] = useState<string[]>([]);
@@ -107,7 +107,8 @@ const MatrixRain = memo(() => {
   useEffect(() => {
     // Create 20 columns of random characters
     const newColumns = [];
-    for (let i = 0; i < 20; i++) {
+    const numColumns = enhanced ? 40 : 20; // More columns in enhanced mode
+    for (let i = 0; i < numColumns; i++) {
       let column = '';
       const length = 5 + Math.floor(Math.random() * 10);
       for (let j = 0; j < length; j++) {
@@ -126,10 +127,10 @@ const MatrixRain = memo(() => {
           return newChar + column.substring(0, column.length - 1);
         })
       );
-    }, 300);
+    }, enhanced ? 150 : 300); // Faster updates in enhanced mode
     
     return () => clearInterval(interval);
-  }, [characters]);
+  }, [characters, enhanced]);
   
   return (
     <Box
@@ -140,20 +141,22 @@ const MatrixRain = memo(() => {
         right: 0,
         bottom: 0,
         pointerEvents: 'none',
-        opacity: 0.07,
+        opacity: enhanced ? 0.2 : 0.07, // More visible in enhanced mode
         overflow: 'hidden',
         zIndex: 0,
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', height: '100%' }}>
         {columns.map((column, i) => (
-          <Box key={i} sx={{ display: 'flex', flexDirection: 'column', color: theme.palette.primary.main, fontSize: '10px' }}>
+          <Box key={i} sx={{ display: 'flex', flexDirection: 'column', color: theme.palette.primary.main, fontSize: enhanced ? '12px' : '10px' }}>
             {column.split('').map((char, j) => (
               <Box 
                 key={`${i}-${j}`} 
                 component="span" 
                 sx={{ 
                   opacity: j === 0 ? 1 : 1 - (j / column.length),
+                  fontWeight: enhanced && j < 3 ? 'bold' : 'normal', // Bold characters at the front in enhanced mode
+                  textShadow: enhanced ? `0 0 5px ${theme.palette.primary.main}` : 'none', // Glow effect in enhanced mode
                 }}
               >
                 {char}
@@ -177,18 +180,95 @@ export const RetroTerminal = ({
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [commandIndex, setCommandIndex] = useState(-1);
   const [showCursor] = useState(true);
+  const [isMatrixMode, setIsMatrixMode] = useState(false);
   const outputRef = useRef<HTMLDivElement>(null);
   
-  // Available commands
-  const commands = useMemo(() => ({
-    help: "Display available commands",
-    skills: "View my technical skills",
-    clear: "Clear the terminal",
-    contact: "Get my contact information",
-    github: "Visit my GitHub profile",
-    resume: "Download my resume",
-    exit: "Close the terminal (not really)"
-  }), []);
+  // Available commands organized by category
+  const commandCategories = useMemo(() => {
+    return {
+      professional: {
+        skills: "View my technical skills",
+        certifications: "List my certifications",
+        contact: "Get my contact information",
+        github: "Visit my GitHub profile",
+        resume: "Download my resume"
+      },
+      terminal: {
+        help: "Display available commands",
+        clear: "Clear the terminal",
+        exit: "Close the terminal (not really)"
+      },
+      fun: {
+        ascii: "Display random ASCII art",
+        joke: "Tell a programmer joke",
+        matrix: "Toggle Matrix rain effect",
+        snake: "Play Snake game (coming soon)"
+      }
+    };
+  }, []);
+
+  // Flatten commands for use in command processing
+  const commands = useMemo(() => {
+    return {
+      ...commandCategories.professional,
+      ...commandCategories.terminal,
+      ...commandCategories.fun
+    };
+  }, [commandCategories]);
+
+  // List of programmer jokes
+  const jokes = useMemo(() => [
+    "Why do programmers prefer dark mode? Because light attracts bugs!",
+    "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+    "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+    "Why do Java developers wear glasses? Because they don't C#!",
+    "What's the object-oriented way to become wealthy? Inheritance.",
+    "Why did the developer go broke? Because he used up all his cache.",
+    "Dev1: We should use a JavaScript framework. Dev2: I agree, which one? Dev1: *starts holy war*",
+    "My code doesn't work, I have no idea why. My code works, I have no idea why.",
+    "The best thing about a Boolean is even if you are wrong, you are only off by a bit.",
+    "Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25."
+  ], []);
+
+  // ASCII art collection
+  const asciiArt = useMemo(() => [
+    `
+    (\\(\\ 
+    (-.-)
+    o_(")(")
+    `,
+    `
+       /\\_/\\  
+      ( o.o ) 
+       > ^ <
+    `,
+    `
+      /\\_/\\
+     (='.'=)
+     (\")_(\")
+    `,
+    `
+     _._     _,-'""\\"--._
+    (,-.\\.-"" "// \\\\ "-.\\"-.
+        \\\\ \\\\ \\/ \\/ \\\\ \\\\
+         \\\\/ /\\\\ /\\\\ \\/ /
+          / /  \\\\  \\\\ \\\\ \\
+    `,
+    `
+     .-.
+    (o.o)
+     |=|
+    __|__
+    /||\\\\ 
+    // \\\\
+    `,
+    `
+        ,_,
+       (o,o)
+       {/)_)
+        " "
+    `
+  ], []);
   
   // Auto-scroll effect whenever content changes
   useEffect(() => {
@@ -324,6 +404,30 @@ export const RetroTerminal = ({
         setCommandHistory(prev => [...prev, "> Opening GitHub profile..."]);
         window.open('https://github.com/hsaenzdev', '_blank');
         break;
+      case 'ascii':
+        const randomAscii = asciiArt[Math.floor(Math.random() * asciiArt.length)];
+        setCommandHistory(prev => [...prev, "> Random ASCII Art:"]);
+        randomAscii.split('\n').forEach(line => {
+          setCommandHistory(prev => [...prev, `> ${line}`]);
+        });
+        break;
+      case 'joke':
+        const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+        setCommandHistory(prev => [...prev, `> ${randomJoke}`]);
+        break;
+      case 'matrix':
+        setIsMatrixMode(!isMatrixMode);
+        setCommandHistory(prev => [...prev, `> Matrix mode ${isMatrixMode ? 'disabled' : 'enabled'}!`]);
+        break;
+      case 'snake':
+        setCommandHistory(prev => [...prev, "> Snake game is coming soon!"]);
+        setCommandHistory(prev => [...prev, "> Try clicking around the page - you might find some surprises!"]);
+        break;
+      case 'certifications':
+        setCommandHistory(prev => [...prev, "> Certifications:"]);
+        setCommandHistory(prev => [...prev, ">   • AWS Certified Cloud Practitioner"]);
+        setCommandHistory(prev => [...prev, ">   • AWS Certified Developer - Associate"]);
+        break;
       case 'resume':
         setCommandHistory(prev => [...prev, "> Downloading resume..."]);
         try {
@@ -345,8 +449,26 @@ export const RetroTerminal = ({
         break;
       case 'help':
         setCommandHistory(prev => [...prev, "> Available commands:"]);
-        Object.entries(commands).forEach(([cmd, desc]) => {
-          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(10)} - ${desc}`]);
+        
+        // Display professional commands
+        setCommandHistory(prev => [...prev, "> "]);
+        setCommandHistory(prev => [...prev, "> 📊 Professional:"]);
+        Object.entries(commandCategories.professional).forEach(([cmd, desc]) => {
+          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
+        });
+        
+        // Display terminal commands
+        setCommandHistory(prev => [...prev, "> "]);
+        setCommandHistory(prev => [...prev, "> 🖥️ Terminal:"]);
+        Object.entries(commandCategories.terminal).forEach(([cmd, desc]) => {
+          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
+        });
+        
+        // Display fun commands
+        setCommandHistory(prev => [...prev, "> "]);
+        setCommandHistory(prev => [...prev, "> 🎮 Fun:"]);
+        Object.entries(commandCategories.fun).forEach(([cmd, desc]) => {
+          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
         });
         break;
       case '':
