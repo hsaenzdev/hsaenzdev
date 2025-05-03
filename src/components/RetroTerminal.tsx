@@ -185,7 +185,6 @@ export const RetroTerminal = ({
     skills: "View my technical skills",
     clear: "Clear the terminal",
     contact: "Get my contact information",
-    projects: "View my recent projects",
     github: "Visit my GitHub profile",
     resume: "Download my resume",
     exit: "Close the terminal (not really)"
@@ -315,17 +314,15 @@ export const RetroTerminal = ({
         setCommandHistory([]);
         break;
       case 'contact':
-        setCommandHistory(prev => [...prev, "> Email: contact@hectorsaenz.dev"]);
-        setCommandHistory(prev => [...prev, "> LinkedIn: linkedin.com/in/hectorsaenz"]);
+        setCommandHistory(prev => [...prev, "> Contact Information:"]);
+        setCommandHistory(prev => [...prev, "> Location: Mexico (Nuevo Laredo)"]);
+        setCommandHistory(prev => [...prev, "> Phone: +52 8677514055"]);
+        setCommandHistory(prev => [...prev, "> Email: hectors.digital@gmail.com"]);
+        setCommandHistory(prev => [...prev, "> LinkedIn: linkedin.com/in/saenzo"]);
         break;
       case 'github':
         setCommandHistory(prev => [...prev, "> Opening GitHub profile..."]);
         window.open('https://github.com/hsaenzdev', '_blank');
-        break;
-      case 'projects':
-        setCommandHistory(prev => [...prev, "> Personal Portfolio - A React-based portfolio with retro terminal aesthetics"]);
-        setCommandHistory(prev => [...prev, "> Project Alpha - A full-stack e-commerce platform with real-time inventory"]);
-        setCommandHistory(prev => [...prev, "> Data Visualizer - An interactive dashboard for complex data visualization"]);
         break;
       case 'resume':
         setCommandHistory(prev => [...prev, "> Downloading resume..."]);
