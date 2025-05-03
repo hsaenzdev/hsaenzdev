@@ -18,9 +18,7 @@
     <tr>
       <td align="center" width="50%">
         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <img width="30" src="https://i.imgur.com/DM6tYZt.gif" />
-          <b>STATS</b>
-          <img width="30" src="https://i.imgur.com/DM6tYZt.gif" />
+          <b>🎮 STATS 🎮</b>
         </div>
         <img src="https://raw.githubusercontent.com/saadeghi/saadeghi/master/dino.gif" width="100%" />
         <div>
@@ -31,9 +29,7 @@
       </td>
       <td align="center" width="50%">
         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <img width="30" src="https://i.imgur.com/zLzE7gI.gif" />
-          <b>EQUIPMENT</b>
-          <img width="30" src="https://i.imgur.com/zLzE7gI.gif" />
+          <b>🛠️ EQUIPMENT 🛠️</b>
         </div>
         <table width="100%" border="0">
           <tr>
@@ -125,10 +121,10 @@
 ## 📟 Connection Ports
 
 <div align="center">
-  <a href="https://hsaenzdev.github.io/hsaenz-portfolio/" target="_blank">
+  <a href="https://hsaenzdev.github.io/hsaenz-portfolio/" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/PORTFOLIO-2bbc8a?style=for-the-badge&logo=files&logoColor=white" />
   </a>
-  <a href="https://linkedin.com/in/saenzo" target="_blank">
+  <a href="https://linkedin.com/in/saenzo" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/LINKEDIN-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
 </div>
