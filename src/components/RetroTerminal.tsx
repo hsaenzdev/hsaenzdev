@@ -2,6 +2,7 @@ import { Box, useTheme, Typography, Tooltip } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
 import resumePdf from '../assets/hsaenzresume.pdf';
+import { useGameContext } from '../context/GameContext';
 
 interface RetroTerminalProps {
   terminalTitle?: string;
@@ -182,6 +183,7 @@ export const RetroTerminal = ({
   const [showCursor] = useState(true);
   const [isMatrixMode, setIsMatrixMode] = useState(false);
   const outputRef = useRef<HTMLDivElement>(null);
+  const { enableGame, isGameEnabled, score } = useGameContext();
   
   // Available commands organized by category
   const commandCategories = useMemo(() => {
@@ -420,8 +422,45 @@ export const RetroTerminal = ({
         setCommandHistory(prev => [...prev, `> Matrix mode ${isMatrixMode ? 'disabled' : 'enabled'}!`]);
         break;
       case 'snake':
-        setCommandHistory(prev => [...prev, "> Snake game is coming soon!"]);
-        setCommandHistory(prev => [...prev, "> Try clicking around the page - you might find some surprises!"]);
+        // Check if the player is actively playing (score > 0)
+        if (isGameEnabled && score > 0) {
+          // Random funny responses when the game is already running
+          const funnyResponses = [
+            "> Hey! You're already playing! Keep your eyes on the snake! 🐍",
+            "> Multi-snaking not supported yet. One snake at a time please! 🙄",
+            "> ERROR: Snake.exe is already running... Just kidding, keep playing! 🎮",
+            "> Look at the screen! Your snake is getting hungry while you type! 🍽️",
+            "> Why are you typing when you could be eating particles? NOM NOM NOM 🟢",
+            "> Dear user, your snake is feeling neglected. Please return to the game. 🥺"
+          ];
+          
+          // Select a random funny response
+          const randomResponse = funnyResponses[Math.floor(Math.random() * funnyResponses.length)];
+          setCommandHistory(prev => [...prev, randomResponse]);
+        } else {
+          // Enable the game if not already enabled
+          enableGame();
+          
+          // Display fun messages about the snake game
+          setCommandHistory(prev => [...prev, "> 🐍 Snake Game Activated! 🐍"]);
+          setCommandHistory(prev => [...prev, "> Use arrow keys to control the snake"]);
+          setCommandHistory(prev => [...prev, "> Eat the glowing particles to grow longer"]);
+          setCommandHistory(prev => [...prev, "> Watch out for walls and don't bite yourself!"]);
+          setCommandHistory(prev => [...prev, "> The score will appear at the top right of the screen"]);
+          
+          // Simulate pressing the right arrow key to immediately start the game
+          setTimeout(() => {
+            const keyEvent = new KeyboardEvent('keydown', {
+              key: 'ArrowUp',
+              code: 'ArrowUp',
+              keyCode: 38,
+              which: 38,
+              bubbles: true,
+              cancelable: true
+            });
+            window.dispatchEvent(keyEvent);
+          }, 500); // Short delay to ensure game is enabled
+        }
         break;
       case 'certifications':
         setCommandHistory(prev => [...prev, "> Certifications:"]);
@@ -489,7 +528,7 @@ export const RetroTerminal = ({
     <Box 
       className="terminal-container"
       sx={{
-        bgcolor: 'rgba(0, 0, 0, 0.9)',
+        bgcolor: 'rgba(0, 0, 0, 0.8)',
         borderRadius: '8px',
         p: 1.5,
         width: '100%',
