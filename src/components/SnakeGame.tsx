@@ -36,6 +36,9 @@ export const createSnakeGame = ({
   let score: number = 0;
   const gridSize: number = 10; // Size of each snake segment
   
+  // Add a transition flag to track game over cooldown
+  let isInTransition: boolean = false;
+  
   // Sidenav width for collision handling - based on SideNav component
   const sideNavWidth = 280; // Width of the sidenav in pixels
   
@@ -279,15 +282,20 @@ export const createSnakeGame = ({
     } else if (gameState === 'GAME_OVER') {
       drawGameOverEffect();
       // Reset game after a short delay
-      setTimeout(() => {
-        gameState = 'INACTIVE';
-      }, 1000);
+      if (!isInTransition) {
+        isInTransition = true;
+        setTimeout(() => {
+          gameState = 'INACTIVE';
+          isInTransition = false;
+        }, 1000);
+      }
     }
   };
   
   // Start the game
   const startGame = () => {
-    if (gameState !== 'INACTIVE') return;
+    // Prevent starting game during transition or when not inactive
+    if (gameState !== 'INACTIVE' || isInTransition) return;
     initializeSnake();
   };
   
@@ -296,6 +304,7 @@ export const createSnakeGame = ({
     startGame,
     changeDirection,
     getGameState: () => gameState,
-    getScore: () => score
+    getScore: () => score,
+    isInTransition: () => isInTransition
   };
 }; 
