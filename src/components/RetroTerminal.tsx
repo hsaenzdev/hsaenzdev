@@ -117,21 +117,21 @@ export const RetroTerminal = ({
   const commandCategories = useMemo(() => {
     return {
       professional: {
-        skills: "View my technical skills",
         certifications: "List my certifications",
         contact: "Get my contact information",
         github: "Visit my GitHub profile",
-        resume: "Download my resume"
+        resume: "Download my resume",
+        skills: "View my technical skills"
       },
       terminal: {
-        help: "Display available commands",
         clear: "Clear the terminal",
-        exit: "Close the terminal (not really)"
+        exit: "Close the terminal (not really)",
+        help: "Display available commands"
       },
       fun: {
         ascii: "Display random ASCII art",
         joke: "Tell a programmer joke",
-        snake: "Play Snake game (coming soon)"
+        snake: "Play Snake game"
       }
     };
   }, []);
@@ -156,7 +156,27 @@ export const RetroTerminal = ({
     "Dev1: We should use a JavaScript framework. Dev2: I agree, which one? Dev1: *starts holy war*",
     "My code doesn't work, I have no idea why. My code works, I have no idea why.",
     "The best thing about a Boolean is even if you are wrong, you are only off by a bit.",
-    "Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25."
+    "Why do programmers always mix up Halloween and Christmas? Because Oct 31 == Dec 25.",
+    "There are 10 kinds of people in this world: those who understand binary and those who don't.",
+    "Programming is 10% writing code and 90% understanding why it's not working.",
+    "A programmer puts two glasses on his bedside table before going to sleep. A full one, in case he gets thirsty, and an empty one, in case he doesn't.",
+    "If at first you don't succeed, call it version 1.0.",
+    "99 little bugs in the code, 99 little bugs, you take one down and patch it around, 125 little bugs in the code.",
+    "I've got a really good UDP joke to tell you, but I don't know if you'll get it.",
+    "What's the best thing about UDP jokes? I don't care if you get them.",
+    "A programmer is heading out to the grocery store, so his wife tells him 'get a gallon of milk, and if they have eggs, get a dozen.' He returns with 13 gallons of milk.",
+    "What do you call a programmer who vomits at IHOP? A stack overflow.",
+    "What did the Java Code say to the C code? You've got no class.",
+    "Why did the programmer quit their job? Because they didn't get arrays.",
+    "Programmer: An organism that turns coffee into software.",
+    "There's no place like 127.0.0.1.",
+    "Why do programmers take so long in the shower? They read the directions on the shampoo bottle and follow them to the letter: Lather, rinse, and repeat.",
+    "A user interface is like a joke. If you have to explain it, it means it's not good.",
+    "What is the most used language in programming? Profanity.",
+    "Real programmers count from 0.",
+    "An optimist says: 'The Glass is Half-Full.' A pessimist says: 'The Glass is Half-Empty.' A programmer says: 'The Glass is Twice as Large as Necessary'.",
+    "Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week debugging Monday's code.",
+    "Software can be fast, reliable, and cheap. Choose any two."
   ], []);
 
   // ASCII art collection
@@ -415,23 +435,29 @@ export const RetroTerminal = ({
         // Display professional commands
         setCommandHistory(prev => [...prev, "> "]);
         setCommandHistory(prev => [...prev, "> 📊 Professional:"]);
-        Object.entries(commandCategories.professional).forEach(([cmd, desc]) => {
-          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
-        });
+        Object.entries(commandCategories.professional)
+          .sort(([cmdA], [cmdB]) => cmdA.localeCompare(cmdB))
+          .forEach(([cmd, desc]) => {
+            setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
+          });
         
         // Display terminal commands
         setCommandHistory(prev => [...prev, "> "]);
         setCommandHistory(prev => [...prev, "> 🖥️ Terminal:"]);
-        Object.entries(commandCategories.terminal).forEach(([cmd, desc]) => {
-          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
-        });
+        Object.entries(commandCategories.terminal)
+          .sort(([cmdA], [cmdB]) => cmdA.localeCompare(cmdB))
+          .forEach(([cmd, desc]) => {
+            setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
+          });
         
         // Display fun commands
         setCommandHistory(prev => [...prev, "> "]);
         setCommandHistory(prev => [...prev, "> 🎮 Fun:"]);
-        Object.entries(commandCategories.fun).forEach(([cmd, desc]) => {
-          setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
-        });
+        Object.entries(commandCategories.fun)
+          .sort(([cmdA], [cmdB]) => cmdA.localeCompare(cmdB))
+          .forEach(([cmd, desc]) => {
+            setCommandHistory(prev => [...prev, `>   ${cmd.padEnd(12)} - ${desc}`]);
+          });
         break;
       case '':
         // Just add a new line for empty command
