@@ -1,6 +1,7 @@
 import { Box, useTheme, Typography, Tooltip } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
+import resumePdf from '../assets/hsaenzresume.pdf';
 
 interface RetroTerminalProps {
   terminalTitle?: string;
@@ -165,109 +166,18 @@ const MatrixRain = memo(() => {
   );
 });
 
-// Skills visualization
-interface Skill {
-  name: string;
-  level: number;
-  category: string;
-}
-
-// Visualize a single skill with a progress bar
-const SkillBar = memo(({ skill }: { skill: Skill }) => {
-  const theme = useTheme();
-  const [show, setShow] = useState(false);
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, 200);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  const getColor = (category: string) => {
-    switch(category) {
-      case 'frontend':
-        return theme.palette.accent1.main;
-      case 'backend':
-        return theme.palette.accent2.main;
-      case 'tools':
-        return theme.palette.accent3.main;
-      default:
-        return theme.palette.primary.main;
-    }
-  };
-  
-  return (
-    <Tooltip title={`${skill.level}%`} placement="right" arrow>
-      <Box sx={{ mb: 1.5, width: '100%' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-          <Typography 
-            variant="caption" 
-            sx={{ 
-              color: 'rgba(255,255,255,0.9)', 
-              fontSize: '0.75rem',
-              fontFamily: 'monospace',
-              fontWeight: 'bold',
-            }}
-          >
-            {skill.name}
-          </Typography>
-          <Typography 
-            variant="caption" 
-            sx={{ 
-              color: getColor(skill.category), 
-              fontSize: '0.7rem',
-              fontFamily: 'monospace',
-            }}
-          >
-            {skill.category}
-          </Typography>
-        </Box>
-        <Box sx={{ width: '100%', height: '8px', bgcolor: 'rgba(0,0,0,0.4)', borderRadius: '4px', overflow: 'hidden' }}>
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: show ? `${skill.level}%` : 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            style={{
-              height: '100%',
-              backgroundColor: getColor(skill.category),
-              borderRadius: '4px',
-              boxShadow: `0 0 5px ${getColor(skill.category)}`,
-            }}
-          />
-        </Box>
-      </Box>
-    </Tooltip>
-  );
-});
-
 // Interactive Terminal Component
 export const RetroTerminal = ({
   terminalTitle = 'portfolio.exe'
 }: RetroTerminalProps) => {
   const theme = useTheme();
-  const [currentState, setCurrentState] = useState<'intro' | 'menu' | 'skills' | 'projects' | 'contact'>('intro');
+  const [currentState, setCurrentState] = useState<'intro' | 'menu'>('intro');
   const [introComplete, setIntroComplete] = useState(false);
   const [command, setCommand] = useState('');
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [commandIndex, setCommandIndex] = useState(-1);
   const [showCursor] = useState(true);
   const outputRef = useRef<HTMLDivElement>(null);
-  
-  // Transform text skills into structured data
-  const skills: Skill[] = useMemo(() => [
-    { name: "React", level: 95, category: "frontend" },
-    { name: "TypeScript", level: 90, category: "frontend" },
-    { name: "JavaScript", level: 95, category: "frontend" },
-    { name: "HTML/CSS", level: 90, category: "frontend" },
-    { name: "ThreeJS", level: 85, category: "frontend" },
-    { name: "Node.js", level: 88, category: "backend" },
-    { name: "Express", level: 85, category: "backend" },
-    { name: "MongoDB", level: 82, category: "backend" },
-    { name: "Git", level: 90, category: "tools" },
-    { name: "Docker", level: 80, category: "tools" },
-  ], []);
   
   // Available commands
   const commands = useMemo(() => ({
@@ -371,12 +281,38 @@ export const RetroTerminal = ({
     
     switch (cleanedCmd) {
       case 'skills':
-        setCurrentState('skills');
-        setTimeout(() => setCurrentState('menu'), 10000); // Return to menu after 10 seconds
+        setCommandHistory(prev => [...prev, "> Skills:"]);
+        setCommandHistory(prev => [...prev, "> Front-End:"]);
+        setCommandHistory(prev => [...prev, ">   • React"]);
+        setCommandHistory(prev => [...prev, ">   • Material UI"]);
+        setCommandHistory(prev => [...prev, ">   • Vue.js"]);
+        setCommandHistory(prev => [...prev, ">   • GraphQL"]);
+        setCommandHistory(prev => [...prev, "> Back-End:"]);
+        setCommandHistory(prev => [...prev, ">   • Node.js"]);
+        setCommandHistory(prev => [...prev, ">   • Express.js"]);
+        setCommandHistory(prev => [...prev, ">   • Phoenix (Elixir)"]);
+        setCommandHistory(prev => [...prev, "> Languages:"]);
+        setCommandHistory(prev => [...prev, ">   • JavaScript/TypeScript"]);
+        setCommandHistory(prev => [...prev, ">   • Python"]);
+        setCommandHistory(prev => [...prev, ">   • Elixir"]);
+        setCommandHistory(prev => [...prev, ">   • PHP"]);
+        setCommandHistory(prev => [...prev, ">   • C#"]);
+        setCommandHistory(prev => [...prev, "> Databases:"]);
+        setCommandHistory(prev => [...prev, ">   • PostgreSQL"]);
+        setCommandHistory(prev => [...prev, ">   • Snowflake"]);
+        setCommandHistory(prev => [...prev, ">   • ClickHouse"]);
+        setCommandHistory(prev => [...prev, ">   • SQL/NoSQL"]);
+        setCommandHistory(prev => [...prev, "> DevOps & Tools:"]);
+        setCommandHistory(prev => [...prev, ">   • AWS"]);
+        setCommandHistory(prev => [...prev, ">   • Docker"]);
+        setCommandHistory(prev => [...prev, ">   • Git (GitLab CI/CD)"]);
+        setCommandHistory(prev => [...prev, ">   • Linux"]);
+        setCommandHistory(prev => [...prev, ">   • Jira"]);
+        setCommandHistory(prev => [...prev, ">   • LaunchDarkly"]);
         break;
       case 'clear':
-        // Just reset to menu state
-        setCurrentState('menu');
+        // Clear the command history
+        setCommandHistory([]);
         break;
       case 'contact':
         setCommandHistory(prev => [...prev, "> Email: contact@hectorsaenz.dev"]);
@@ -384,7 +320,7 @@ export const RetroTerminal = ({
         break;
       case 'github':
         setCommandHistory(prev => [...prev, "> Opening GitHub profile..."]);
-        window.open('https://github.com/yourusername', '_blank');
+        window.open('https://github.com/hsaenzdev', '_blank');
         break;
       case 'projects':
         setCommandHistory(prev => [...prev, "> Personal Portfolio - A React-based portfolio with retro terminal aesthetics"]);
@@ -393,7 +329,19 @@ export const RetroTerminal = ({
         break;
       case 'resume':
         setCommandHistory(prev => [...prev, "> Downloading resume..."]);
-        // You can add actual download logic here
+        try {
+          // Create a link element to trigger download
+          const link = document.createElement('a');
+          link.href = resumePdf;
+          link.download = 'hsaenzresume.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setCommandHistory(prev => [...prev, "> Download complete!"]);
+        } catch (error) {
+          console.error("Error downloading resume:", error);
+          setCommandHistory(prev => [...prev, "> Error downloading resume. Please try again."]);
+        }
         break;
       case 'exit':
         setCommandHistory(prev => [...prev, "> Nice try! You can't escape that easily 😊"]);
@@ -624,59 +572,6 @@ export const RetroTerminal = ({
                 </Typography>
                 {showCursor && <Cursor />}
               </Box>
-            </motion.div>
-          )}
-          
-          {currentState === 'skills' && (
-            <motion.div
-              key="skills"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Typography 
-                variant="h6" 
-                sx={{ 
-                  color: theme.palette.primary.main,
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  mb: 2,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  textShadow: `0 0 5px ${theme.palette.primary.main}`,
-                }}
-              >
-                SKILL PROFICIENCY ANALYSIS
-              </Typography>
-              
-              <Box sx={{ mb: 2 }}>
-                {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <SkillBar skill={skill} />
-                  </motion.div>
-                ))}
-              </Box>
-              
-              <Typography 
-                variant="caption" 
-                sx={{ 
-                  color: 'rgba(255,255,255,0.6)',
-                  fontSize: '0.75rem',
-                  fontFamily: 'monospace',
-                  display: 'block',
-                  textAlign: 'center',
-                  mt: 2,
-                  fontStyle: 'italic',
-                }}
-              >
-                Returning to terminal in a few seconds...
-              </Typography>
             </motion.div>
           )}
         </AnimatePresence>
