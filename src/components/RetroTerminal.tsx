@@ -126,7 +126,7 @@ export const RetroTerminal = ({
   const [commandIndex, setCommandIndex] = useState(-1);
   const [showCursor] = useState(true);
   const outputRef = useRef<HTMLDivElement>(null);
-  const { enableGame, isGameEnabled, score } = useGameContext();
+  const { enableGame, isGameEnabled, gameState } = useGameContext();
   
   // Available commands organized by category
   const commandCategories = useMemo(() => {
@@ -391,8 +391,8 @@ export const RetroTerminal = ({
         setCommandHistory(prev => [...prev, `> ${randomJoke}`]);
         break;
       case 'snake':
-        // Check if the player is actively playing (score > 0)
-        if (isGameEnabled && score > 0) {
+        // Check if the player is actively playing based on gameState
+        if (isGameEnabled && gameState === 'ACTIVE') {
           // Random funny responses when the game is already running
           const funnyResponses = [
             "> Hey! You're already playing! Keep your eyes on the snake! 🐍",
