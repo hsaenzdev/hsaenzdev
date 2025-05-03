@@ -1,6 +1,6 @@
 <!-- PLAYER ONE READY -->
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&size=30&duration=4000&color=2bbc8a&center=true&vCenter=true&width=600&lines=HECTOR+SAENZ;FULL+STACK+DEVELOPER;LEVEL+10+%2B+EXPERIENCE" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&size=30&duration=4000&color=2bbc8a&center=true&vCenter=true&width=600&lines=FULL+STACK+DEVELOPER;LEVEL+10+EXPERIENCE" alt="Typing SVG" />
   <br/>
   <img src="https://img.shields.io/badge/Quest-Active-2bbc8a?style=for-the-badge&logo=quest&logoColor=white" />
   <img src="https://img.shields.io/badge/XP-10+_Years-FFD700?style=for-the-badge&logo=xprize&logoColor=white" />
