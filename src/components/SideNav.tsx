@@ -13,10 +13,10 @@ import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
 
 const menuItems = [
-  { text: 'Home', icon: <HomeIcon />, path: '/hsaenz-portfolio' },
-  { text: 'Projects', icon: <WorkIcon />, path: '/hsaenz-portfolio/projects' },
-  { text: 'Skills', icon: <CodeIcon />, path: '/hsaenz-portfolio/skills' },
-  { text: 'Experience', icon: <BusinessCenterIcon />, path: '/hsaenz-portfolio/experience' },
+  { text: 'Home', icon: <HomeIcon />, path: '/' },
+  { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
+  { text: 'Skills', icon: <CodeIcon />, path: '/skills' },
+  { text: 'Experience', icon: <BusinessCenterIcon />, path: '/experience' },
 ];
 
 export const SideNav = () => {

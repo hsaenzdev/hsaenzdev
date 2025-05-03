@@ -12,7 +12,6 @@ import {
 import { motion } from 'framer-motion';
 import { GlowingText } from '../components/GlowingText';
 import { RetroProjectCard } from '../components/RetroProjectCard';
-import { ProjectAnimation } from '../components/ProjectAnimation';
 import { projectsData } from '../data/projectsData';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 
@@ -42,8 +41,6 @@ export const Projects = () => {
         id="projects-container"
         sx={{ position: 'relative', minHeight: '100vh' }}
       >
-        {/* Add background animation */}
-        <ProjectAnimation containerId="projects-container" />
         
         {/* Header Section */}
         <Box sx={{ mb: 6, position: 'relative', zIndex: 2 }}>

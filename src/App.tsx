@@ -20,7 +20,7 @@ function AppContent() {
       <CssBaseline />
       <ParallaxProvider>
         <Routes>
-          <Route path="/hsaenz-portfolio" element={<Portfolio />}>
+          <Route path="/" element={<Portfolio />}>
             <Route index element={<Home />} />
             <Route path="projects" element={<Projects />} />
             <Route path="skills" element={<Skills />} />
@@ -34,7 +34,7 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/hsaenz-portfolio">
       <ThemeProvider>
         <GameProvider>
           <AppContent />
