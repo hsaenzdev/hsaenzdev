@@ -99,77 +99,6 @@ const AsciiLogo = memo(() => {
   );
 });
 
-// Matrix-like raining code effect for background
-const MatrixRain = memo(({ enhanced = false }: { enhanced?: boolean }) => {
-  const theme = useTheme();
-  const characters = useMemo(() => 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワ', []);
-  const [columns, setColumns] = useState<string[]>([]);
-  
-  useEffect(() => {
-    // Create 20 columns of random characters
-    const newColumns = [];
-    const numColumns = enhanced ? 40 : 20; // More columns in enhanced mode
-    for (let i = 0; i < numColumns; i++) {
-      let column = '';
-      const length = 5 + Math.floor(Math.random() * 10);
-      for (let j = 0; j < length; j++) {
-        column += characters.charAt(Math.floor(Math.random() * characters.length));
-      }
-      newColumns.push(column);
-    }
-    setColumns(newColumns);
-    
-    // Update the matrix rain periodically
-    const interval = setInterval(() => {
-      setColumns(prev => 
-        prev.map(column => {
-          // Shift characters and add a new one at the beginning
-          const newChar = characters.charAt(Math.floor(Math.random() * characters.length));
-          return newChar + column.substring(0, column.length - 1);
-        })
-      );
-    }, enhanced ? 150 : 300); // Faster updates in enhanced mode
-    
-    return () => clearInterval(interval);
-  }, [characters, enhanced]);
-  
-  return (
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        pointerEvents: 'none',
-        opacity: enhanced ? 0.2 : 0.07, // More visible in enhanced mode
-        overflow: 'hidden',
-        zIndex: 0,
-      }}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', height: '100%' }}>
-        {columns.map((column, i) => (
-          <Box key={i} sx={{ display: 'flex', flexDirection: 'column', color: theme.palette.primary.main, fontSize: enhanced ? '12px' : '10px' }}>
-            {column.split('').map((char, j) => (
-              <Box 
-                key={`${i}-${j}`} 
-                component="span" 
-                sx={{ 
-                  opacity: j === 0 ? 1 : 1 - (j / column.length),
-                  fontWeight: enhanced && j < 3 ? 'bold' : 'normal', // Bold characters at the front in enhanced mode
-                  textShadow: enhanced ? `0 0 5px ${theme.palette.primary.main}` : 'none', // Glow effect in enhanced mode
-                }}
-              >
-                {char}
-              </Box>
-            ))}
-          </Box>
-        ))}
-      </Box>
-    </Box>
-  );
-});
-
 // Interactive Terminal Component
 export const RetroTerminal = ({
   terminalTitle = 'portfolio.exe'
@@ -181,7 +110,6 @@ export const RetroTerminal = ({
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [commandIndex, setCommandIndex] = useState(-1);
   const [showCursor] = useState(true);
-  const [isMatrixMode, setIsMatrixMode] = useState(false);
   const outputRef = useRef<HTMLDivElement>(null);
   const { enableGame, isGameEnabled, score } = useGameContext();
   
@@ -203,7 +131,6 @@ export const RetroTerminal = ({
       fun: {
         ascii: "Display random ASCII art",
         joke: "Tell a programmer joke",
-        matrix: "Toggle Matrix rain effect",
         snake: "Play Snake game (coming soon)"
       }
     };
@@ -417,10 +344,6 @@ export const RetroTerminal = ({
         const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
         setCommandHistory(prev => [...prev, `> ${randomJoke}`]);
         break;
-      case 'matrix':
-        setIsMatrixMode(!isMatrixMode);
-        setCommandHistory(prev => [...prev, `> Matrix mode ${isMatrixMode ? 'disabled' : 'enabled'}!`]);
-        break;
       case 'snake':
         // Check if the player is actively playing (score > 0)
         if (isGameEnabled && score > 0) {
@@ -538,9 +461,6 @@ export const RetroTerminal = ({
         position: 'relative',
       }}
     >
-      {/* Matrix-like background effect */}
-      <MatrixRain />
-      
       {/* Terminal Header */}
       <Box 
         sx={{ 
