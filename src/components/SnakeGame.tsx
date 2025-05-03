@@ -1,4 +1,6 @@
 // Define Snake segment structure
+import { GameState } from '../context/GameContext';
+
 interface SnakeSegment {
   x: number;
   y: number;
@@ -6,9 +8,6 @@ interface SnakeSegment {
 
 // Define direction types
 type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
-
-// Game state types
-type GameState = 'INACTIVE' | 'ACTIVE' | 'GAME_OVER';
 
 // Props for the SnakeGame component
 interface SnakeGameProps {

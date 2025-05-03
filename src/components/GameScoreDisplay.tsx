@@ -3,10 +3,10 @@ import { useGameContext } from '../context/GameContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const GameScoreDisplay = () => {
-  const { score, isGameEnabled } = useGameContext();
+  const { score, gameState } = useGameContext();
   
-  // Only show score if game is enabled and score is greater than 0
-  const showScore = isGameEnabled && score > 0;
+  // Only show score when snake is active on screen (gameState is 'ACTIVE')
+  const showScore = gameState === 'ACTIVE';
   
   return (
     <AnimatePresence>

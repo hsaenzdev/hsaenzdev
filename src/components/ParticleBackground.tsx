@@ -28,7 +28,7 @@ export const ParticleBackground = () => {
   const colorsRef = useRef<string[]>([]);
   const isInitializedRef = useRef(false);
   const snakeGameRef = useRef<ReturnType<typeof createSnakeGame> | null>(null);
-  const { isGameEnabled, isInputFocused, setScore } = useGameContext();
+  const { isGameEnabled, isInputFocused, setScore, setGameState } = useGameContext();
   
   // Memoize color-related functions
   const hexToRgb = useCallback((hex: string): string => {
@@ -370,6 +370,9 @@ export const ParticleBackground = () => {
         
         // Update score in game context based on current game state
         const currentGameState = snakeGameRef.current.getGameState();
+        // Update the game state in the context
+        setGameState(currentGameState);
+        
         if (currentGameState === 'INACTIVE') {
           // Reset score to 0 when game is inactive
           setScore(0);
@@ -391,7 +394,7 @@ export const ParticleBackground = () => {
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, [hexToRgb, lerpColor, handleParticleEaten, isGameEnabled, theme, setScore]); // Dependencies updated
+  }, [hexToRgb, lerpColor, handleParticleEaten, isGameEnabled, theme, setScore, setGameState]);
   
   return (
     <motion.canvas

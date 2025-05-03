@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 
+// Game state types
+export type GameState = 'INACTIVE' | 'ACTIVE' | 'GAME_OVER';
+
 interface GameContextType {
   isGameEnabled: boolean;
   enableGame: () => void;
@@ -9,6 +12,8 @@ interface GameContextType {
   setScore: (score: number) => void;
   isInputFocused: boolean;
   setInputFocused: (focused: boolean) => void;
+  gameState: GameState;
+  setGameState: (state: GameState) => void;
 }
 
 const defaultGameContext: GameContextType = {
@@ -19,7 +24,9 @@ const defaultGameContext: GameContextType = {
   score: 0,
   setScore: () => {},
   isInputFocused: false,
-  setInputFocused: () => {}
+  setInputFocused: () => {},
+  gameState: 'INACTIVE',
+  setGameState: () => {}
 };
 
 const GameContext = createContext<GameContextType>(defaultGameContext);
@@ -34,6 +41,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
   const [isGameEnabled, setIsGameEnabled] = useState(false);
   const [score, setScore] = useState(0);
   const [isInputFocused, setInputFocused] = useState(false);
+  const [gameState, setGameState] = useState<GameState>('INACTIVE');
 
   const enableGame = useCallback(() => {
     setIsGameEnabled(true);
@@ -55,7 +63,9 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     score,
     setScore,
     isInputFocused,
-    setInputFocused
+    setInputFocused,
+    gameState,
+    setGameState
   };
 
   return (
