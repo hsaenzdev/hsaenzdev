@@ -1,4 +1,4 @@
-import { Box, useTheme, Typography, Tooltip } from '@mui/material';
+import { Box, useTheme, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
 import resumePdf from '../assets/hsaenzresume.pdf';
@@ -56,9 +56,23 @@ const Cursor = memo(() => {
 const TypedLine = ({ text, duration = 1.5, onComplete }: { text: string; duration?: number; onComplete?: () => void }) => {
   const [displayedText, setDisplayedText] = useState('');
   const intervalRef = useRef<number | null>(null);
+  const animationCompleteRef = useRef(false);
+  const textRef = useRef(text);
   
   useEffect(() => {
-    let currentIndex = 0;
+    // Only reset and restart animation if the text actually changes
+    if (textRef.current !== text) {
+      setDisplayedText('');
+      animationCompleteRef.current = false;
+      textRef.current = text;
+    }
+    
+    // If animation was already completed, don't restart
+    if (animationCompleteRef.current) {
+      return;
+    }
+    
+    let currentIndex = displayedText.length || 0;
     const charTime = duration * 1000 / text.length;
     
     intervalRef.current = window.setInterval(() => {
@@ -66,9 +80,10 @@ const TypedLine = ({ text, duration = 1.5, onComplete }: { text: string; duratio
         setDisplayedText(text.substring(0, currentIndex));
         currentIndex++;
         
-        if (currentIndex > text.length && onComplete) {
+        if (currentIndex > text.length) {
           if (intervalRef.current) clearInterval(intervalRef.current);
-          setTimeout(onComplete, 300);
+          animationCompleteRef.current = true;
+          if (onComplete) setTimeout(onComplete, 300);
         }
       }
     }, charTime);
@@ -229,22 +244,62 @@ export const RetroTerminal = ({
   // Handle the intro sequence
   useEffect(() => {
     if (currentState === 'intro') {
+      // Use a ref to track if the animation has completed
+      const hasCompleted = { current: false };
+      
       const timer = setTimeout(() => {
-        setIntroComplete(true);
-        setCurrentState('menu');
+        if (!hasCompleted.current) {
+          hasCompleted.current = true;
+          setIntroComplete(true);
+          setCurrentState('menu');
+        }
       }, 5000);
       
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [currentState]);
   
   // Handle key presses for terminal input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (currentState !== 'menu') return;
+      // Exit early if not in menu state or if event is already handled
+      if (currentState !== 'menu' || e.defaultPrevented) {
+        return;
+      }
       
-      // Check if the event is already handled elsewhere (e.g. by the game)
-      if (e.defaultPrevented) return;
+      // Check if we're handling arrow keys
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        // Only handle arrow keys if we're focused on the terminal
+        const terminalFocused = document.activeElement?.closest('.terminal-container') !== null;
+        
+        if (!terminalFocused) {
+          return; // Let other components handle the arrow keys
+        }
+        
+        e.preventDefault(); // Prevent default behavior for arrow keys in terminal
+        
+        if (e.key === 'ArrowUp') {
+          // Navigate command history
+          if (commandHistory.length > 0 && commandIndex < commandHistory.length - 1) {
+            const newIndex = commandIndex + 1;
+            setCommandIndex(newIndex);
+            setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
+          }
+        } else if (e.key === 'ArrowDown') {
+          // Navigate command history
+          if (commandIndex > 0) {
+            const newIndex = commandIndex - 1;
+            setCommandIndex(newIndex);
+            setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
+          } else if (commandIndex === 0) {
+            setCommandIndex(-1);
+            setCommand('');
+          }
+        }
+        return;
+      }
       
       if (e.key === 'Enter') {
         // Process command
@@ -257,35 +312,6 @@ export const RetroTerminal = ({
         setCommandIndex(-1);
       } else if (e.key === 'Backspace') {
         setCommand(prev => prev.slice(0, -1));
-      } else if (e.key === 'ArrowUp') {
-        // Only handle arrow keys if we're focused on the terminal
-        const terminalFocused = document.activeElement?.closest('.terminal-container') !== null;
-        
-        if (terminalFocused) {
-          e.preventDefault();
-          // Navigate command history
-          if (commandHistory.length > 0 && commandIndex < commandHistory.length - 1) {
-            const newIndex = commandIndex + 1;
-            setCommandIndex(newIndex);
-            setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
-          }
-        }
-      } else if (e.key === 'ArrowDown') {
-        // Only handle arrow keys if we're focused on the terminal
-        const terminalFocused = document.activeElement?.closest('.terminal-container') !== null;
-        
-        if (terminalFocused) {
-          e.preventDefault();
-          // Navigate command history
-          if (commandIndex > 0) {
-            const newIndex = commandIndex - 1;
-            setCommandIndex(newIndex);
-            setCommand(commandHistory[commandHistory.length - 1 - newIndex]);
-          } else if (commandIndex === 0) {
-            setCommandIndex(-1);
-            setCommand('');
-          }
-        }
       } else if (e.key === 'Tab') {
         e.preventDefault();
         // Auto-complete command
