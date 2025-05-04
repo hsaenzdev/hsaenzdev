@@ -57,80 +57,82 @@ export const Skills = () => {
   // Skills categorized by type
   const [skills] = useState({
     frontend: [
-      { name: 'JavaScript/TypeScript', startYear: 2012, years: currentYear - 2012, projects: 25, icon: <JavascriptIcon /> },
-      { name: 'React', startYear: 2016, years: currentYear - 2016, projects: 18, icon: <WebIcon /> },
-      { name: 'Material UI', startYear: 2018, years: currentYear - 2018, projects: 12, icon: <DevicesIcon /> },
-      { name: 'Vue.js', startYear: 2017, years: currentYear - 2017, projects: 8, icon: <LanguageIcon /> },
-      { name: 'GraphQL', startYear: 2018, years: currentYear - 2018, projects: 6, icon: <ApiIcon /> }
+      { name: 'JavaScript', startYear: 2014, years: currentYear - 2014, projects: 12, icon: <JavascriptIcon /> },
+      { name: 'TypeScript', startYear: 2016, years: currentYear - 2016, projects: 8, icon: <CodeIcon /> },
+      { name: 'React', startYear: 2017, years: currentYear - 2017, projects: 10, icon: <WebIcon /> },
+      { name: 'Material UI', startYear: 2018, years: currentYear - 2018, projects: 7, icon: <DevicesIcon /> },
+      { name: 'Vue.js', startYear: 2018, years: currentYear - 2018, projects: 5, icon: <LanguageIcon /> },
+      { name: 'GraphQL', startYear: 2019, years: currentYear - 2019, projects: 4, icon: <ApiIcon /> }
     ],
     backend: [
-      { name: 'Node.js', startYear: 2014, years: currentYear - 2014, projects: 20, icon: <TerminalIcon /> },
-      { name: 'Express.js', startYear: 2015, years: currentYear - 2015, projects: 15, icon: <DataObjectIcon /> },
-      { name: 'Elixir/Phoenix', startYear: 2019, years: currentYear - 2019, projects: 4, icon: <AutoAwesomeIcon /> },
-      { name: 'PHP', startYear: 2010, years: currentYear - 2010, projects: 30, icon: <PhpIcon /> },
-      { name: 'C#', startYear: 2014, years: currentYear - 2014, projects: 10, icon: <CodeIcon /> },
-      { name: 'Python', startYear: 2016, years: currentYear - 2016, projects: 12, icon: <DesignServicesIcon /> }
+      { name: 'Node.js', startYear: 2016, years: currentYear - 2016, projects: 9, icon: <TerminalIcon /> },
+      { name: 'Express.js', startYear: 2016, years: currentYear - 2016, projects: 8, icon: <DataObjectIcon /> },
+      { name: 'Elixir/Phoenix', startYear: 2022, years: currentYear - 2022, projects: 3, icon: <AutoAwesomeIcon /> },
+      { name: 'PHP', startYear: 2014, years: currentYear - 2014, projects: 12, icon: <PhpIcon /> },
+      { name: 'C#', startYear: 2015, years: currentYear - 2015, projects: 6, icon: <CodeIcon /> },
+      { name: 'Python', startYear: 2018, years: currentYear - 2018, projects: 5, icon: <DesignServicesIcon /> }
     ],
     database: [
-      { name: 'PostgreSQL', startYear: 2015, years: currentYear - 2015, projects: 14, icon: <StorageIcon /> },
-      { name: 'Snowflake', startYear: 2020, years: currentYear - 2020, projects: 3, icon: <StorageRoundedIcon /> },
-      { name: 'ClickHouse', startYear: 2021, years: currentYear - 2021, projects: 2, icon: <DnsIcon /> },
-      { name: 'SQL/NoSQL', startYear: 2012, years: currentYear - 2012, projects: 22, icon: <CalendarViewWeekIcon /> }
+      { name: 'PostgreSQL', startYear: 2016, years: currentYear - 2016, projects: 8, icon: <StorageIcon /> },
+      { name: 'MongoDB', startYear: 2017, years: currentYear - 2017, projects: 6, icon: <StorageRoundedIcon /> },
+      { name: 'Snowflake', startYear: 2022, years: currentYear - 2022, projects: 2, icon: <StorageRoundedIcon /> },
+      { name: 'ClickHouse', startYear: 2022, years: currentYear - 2022, projects: 1, icon: <DnsIcon /> },
+      { name: 'SQL/NoSQL', startYear: 2014, years: currentYear - 2014, projects: 15, icon: <CalendarViewWeekIcon /> }
     ],
     devops: [
-      { name: 'AWS', startYear: 2018, years: currentYear - 2018, projects: 10, icon: <CloudIcon /> },
-      { name: 'Docker', startYear: 2017, years: currentYear - 2017, projects: 8, icon: <WebIcon /> },
-      { name: 'Git (GitLab CI/CD)', startYear: 2014, years: currentYear - 2014, projects: 30, icon: <GitHubIcon /> },
-      { name: 'Linux', startYear: 2012, years: currentYear - 2012, projects: 25, icon: <TerminalIcon /> },
-      { name: 'Jira', startYear: 2016, years: currentYear - 2016, projects: 15, icon: <DeveloperModeIcon /> },
-      { name: 'LaunchDarkly', startYear: 2021, years: currentYear - 2021, projects: 4, icon: <ApiIcon /> }
+      { name: 'AWS', startYear: 2019, years: currentYear - 2019, projects: 6, icon: <CloudIcon /> },
+      { name: 'Docker', startYear: 2019, years: currentYear - 2019, projects: 5, icon: <WebIcon /> },
+      { name: 'Git (GitLab CI/CD)', startYear: 2014, years: currentYear - 2014, projects: 20, icon: <GitHubIcon /> },
+      { name: 'Linux', startYear: 2014, years: currentYear - 2014, projects: 15, icon: <TerminalIcon /> },
+      { name: 'Jira', startYear: 2017, years: currentYear - 2017, projects: 10, icon: <DeveloperModeIcon /> },
+      { name: 'LaunchDarkly', startYear: 2022, years: currentYear - 2022, projects: 2, icon: <ApiIcon /> }
     ],
     soft: [
       { 
         name: 'Team Collaboration', 
-        startYear: 2010, 
-        years: currentYear - 2010, 
-        projects: 40, 
+        startYear: 2014, 
+        years: currentYear - 2014, 
+        projects: 20, 
         icon: <HandshakeIcon />,
         description: 'Party member synergy +100. Works well in multiplayer mode!'
       },
       { 
         name: 'Problem Solving', 
-        startYear: 2010, 
-        years: currentYear - 2010, 
-        projects: 50, 
+        startYear: 2014, 
+        years: currentYear - 2014, 
+        projects: 25, 
         icon: <PsychologyIcon />,
         description: 'Can solve puzzles and defeat boss bugs with strategic thinking'
       },
       { 
         name: 'Communication', 
-        startYear: 2010, 
-        years: currentYear - 2010, 
-        projects: 45, 
+        startYear: 2014, 
+        years: currentYear - 2014, 
+        projects: 22, 
         icon: <RecordVoiceOverIcon />,
         description: 'High charisma stat! Explains complex concepts in simple terms'
       },
       { 
         name: 'Adaptability', 
-        startYear: 2010, 
-        years: currentYear - 2010, 
-        projects: 35, 
+        startYear: 2014, 
+        years: currentYear - 2014, 
+        projects: 20, 
         icon: <AutoFixHighIcon />,
         description: 'Quick to master new environments and tech skill trees'
       },
       { 
         name: 'Attention to Detail', 
-        startYear: 2010, 
-        years: currentYear - 2010, 
-        projects: 48, 
+        startYear: 2014, 
+        years: currentYear - 2014, 
+        projects: 25, 
         icon: <StarRateIcon />,
         description: 'Eagle-eyed bug hunter with +10 precision stat'
       },
       { 
         name: 'Creativity', 
-        startYear: 2010, 
-        years: currentYear - 2010, 
-        projects: 30, 
+        startYear: 2014, 
+        years: currentYear - 2014, 
+        projects: 18, 
         icon: <BrushIcon />,
         description: 'Thinks outside the inventory box for innovative solutions'
       }

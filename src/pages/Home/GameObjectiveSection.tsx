@@ -1,13 +1,14 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import { GlowingText } from "../../components/GlowingText";
+import StarIcon from '@mui/icons-material/Star';
 
 export const GameObjectiveSection = () => {
   const theme = useTheme();
   
-  // Enhanced description text that features career highlights
+  // Friendly, conversational description highlighting key achievements from resume
   const enhancedDescription = 
-    "Full-stack developer with 10+ years crafting web applications. Specializing in React, TypeScript, and AWS. Successfully led the development of document management platforms, interactive dashboards, and secure cloud solutions.";
+    "Hey there! I'm a passionate full-stack developer who loves turning complex challenges into user-friendly solutions. Over my 10+ year journey, I've built everything from interactive data dashboards to secure document management systems. My superpower? Combining React and TypeScript expertise with cloud solutions to create scalable, high-performance applications. I thrive in collaborative environments and genuinely enjoy optimizing code to make things run smoother and faster!";
 
   return (
     <Box 
@@ -29,7 +30,7 @@ export const GameObjectiveSection = () => {
         transition={{ duration: 0.4 }}
       >
         <GlowingText 
-          text="DEVELOPER PROFILE"
+          text="CAREER QUEST"
           variant="h4"
           color="#ffffff"
           glowColor={theme.palette.accent3.main}
@@ -42,26 +43,6 @@ export const GameObjectiveSection = () => {
         />
       </Box>
       
-      {/* Character Name */}
-      <Typography
-        component={motion.div}
-        initial={{ y: -10 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.4 }}
-        variant="body1"
-        sx={{
-          color: theme.palette.primary.main,
-          fontFamily: '"Press Start 2P", monospace',
-          fontSize: { xs: '0.75rem', sm: '0.8rem', md: '0.85rem' },
-          fontWeight: 'bold',
-          lineHeight: 1.6,
-          letterSpacing: '0.05em',
-          textShadow: `0 0 10px ${theme.palette.primary.main}70`,
-          mb: 1.5,
-        }}
-      >
-        HECTOR SAENZ - LVL 10
-      </Typography>
       
       {/* Main description */}
       <motion.div

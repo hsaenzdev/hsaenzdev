@@ -47,7 +47,6 @@ export const DevStatsSection = () => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6 }}
       sx={{
-        padding: 2.5,
         maxWidth: { xs: '100%', sm: '230px' },
         height: 'fit-content',
         position: 'relative',
