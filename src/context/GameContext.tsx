@@ -1,7 +1,13 @@
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useCallback,
+} from "react";
 
 // Game state types
-export type GameState = 'INACTIVE' | 'ACTIVE' | 'GAME_OVER';
+export type GameState = "INACTIVE" | "ACTIVE" | "GAME_OVER";
 
 interface GameContextType {
   isGameEnabled: boolean;
@@ -25,8 +31,8 @@ const defaultGameContext: GameContextType = {
   setScore: () => {},
   isInputFocused: false,
   setInputFocused: () => {},
-  gameState: 'INACTIVE',
-  setGameState: () => {}
+  gameState: "INACTIVE",
+  setGameState: () => {},
 };
 
 const GameContext = createContext<GameContextType>(defaultGameContext);
@@ -41,7 +47,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
   const [isGameEnabled, setIsGameEnabled] = useState(false);
   const [score, setScore] = useState(0);
   const [isInputFocused, setInputFocused] = useState(false);
-  const [gameState, setGameState] = useState<GameState>('INACTIVE');
+  const [gameState, setGameState] = useState<GameState>("INACTIVE");
 
   const enableGame = useCallback(() => {
     setIsGameEnabled(true);
@@ -52,7 +58,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
   }, []);
 
   const toggleGame = useCallback(() => {
-    setIsGameEnabled(prev => !prev);
+    setIsGameEnabled((prev) => !prev);
   }, []);
 
   const value = {
@@ -65,12 +71,8 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     isInputFocused,
     setInputFocused,
     gameState,
-    setGameState
+    setGameState,
   };
 
-  return (
-    <GameContext.Provider value={value}>
-      {children}
-    </GameContext.Provider>
-  );
-}; 
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
+};

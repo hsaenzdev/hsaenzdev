@@ -1,13 +1,13 @@
-import { Box, Typography } from '@mui/material';
-import { useGameContext } from '../context/GameContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Box, Typography } from "@mui/material";
+import { useGameContext } from "../context/GameContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const GameScoreDisplay = () => {
   const { score, gameState } = useGameContext();
-  
+
   // Only show score when snake is active on screen (gameState is 'ACTIVE')
-  const showScore = gameState === 'ACTIVE';
-  
+  const showScore = gameState === "ACTIVE";
+
   return (
     <AnimatePresence>
       {showScore && (
@@ -18,26 +18,26 @@ export const GameScoreDisplay = () => {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
           sx={{
-            position: 'fixed',
+            position: "fixed",
             top: 16,
             right: 16,
             zIndex: 1000,
-            padding: '4px 12px',
-            borderRadius: '4px',
-            background: 'rgba(0, 0, 0, 0.7)',
-            backdropFilter: 'blur(5px)',
-            border: '2px solid',
-            borderColor: theme => theme.palette.primary.main,
-            boxShadow: theme => `0 0 10px ${theme.palette.primary.main}`,
+            padding: "4px 12px",
+            borderRadius: "4px",
+            background: "rgba(0, 0, 0, 0.7)",
+            backdropFilter: "blur(5px)",
+            border: "2px solid",
+            borderColor: (theme) => theme.palette.primary.main,
+            boxShadow: (theme) => `0 0 10px ${theme.palette.primary.main}`,
           }}
         >
           <Typography
             variant="h6"
             sx={{
               fontFamily: '"Press Start 2P", cursive',
-              fontSize: '0.8rem',
-              color: '#fff',
-              textShadow: theme => `0 0 5px ${theme.palette.primary.main}`,
+              fontSize: "0.8rem",
+              color: "#fff",
+              textShadow: (theme) => `0 0 5px ${theme.palette.primary.main}`,
             }}
           >
             SCORE: {score}
@@ -46,4 +46,4 @@ export const GameScoreDisplay = () => {
       )}
     </AnimatePresence>
   );
-}; 
+};

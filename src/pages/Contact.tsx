@@ -1,35 +1,43 @@
-import { Box, Typography, Paper, TextField, Button, useTheme } from "@mui/material";
-import EmailIcon from '@mui/icons-material/Email';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import SendIcon from '@mui/icons-material/Send';
+import {
+  Box,
+  Typography,
+  Paper,
+  TextField,
+  Button,
+  useTheme,
+} from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import SendIcon from "@mui/icons-material/Send";
 
 export const Contact = () => {
   const theme = useTheme();
-  
+
   return (
     <Box
       sx={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
         padding: theme.spacing(4),
       }}
     >
-      <Typography 
-        variant="h3" 
-        sx={{ 
-          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+      <Typography
+        variant="h3"
+        sx={{
+          fontFamily:
+            '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
           color: theme.palette.primary.main,
           mb: 4,
-          textAlign: 'center'
+          textAlign: "center",
         }}
       >
         Game Over?
       </Typography>
-      
-      <Box sx={{ maxWidth: 800, mx: 'auto', width: '100%' }}>
+
+      <Box sx={{ maxWidth: 800, mx: "auto", width: "100%" }}>
         <Paper
           elevation={3}
           sx={{
@@ -38,23 +46,25 @@ export const Contact = () => {
             background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
           }}
         >
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '1rem',
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily:
+                '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: "1rem",
               color: theme.palette.primary.main,
               mb: 3,
-              textAlign: 'center'
+              textAlign: "center",
             }}
           >
             Continue The Adventure
           </Typography>
-          
-          <Typography variant="body1" sx={{ mb: 4, textAlign: 'center' }}>
-            Ready to collaborate or have questions? Send me a message and I'll get back to you!
+
+          <Typography variant="body1" sx={{ mb: 4, textAlign: "center" }}>
+            Ready to collaborate or have questions? Send me a message and I'll
+            get back to you!
           </Typography>
-          
+
           <Box component="form" sx={{ mb: 4 }}>
             <TextField
               fullWidth
@@ -65,15 +75,15 @@ export const Contact = () => {
                 sx: {
                   borderRadius: 1,
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.accent1.main
+                    borderColor: theme.palette.accent1.main,
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.primary.main
-                  }
-                }
+                    borderColor: theme.palette.primary.main,
+                  },
+                },
               }}
             />
-            
+
             <TextField
               fullWidth
               label="Your Email"
@@ -83,15 +93,15 @@ export const Contact = () => {
                 sx: {
                   borderRadius: 1,
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.accent2.main
+                    borderColor: theme.palette.accent2.main,
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.primary.main
-                  }
-                }
+                    borderColor: theme.palette.primary.main,
+                  },
+                },
               }}
             />
-            
+
             <TextField
               fullWidth
               label="Message"
@@ -103,104 +113,108 @@ export const Contact = () => {
                 sx: {
                   borderRadius: 1,
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.accent3.main
+                    borderColor: theme.palette.accent3.main,
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.primary.main
-                  }
-                }
+                    borderColor: theme.palette.primary.main,
+                  },
+                },
               }}
             />
-            
+
             <Button
               variant="contained"
               color="primary"
               size="large"
-              sx={{ 
+              sx={{
                 mt: 2,
-                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                fontSize: '0.8rem',
-                py: 1.5
+                fontFamily:
+                  '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize: "0.8rem",
+                py: 1.5,
               }}
               endIcon={<SendIcon />}
             >
               SEND
             </Button>
           </Box>
-          
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mb: 3 }}>
+
+          <Box
+            sx={{ display: "flex", justifyContent: "center", gap: 3, mb: 3 }}
+          >
             <Paper
               elevation={2}
-              sx={{ 
-                p: 1.5, 
-                borderRadius: '50%',
+              sx={{
+                p: 1.5,
+                borderRadius: "50%",
                 background: theme.palette.primary.main,
-                cursor: 'pointer',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'scale(1.1)'
-                }
+                cursor: "pointer",
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
               }}
             >
-              <EmailIcon sx={{ color: 'white' }} />
+              <EmailIcon sx={{ color: "white" }} />
             </Paper>
-            
+
             <Paper
               elevation={2}
-              sx={{ 
-                p: 1.5, 
-                borderRadius: '50%',
+              sx={{
+                p: 1.5,
+                borderRadius: "50%",
                 background: theme.palette.accent1.main,
-                cursor: 'pointer',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'scale(1.1)'
-                }
+                cursor: "pointer",
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
               }}
             >
-              <GitHubIcon sx={{ color: 'white' }} />
+              <GitHubIcon sx={{ color: "white" }} />
             </Paper>
-            
+
             <Paper
               elevation={2}
-              sx={{ 
-                p: 1.5, 
-                borderRadius: '50%',
+              sx={{
+                p: 1.5,
+                borderRadius: "50%",
                 background: theme.palette.accent2.main,
-                cursor: 'pointer',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'scale(1.1)'
-                }
+                cursor: "pointer",
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
               }}
             >
-              <LinkedInIcon sx={{ color: 'white' }} />
+              <LinkedInIcon sx={{ color: "white" }} />
             </Paper>
-            
+
             <Paper
               elevation={2}
-              sx={{ 
-                p: 1.5, 
-                borderRadius: '50%',
+              sx={{
+                p: 1.5,
+                borderRadius: "50%",
                 background: theme.palette.accent3.main,
-                cursor: 'pointer',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'scale(1.1)'
-                }
+                cursor: "pointer",
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
               }}
             >
-              <TwitterIcon sx={{ color: 'white' }} />
+              <TwitterIcon sx={{ color: "white" }} />
             </Paper>
           </Box>
-          
-          <Typography 
-            variant="caption" 
-            sx={{ 
-              display: 'block', 
-              textAlign: 'center',
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '0.6rem'
+
+          <Typography
+            variant="caption"
+            sx={{
+              display: "block",
+              textAlign: "center",
+              fontFamily:
+                '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: "0.6rem",
             }}
           >
             PRESS SEND TO CONTINUE
@@ -209,4 +223,4 @@ export const Contact = () => {
       </Box>
     </Box>
   );
-}; 
+};

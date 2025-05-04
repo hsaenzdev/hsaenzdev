@@ -1,51 +1,67 @@
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Paper, useTheme } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  Paper,
+  useTheme,
+} from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import HomeIcon from '@mui/icons-material/Home';
-import CodeIcon from '@mui/icons-material/Code';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import DownloadIcon from '@mui/icons-material/Download';
+import HomeIcon from "@mui/icons-material/Home";
+import CodeIcon from "@mui/icons-material/Code";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import DownloadIcon from "@mui/icons-material/Download";
 import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
-import resumePdf from '../assets/hsaenzresume.pdf';
+import resumePdf from "../assets/hsaenzresume.pdf";
 
 const menuItems = [
-  { text: 'Home', icon: <HomeIcon />, path: '/' },
-  { text: 'Skills', icon: <CodeIcon />, path: '/skills' },
-  { text: 'Experience', icon: <BusinessCenterIcon />, path: '/experience' },
+  { text: "Home", icon: <HomeIcon />, path: "/" },
+  { text: "Skills", icon: <CodeIcon />, path: "/skills" },
+  { text: "Experience", icon: <BusinessCenterIcon />, path: "/experience" },
 ];
 
 // Social links
 const socialLinks = [
-  { text: 'GitHub', icon: <GitHubIcon />, url: 'https://github.com/hsaenzdev' },
-  { text: 'LinkedIn', icon: <LinkedInIcon />, url: 'https://www.linkedin.com/in/saenzo/' },
-  { text: 'Resume', icon: <DownloadIcon />, url: '' }
+  { text: "GitHub", icon: <GitHubIcon />, url: "https://github.com/hsaenzdev" },
+  {
+    text: "LinkedIn",
+    icon: <LinkedInIcon />,
+    url: "https://www.linkedin.com/in/saenzo/",
+  },
+  { text: "Resume", icon: <DownloadIcon />, url: "" },
 ];
 
 export const SideNav = () => {
   const location = useLocation();
   const { mode } = useThemeContext();
   const theme = useTheme();
-  
+
   // Animate active menu item
   const [activeMenuIndex, setActiveMenuIndex] = useState<number>(-1);
-  
+
   useEffect(() => {
-    const index = menuItems.findIndex(item => item.path === location.pathname);
+    const index = menuItems.findIndex(
+      (item) => item.path === location.pathname,
+    );
     setActiveMenuIndex(index);
   }, [location.pathname]);
-  
+
   // Handle resume download
   const handleResumeDownload = (e: React.MouseEvent) => {
     e.preventDefault();
     try {
       // Create a link element to trigger download
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = resumePdf;
-      link.download = 'hsaenzresume.pdf';
+      link.download = "hsaenzresume.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -53,31 +69,31 @@ export const SideNav = () => {
       console.error("Error downloading resume:", error);
     }
   };
-  
+
   return (
     <Paper
       elevation={3}
-      sx={{ 
-        width: 280, 
-        height: '100%',
+      sx={{
+        width: 280,
+        height: "100%",
         borderRadius: 0,
-        border: 'none',
+        border: "none",
         borderRight: `4px solid ${theme.palette.primary.main}`,
         background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
-        overflow: 'hidden',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
+        overflow: "hidden",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       {/* Pixelated border effect */}
-      <Box 
+      <Box
         sx={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           right: 0,
-          width: '8px',
-          height: '100%',
+          width: "8px",
+          height: "100%",
           background: `repeating-linear-gradient(
             0deg,
             ${theme.palette.primary.dark} 0px,
@@ -85,82 +101,96 @@ export const SideNav = () => {
             ${theme.palette.primary.main} 8px,
             ${theme.palette.primary.main} 16px
           )`,
-          opacity: 0.8
+          opacity: 0.8,
         }}
       />
-      
+
       {/* Logo Header */}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           py: 5,
           px: 3,
-          display: 'flex', 
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
           borderBottom: `2px solid ${theme.palette.divider}`,
         }}
       >
         {/* Name and subtitle with proper alignment */}
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          width: '100%',
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
           {/* Main name */}
           <Typography
             component="h1"
             sx={{
-              fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-              fontSize: '1.6rem',
-              letterSpacing: '0.05em',
+              fontFamily:
+                '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+              fontSize: "1.6rem",
+              letterSpacing: "0.05em",
               mb: 0.7,
-              textShadow: `2px 2px 0px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.15)'}`,
+              textShadow: `2px 2px 0px ${theme.palette.mode === "dark" ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.15)"}`,
             }}
           >
-            <Box component="span" sx={{ 
-              color: theme.palette.accent2.main,
-              textShadow: `
+            <Box
+              component="span"
+              sx={{
+                color: theme.palette.accent2.main,
+                textShadow: `
                 0 0 5px ${theme.palette.accent2.main}60,
                 0 0 10px ${theme.palette.accent2.main}40
               `,
-              filter: `drop-shadow(0 0 3px ${theme.palette.accent2.main})`,
-              mr: 1
-            }}>
+                filter: `drop-shadow(0 0 3px ${theme.palette.accent2.main})`,
+                mr: 1,
+              }}
+            >
               &lt;&gt;
             </Box>
-            <Box component="span" sx={{ 
-              color: theme.palette.primary.main,
-              textShadow: `
+            <Box
+              component="span"
+              sx={{
+                color: theme.palette.primary.main,
+                textShadow: `
                 0 0 5px ${theme.palette.primary.main}60,
                 0 0 10px ${theme.palette.primary.main}40
               `,
-              filter: `drop-shadow(0 0 3px ${theme.palette.primary.main})`,
-            }}>
+                filter: `drop-shadow(0 0 3px ${theme.palette.primary.main})`,
+              }}
+            >
               HSAENZ
             </Box>
           </Typography>
-          
+
           {/* Subtitle with right alignment to match the image */}
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            gap: 0.6,
-            mt: -0.5,
-            pr: 0.5,
-          }}>
-            <VideogameAssetIcon sx={{ 
-              fontSize: '0.9rem', 
-              color: theme.palette.accent3.main,
-              filter: `drop-shadow(0 0 3px ${theme.palette.accent3.main}70)`,
-            }} />
-            <Typography 
-              component="div" 
-              sx={{ 
-                fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 0.6,
+              mt: -0.5,
+              pr: 0.5,
+            }}
+          >
+            <VideogameAssetIcon
+              sx={{
+                fontSize: "0.9rem",
                 color: theme.palette.accent3.main,
-                textShadow: `0 0 3px ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'}`,
+                filter: `drop-shadow(0 0 3px ${theme.palette.accent3.main}70)`,
+              }}
+            />
+            <Typography
+              component="div"
+              sx={{
+                fontFamily:
+                  '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize: "0.65rem",
+                letterSpacing: "0.1em",
+                color: theme.palette.accent3.main,
+                textShadow: `0 0 3px ${theme.palette.mode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)"}`,
               }}
             >
               DEV QUEST
@@ -168,34 +198,35 @@ export const SideNav = () => {
           </Box>
         </Box>
       </Box>
-      
+
       {/* MAIN QUESTS Section */}
       <Box sx={{ px: 2, py: 3 }}>
         <Typography
           variant="subtitle2"
           sx={{
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.7rem',
-            color: '#00BFFF',
+            fontFamily:
+              '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+            fontSize: "0.7rem",
+            color: "#00BFFF",
             mb: 1,
             pl: 2,
-            letterSpacing: '0.1em'
+            letterSpacing: "0.1em",
           }}
         >
           MAIN QUESTS
         </Typography>
-        
+
         <Box sx={{ pr: 3 }}>
           <List sx={{ p: 0 }}>
             {menuItems.map((item, index) => (
               <ListItem key={item.text} disablePadding sx={{ mb: 2 }}>
                 <motion.div
                   initial={{ x: 0 }}
-                  animate={{ 
+                  animate={{
                     x: activeMenuIndex === index ? 8 : 0,
-                    scale: activeMenuIndex === index ? 1.02 : 1
+                    scale: activeMenuIndex === index ? 1.02 : 1,
                   }}
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                 >
                   <ListItemButton
                     component={Link}
@@ -203,36 +234,41 @@ export const SideNav = () => {
                     selected={location.pathname === item.path}
                     sx={{
                       borderRadius: 1,
-                      border: location.pathname === item.path 
-                        ? `2px solid ${theme.palette.primary.main}` 
-                        : `2px solid transparent`,
+                      border:
+                        location.pathname === item.path
+                          ? `2px solid ${theme.palette.primary.main}`
+                          : `2px solid transparent`,
                       mb: 0.5,
                       px: 2,
-                      '&.Mui-selected': {
-                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                      "&.Mui-selected": {
+                        backgroundColor: "rgba(0, 0, 0, 0.1)",
                         color: theme.palette.primary.main,
-                        '&:hover': {
-                          backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.15)",
                         },
                       },
                     }}
                   >
-                    <ListItemIcon 
-                      sx={{ 
-                        color: location.pathname === item.path ? theme.palette.primary.main : 'inherit',
-                        minWidth: 40
+                    <ListItemIcon
+                      sx={{
+                        color:
+                          location.pathname === item.path
+                            ? theme.palette.primary.main
+                            : "inherit",
+                        minWidth: 40,
                       }}
                     >
                       {item.icon}
                     </ListItemIcon>
-                    <ListItemText 
-                      primary={item.text} 
+                    <ListItemText
+                      primary={item.text}
                       primaryTypographyProps={{
                         sx: {
-                          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                          fontSize: '0.7rem',
-                          letterSpacing: '0.05em'
-                        }
+                          fontFamily:
+                            '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                          fontSize: "0.7rem",
+                          letterSpacing: "0.05em",
+                        },
                       }}
                     />
                   </ListItemButton>
@@ -242,87 +278,89 @@ export const SideNav = () => {
           </List>
         </Box>
       </Box>
-      
+
       {/* Divider after MAIN QUESTS */}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           borderBottom: `2px solid ${theme.palette.divider}`,
         }}
       />
-      
+
       {/* QUEST ITEMS Section (merged Resume and Contact) */}
       <Box sx={{ px: 2, py: 3, flex: 1 }}>
-        <Typography 
-          variant="subtitle2" 
-          sx={{ 
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.7rem',
-            color: '#00E5FF', // Bright cyan/teal color for the heading
+        <Typography
+          variant="subtitle2"
+          sx={{
+            fontFamily:
+              '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+            fontSize: "0.7rem",
+            color: "#00E5FF", // Bright cyan/teal color for the heading
             mb: 2,
             pl: 2,
-            letterSpacing: '0.1em'
+            letterSpacing: "0.1em",
           }}
         >
           QUEST ITEMS
         </Typography>
-        
+
         {/* Resource links as a list */}
         <List sx={{ p: 0 }}>
           {socialLinks.map((link) => {
             // Determine color based on link text
-            let itemColor = '#FFD700'; // Default gold
-            
-            if (link.text === 'GitHub') {
-              itemColor = '#2ECC71'; // Green for GitHub
-            } else if (link.text === 'LinkedIn') {
-              itemColor = '#3498DB'; // Blue for LinkedIn
-            } else if (link.text === 'Resume') {
-              itemColor = '#F39C12'; // Orange for Resume
+            let itemColor = "#FFD700"; // Default gold
+
+            if (link.text === "GitHub") {
+              itemColor = "#2ECC71"; // Green for GitHub
+            } else if (link.text === "LinkedIn") {
+              itemColor = "#3498DB"; // Blue for LinkedIn
+            } else if (link.text === "Resume") {
+              itemColor = "#F39C12"; // Orange for Resume
             }
-            
+
             return (
               <ListItem disablePadding sx={{ mb: 2 }} key={link.text}>
-                <motion.div
-                  style={{ width: '100%' }}
-                >
+                <motion.div style={{ width: "100%" }}>
                   <ListItemButton
                     component="a"
                     href={link.url}
-                    target={link.text !== 'Resume' ? "_blank" : undefined}
-                    onClick={link.text === 'Resume' ? handleResumeDownload : undefined}
+                    target={link.text !== "Resume" ? "_blank" : undefined}
+                    onClick={
+                      link.text === "Resume" ? handleResumeDownload : undefined
+                    }
                     sx={{
                       borderRadius: 1,
                       border: `2px solid ${itemColor}`,
                       py: 0.8,
                       px: 2,
-                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      '&:hover': {
-                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                      }
+                      backgroundColor: "rgba(0, 0, 0, 0.05)",
+                      position: "relative",
+                      overflow: "hidden",
+                      "&:hover": {
+                        backgroundColor: "rgba(0, 0, 0, 0.1)",
+                      },
                     }}
                   >
-                    <ListItemIcon 
-                      sx={{ 
+                    <ListItemIcon
+                      sx={{
                         color: itemColor,
                         minWidth: 40,
-                        '& .MuiSvgIcon-root': {
-                          filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
-                        }
+                        "& .MuiSvgIcon-root": {
+                          filter: "drop-shadow(2px 2px 0 rgba(0,0,0,0.2))",
+                        },
                       }}
                     >
                       {link.icon}
                     </ListItemIcon>
-                    <ListItemText 
-                      primary={link.text} 
+                    <ListItemText
+                      primary={link.text}
                       primaryTypographyProps={{
                         sx: {
-                          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                          fontSize: '0.65rem',
-                          letterSpacing: '0.05em',
-                          color: itemColor
-                        }
+                          fontFamily:
+                            '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                          fontSize: "0.65rem",
+                          letterSpacing: "0.05em",
+                          color: itemColor,
+                        },
                       }}
                     />
                   </ListItemButton>
@@ -332,25 +370,29 @@ export const SideNav = () => {
           })}
         </List>
       </Box>
-      
+
       {/* Copyright bottom section */}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           p: 2,
           borderTop: `2px solid ${theme.palette.divider}`,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Typography
           variant="caption"
           sx={{
-            fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-            fontSize: '0.5rem',
-            color: mode === 'dark' ? theme.palette.accent1.main : theme.palette.accent2.main,
-            letterSpacing: '0.05em',
-            opacity: 0.7
+            fontFamily:
+              '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+            fontSize: "0.5rem",
+            color:
+              mode === "dark"
+                ? theme.palette.accent1.main
+                : theme.palette.accent2.main,
+            letterSpacing: "0.05em",
+            opacity: 0.7,
           }}
         >
           © 2024 HSAENZ
@@ -358,4 +400,4 @@ export const SideNav = () => {
       </Box>
     </Paper>
   );
-}; 
+};

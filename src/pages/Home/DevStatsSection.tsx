@@ -1,41 +1,41 @@
 import { Box, Typography, useTheme, alpha } from "@mui/material";
 import { motion } from "framer-motion";
-import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
-import BuildIcon from '@mui/icons-material/Build';
-import CodeIcon from '@mui/icons-material/Code';
-import StorageIcon from '@mui/icons-material/Storage';
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import BuildIcon from "@mui/icons-material/Build";
+import CodeIcon from "@mui/icons-material/Code";
+import StorageIcon from "@mui/icons-material/Storage";
 
 export const DevStatsSection = () => {
   const theme = useTheme();
-  
+
   // Developer stats as retro game attributes focused on recruiter-valued qualities
   const devStats = [
-    { 
-      icon: <WorkHistoryIcon />, 
-      label: "Experience", 
-      value: "10+", 
-      unit: "YRS", 
+    {
+      icon: <WorkHistoryIcon />,
+      label: "Experience",
+      value: "10+",
+      unit: "YRS",
       color: theme.palette.accent1.main,
     },
-    { 
-      icon: <BuildIcon />, 
-      label: "Projects", 
-      value: "8+", 
-      unit: "MAJOR", 
+    {
+      icon: <BuildIcon />,
+      label: "Projects",
+      value: "8+",
+      unit: "MAJOR",
       color: theme.palette.primary.main,
     },
-    { 
-      icon: <CodeIcon />, 
-      label: "Languages", 
-      value: "5+", 
-      unit: "TECH", 
+    {
+      icon: <CodeIcon />,
+      label: "Languages",
+      value: "5+",
+      unit: "TECH",
       color: "#00F5D4",
     },
-    { 
-      icon: <StorageIcon />, 
-      label: "Databases", 
-      value: "4+", 
-      unit: "TYPES", 
+    {
+      icon: <StorageIcon />,
+      label: "Databases",
+      value: "4+",
+      unit: "TYPES",
       color: theme.palette.error.main,
     },
   ];
@@ -47,16 +47,16 @@ export const DevStatsSection = () => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6 }}
       sx={{
-        maxWidth: { xs: '100%', sm: '230px' },
-        height: 'fit-content',
-        position: 'relative',
+        maxWidth: { xs: "100%", sm: "230px" },
+        height: "fit-content",
+        position: "relative",
       }}
     >
       {/* Stats Grid */}
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           gap: 2,
         }}
       >
@@ -69,29 +69,29 @@ export const DevStatsSection = () => {
           >
             <Box
               sx={{
-                display: 'flex',
-                alignItems: 'center',
+                display: "flex",
+                alignItems: "center",
                 gap: 1.8,
                 p: 0.8,
-                borderRadius: '8px',
+                borderRadius: "8px",
                 background: `linear-gradient(120deg, ${alpha(stat.color, 0.12)} 0%, transparent 100%)`,
                 border: `1px solid ${alpha(stat.color, 0.2)}`,
                 boxShadow: `0 0 8px ${alpha(stat.color, 0.08)}`,
-                transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                overflow: 'hidden',
-                '&:hover': {
-                  transform: 'translateX(5px) scale(1.03)',
+                transition: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                overflow: "hidden",
+                "&:hover": {
+                  transform: "translateX(5px) scale(1.03)",
                   background: `linear-gradient(120deg, ${alpha(stat.color, 0.2)} 0%, transparent 100%)`,
                   boxShadow: `0 0 12px ${alpha(stat.color, 0.15)}`,
-                  '& .stat-icon': {
-                    transform: 'scale(1.1) rotate(5deg)',
+                  "& .stat-icon": {
+                    transform: "scale(1.1) rotate(5deg)",
                     boxShadow: `0 0 12px ${stat.color}`,
                   },
-                  '& .stat-value': {
-                    transform: 'scale(1.05)',
+                  "& .stat-value": {
+                    transform: "scale(1.05)",
                     textShadow: `0 0 8px ${stat.color}`,
-                  }
-                }
+                  },
+                },
               }}
             >
               {/* Icon with animated background */}
@@ -99,43 +99,43 @@ export const DevStatsSection = () => {
                 className="stat-icon"
                 sx={{
                   color: stat.color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '6px',
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "6px",
                   p: 0.8,
                   backgroundColor: alpha(stat.color, 0.12),
                   boxShadow: `0 0 8px ${alpha(stat.color, 0.15)}`,
-                  transition: 'all 0.3s ease',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&::after': {
+                  transition: "all 0.3s ease",
+                  position: "relative",
+                  overflow: "hidden",
+                  "&::after": {
                     content: '""',
-                    position: 'absolute',
+                    position: "absolute",
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0,
                     background: `radial-gradient(circle at center, ${alpha(stat.color, 0.3)} 0%, transparent 70%)`,
                     opacity: 0.5,
-                    transform: 'scale(0)',
-                    transition: 'transform 0.5s ease',
+                    transform: "scale(0)",
+                    transition: "transform 0.5s ease",
                   },
-                  '&:hover::after': {
-                    transform: 'scale(1.5)',
-                  }
+                  "&:hover::after": {
+                    transform: "scale(1.5)",
+                  },
                 }}
               >
                 {stat.icon}
               </Box>
-              
+
               {/* Label and value */}
               <Box sx={{ flexGrow: 1 }}>
                 <Typography
                   variant="caption"
                   sx={{
-                    display: 'block',
-                    fontSize: '0.55rem',
+                    display: "block",
+                    fontSize: "0.55rem",
                     color: theme.palette.text.secondary,
                     fontFamily: '"Press Start 2P", monospace',
                     mb: 0.4,
@@ -143,17 +143,17 @@ export const DevStatsSection = () => {
                 >
                   {stat.label}
                 </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.6 }}>
+                <Box sx={{ display: "flex", alignItems: "baseline", gap: 0.6 }}>
                   <Typography
                     className="stat-value"
                     variant="body2"
                     sx={{
-                      fontWeight: 'bold',
-                      fontSize: '0.75rem',
+                      fontWeight: "bold",
+                      fontSize: "0.75rem",
                       fontFamily: '"Press Start 2P", monospace',
                       color: stat.color,
                       textShadow: `0 0 5px ${alpha(stat.color, 0.5)}`,
-                      transition: 'all 0.3s ease',
+                      transition: "all 0.3s ease",
                     }}
                   >
                     {stat.value}
@@ -162,7 +162,7 @@ export const DevStatsSection = () => {
                     <Typography
                       variant="caption"
                       sx={{
-                        fontSize: '0.55rem',
+                        fontSize: "0.55rem",
                         color: theme.palette.text.secondary,
                         opacity: 0.8,
                       }}
@@ -178,4 +178,4 @@ export const DevStatsSection = () => {
       </Box>
     </Box>
   );
-}; 
+};

@@ -10,48 +10,48 @@ import { useEffect } from "react";
 export const Portfolio = () => {
   const theme = useTheme();
   const { enableGame } = useGameContext();
-  
+
   // Enable the game by default when the portfolio loads
   useEffect(() => {
     enableGame();
   }, [enableGame]);
-  
+
   return (
-    <Box 
-      display="flex" 
-      flexDirection="row" 
+    <Box
+      display="flex"
+      flexDirection="row"
       height="100vh"
       sx={{
-        position: 'relative',
-        overflow: 'hidden'
+        position: "relative",
+        overflow: "hidden",
       }}
     >
       {/* Track input focus to prevent game activation when typing */}
       <InputFocusHandler />
-      
+
       {/* Animated background particles and snake game */}
       <ParticleBackground />
-      
+
       {/* Display score when game is active */}
       <GameScoreDisplay />
-      
+
       <SideNav />
-      
-      <Box 
-        flex={1}  
-        sx={{ 
-          overflow: 'auto',
-          position: 'relative',
+
+      <Box
+        flex={1}
+        sx={{
+          overflow: "auto",
+          position: "relative",
           zIndex: 1,
-          '&::-webkit-scrollbar': {
-            width: '12px',
+          "&::-webkit-scrollbar": {
+            width: "12px",
           },
-          '&::-webkit-scrollbar-track': {
+          "&::-webkit-scrollbar-track": {
             background: theme.palette.background.default,
           },
-          '&::-webkit-scrollbar-thumb': {
+          "&::-webkit-scrollbar-thumb": {
             background: theme.palette.primary.main,
-            borderRadius: '2px',
+            borderRadius: "2px",
             border: `3px solid ${theme.palette.background.default}`,
           },
         }}
