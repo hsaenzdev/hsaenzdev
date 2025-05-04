@@ -325,8 +325,24 @@ export const RetroTerminal = ({
       }
     };
     
+    // Add an event listener to prevent the terminal from scrolling when using arrow keys
+    const preventTerminalScroll = (e: KeyboardEvent) => {
+      if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+        // Check if we're focused on or inside the terminal
+        const terminalElem = document.querySelector('.terminal-container');
+        if (terminalElem && (terminalElem === document.activeElement || terminalElem.contains(document.activeElement))) {
+          e.preventDefault();
+        }
+      }
+    };
+    
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', preventTerminalScroll, { capture: true });
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keydown', preventTerminalScroll, { capture: true });
+    };
   }, [command, commandHistory, commandIndex, commands, currentState]);
   
   // Process command input
