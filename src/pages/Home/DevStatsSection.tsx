@@ -12,7 +12,7 @@ export const DevStatsSection = () => {
   const devStats = [
     {
       icon: <WorkHistoryIcon />,
-      label: "Experience",
+      label: "XP",
       value: "10+",
       unit: "YRS",
       color: theme.palette.accent1.main,
@@ -33,7 +33,7 @@ export const DevStatsSection = () => {
     },
     {
       icon: <StorageIcon />,
-      label: "Databases",
+      label: "DB",
       value: "4+",
       unit: "TYPES",
       color: theme.palette.error.main,
@@ -56,7 +56,7 @@ export const DevStatsSection = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           gap: 2,
         }}
       >

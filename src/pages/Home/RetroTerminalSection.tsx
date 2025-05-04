@@ -7,13 +7,12 @@ export const RetroTerminalSection = () => {
 
   return (
     <Box
-      marginTop="-200px"
+      marginTop="-150px"
       sx={{
-        width: { xs: "400px", sm: "500px", md: "600px" },
+        width: { xs: "300px", sm: "500px", md: "650px" },
         height: { xs: "450px", sm: "500px", md: "650px" },
         display: "flex",
         alignItems: "center",
-        mr: { xs: 0, sm: 1, md: 4 },
       }}
     >
       {/* Terminal with Glowing Border and Floating Animation */}

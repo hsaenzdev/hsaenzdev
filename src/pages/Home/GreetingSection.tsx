@@ -56,8 +56,6 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
     <Box
       sx={{
         pt: { xs: 4, md: 5 },
-        pl: { xs: 1, sm: 2, md: 3 },
-        zIndex: 10,
         maxWidth: { xs: "95%", sm: "60%", md: "50%" },
       }}
     >
@@ -86,7 +84,6 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
         sx={{
-          mt: 2,
           whiteSpace: "nowrap",
           overflow: "visible",
           display: "flex",
@@ -101,6 +98,8 @@ export const GreetingSection = ({ customGreeting }: GreetingSectionProps) => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
           alignItems="center"
+          mt={3}
+          ml="-8px"
           sx={{ gap: { xs: "0.5rem", sm: "0.75rem" } }}
         >
           <GlowingName
