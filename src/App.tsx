@@ -32,7 +32,7 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter basename="/hsaenz-portfolio">
+    <BrowserRouter basename="/hsaenzdev">
       <ThemeProvider>
         <GameProvider>
           <AppContent />

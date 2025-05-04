@@ -10,7 +10,7 @@ export const RetroTerminalSection = () => {
       marginTop="-150px"
       sx={{
         width: { xs: "300px", sm: "500px", md: "650px" },
-        height: { xs: "450px", sm: "500px", md: "650px" },
+        height: { xs: "450px", sm: "500px", md: "600px" },
         display: "flex",
         alignItems: "center",
       }}
