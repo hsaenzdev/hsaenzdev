@@ -257,7 +257,7 @@ export const SideNav = () => {
           sx={{ 
             fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
             fontSize: '0.7rem',
-            color: theme.palette.accent1.main,
+            color: '#00E5FF', // Bright cyan/teal color for the heading
             mb: 2,
             pl: 2,
             letterSpacing: '0.1em'
@@ -268,55 +268,68 @@ export const SideNav = () => {
         
         {/* Resource links as a list */}
         <List sx={{ p: 0 }}>
-          {socialLinks.map((link) => (
-            <ListItem disablePadding sx={{ mb: 2 }} key={link.text}>
-              <motion.div
-                style={{ width: '100%' }}
-              >
-                <ListItemButton
-                  component="a"
-                  href={link.url}
-                  target={link.text !== 'Resume' ? "_blank" : undefined}
-                  onClick={link.text === 'Resume' ? handleResumeDownload : undefined}
-                  sx={{
-                    borderRadius: 1,
-                    border: `2px solid ${theme.palette.accent2.main}`,
-                    py: 0.8,
-                    px: 2,
-                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&:hover': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                    }
-                  }}
+          {socialLinks.map((link) => {
+            // Determine color based on link text
+            let itemColor = '#FFD700'; // Default gold
+            
+            if (link.text === 'GitHub') {
+              itemColor = '#2ECC71'; // Green for GitHub
+            } else if (link.text === 'LinkedIn') {
+              itemColor = '#3498DB'; // Blue for LinkedIn
+            } else if (link.text === 'Resume') {
+              itemColor = '#F39C12'; // Orange for Resume
+            }
+            
+            return (
+              <ListItem disablePadding sx={{ mb: 2 }} key={link.text}>
+                <motion.div
+                  style={{ width: '100%' }}
                 >
-                  <ListItemIcon 
-                    sx={{ 
-                      color: theme.palette.accent2.main,
-                      minWidth: 40,
-                      '& .MuiSvgIcon-root': {
-                        filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                  <ListItemButton
+                    component="a"
+                    href={link.url}
+                    target={link.text !== 'Resume' ? "_blank" : undefined}
+                    onClick={link.text === 'Resume' ? handleResumeDownload : undefined}
+                    sx={{
+                      borderRadius: 1,
+                      border: `2px solid ${itemColor}`,
+                      py: 0.8,
+                      px: 2,
+                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&:hover': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
                       }
                     }}
                   >
-                    {link.icon}
-                  </ListItemIcon>
-                  <ListItemText 
-                    primary={link.text} 
-                    primaryTypographyProps={{
-                      sx: {
-                        fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                        fontSize: '0.65rem',
-                        letterSpacing: '0.05em',
-                        color: theme.palette.accent2.main
-                      }
-                    }}
-                  />
-                </ListItemButton>
-              </motion.div>
-            </ListItem>
-          ))}
+                    <ListItemIcon 
+                      sx={{ 
+                        color: itemColor,
+                        minWidth: 40,
+                        '& .MuiSvgIcon-root': {
+                          filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                        }
+                      }}
+                    >
+                      {link.icon}
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={link.text} 
+                      primaryTypographyProps={{
+                        sx: {
+                          fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                          fontSize: '0.65rem',
+                          letterSpacing: '0.05em',
+                          color: itemColor
+                        }
+                      }}
+                    />
+                  </ListItemButton>
+                </motion.div>
+              </ListItem>
+            );
+          })}
         </List>
       </Box>
       
