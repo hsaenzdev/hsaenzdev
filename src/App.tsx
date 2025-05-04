@@ -6,7 +6,6 @@ import { CssBaseline, ThemeProvider as MuiThemeProvider } from "@mui/material";
 import { useThemeContext } from "./context/ThemeContext";
 import { getAppTheme } from "./theme/theme";
 import { Home } from "./pages/Home";
-import { Projects } from "./pages/Projects";
 import { Skills } from "./pages/Skills";
 import { Experience } from "./pages/Experience";
 import { GameProvider } from "./context/GameContext";
@@ -22,7 +21,6 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Portfolio />}>
             <Route index element={<Home />} />
-            <Route path="projects" element={<Projects />} />
             <Route path="skills" element={<Skills />} />
             <Route path="experience" element={<Experience />} />
           </Route>

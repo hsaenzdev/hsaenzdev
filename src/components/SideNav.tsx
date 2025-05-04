@@ -2,7 +2,6 @@ import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typogr
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import HomeIcon from '@mui/icons-material/Home';
-import WorkIcon from '@mui/icons-material/Work';
 import CodeIcon from '@mui/icons-material/Code';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
@@ -14,9 +13,15 @@ import { useThemeContext } from "../context/ThemeContext";
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
-  { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
   { text: 'Skills', icon: <CodeIcon />, path: '/skills' },
   { text: 'Experience', icon: <BusinessCenterIcon />, path: '/experience' },
+];
+
+// Social links
+const socialLinks = [
+  { text: 'GitHub', icon: <GitHubIcon />, url: 'https://github.com/hsaenzdev' },
+  { text: 'LinkedIn', icon: <LinkedInIcon />, url: 'https://www.linkedin.com/in/saenzo/' },
+  { text: 'Resume', icon: <DownloadIcon />, url: '/resume.pdf' }
 ];
 
 export const SideNav = () => {
@@ -246,146 +251,54 @@ export const SideNav = () => {
         
         {/* Resource links as a list */}
         <List sx={{ p: 0 }}>
-          <ListItem disablePadding sx={{ mb: 2 }}>
-            <motion.div
-              style={{ width: '100%' }}
-            >
-              <ListItemButton
-                component="a"
-                href="https://github.com/hsaenzdev"
-                target="_blank"
-                sx={{
-                  borderRadius: 1,
-                  border: `2px solid #00FFDD`,
-                  py: 0.8,
-                  px: 2,
-                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                  }
-                }}
+          {socialLinks.map((link) => (
+            <ListItem disablePadding sx={{ mb: 2 }} key={link.text}>
+              <motion.div
+                style={{ width: '100%' }}
               >
-                <ListItemIcon 
-                  sx={{ 
-                    color: '#00FFDD',
-                    minWidth: 40,
-                    '& .MuiSvgIcon-root': {
-                      filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                <ListItemButton
+                  component="a"
+                  href={link.url}
+                  target="_blank"
+                  sx={{
+                    borderRadius: 1,
+                    border: `2px solid ${theme.palette.accent2.main}`,
+                    py: 0.8,
+                    px: 2,
+                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
                     }
                   }}
                 >
-                  <GitHubIcon />
-                </ListItemIcon>
-                <ListItemText 
-                  primary="GitHub" 
-                  primaryTypographyProps={{
-                    sx: {
-                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                      fontSize: '0.65rem',
-                      letterSpacing: '0.05em',
-                      color: '#00FFDD'
-                    }
-                  }}
-                />
-              </ListItemButton>
-            </motion.div>
-          </ListItem>
-          
-          <ListItem disablePadding sx={{ mb: 2 }}>
-            <motion.div
-              style={{ width: '100%' }}
-            >
-              <ListItemButton
-                component="a"
-                href="https://www.linkedin.com/in/saenzo"
-                target="_blank"
-                sx={{
-                  borderRadius: 1,
-                  border: `2px solid ${theme.palette.accent2.main}`,
-                  py: 0.8,
-                  px: 2,
-                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                  }
-                }}
-              >
-                <ListItemIcon 
-                  sx={{ 
-                    color: theme.palette.accent2.main,
-                    minWidth: 40,
-                    '& .MuiSvgIcon-root': {
-                      filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
-                    }
-                  }}
-                >
-                  <LinkedInIcon />
-                </ListItemIcon>
-                <ListItemText 
-                  primary="LinkedIn" 
-                  primaryTypographyProps={{
-                    sx: {
-                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                      fontSize: '0.65rem',
-                      letterSpacing: '0.05em',
-                      color: theme.palette.accent2.main
-                    }
-                  }}
-                />
-              </ListItemButton>
-            </motion.div>
-          </ListItem>
-          
-          <ListItem disablePadding sx={{ mb: 2 }}>
-            <motion.div
-              style={{ width: '100%' }}
-            >
-              <ListItemButton
-                component="a"
-                href="/hsaenz-portfolio/assets/hsaenzresume.pdf"
-                download
-                sx={{
-                  borderRadius: 1,
-                  border: `2px solid #FFFF00`,
-                  py: 0.8,
-                  px: 2,
-                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                  }
-                }}
-              >
-                <ListItemIcon 
-                  sx={{ 
-                    color: '#FFFF00',
-                    minWidth: 40,
-                    '& .MuiSvgIcon-root': {
-                      filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
-                    }
-                  }}
-                >
-                  <DownloadIcon />
-                </ListItemIcon>
-                <ListItemText 
-                  primary="Resume" 
-                  primaryTypographyProps={{
-                    sx: {
-                      fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
-                      fontSize: '0.65rem',
-                      letterSpacing: '0.05em',
-                      color: '#FFFF00'
-                    }
-                  }}
-                />
-              </ListItemButton>
-            </motion.div>
-          </ListItem>
+                  <ListItemIcon 
+                    sx={{ 
+                      color: theme.palette.accent2.main,
+                      minWidth: 40,
+                      '& .MuiSvgIcon-root': {
+                        filter: 'drop-shadow(2px 2px 0 rgba(0,0,0,0.2))',
+                      }
+                    }}
+                  >
+                    {link.icon}
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary={link.text} 
+                    primaryTypographyProps={{
+                      sx: {
+                        fontFamily: '"Press Start 2P", "Roboto", "Helvetica", "Arial", sans-serif',
+                        fontSize: '0.65rem',
+                        letterSpacing: '0.05em',
+                        color: theme.palette.accent2.main
+                      }
+                    }}
+                  />
+                </ListItemButton>
+              </motion.div>
+            </ListItem>
+          ))}
         </List>
       </Box>
       
