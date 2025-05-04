@@ -10,6 +10,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DownloadIcon from '@mui/icons-material/Download';
 import { motion } from "framer-motion";
 import { useThemeContext } from "../context/ThemeContext";
+import resumePdf from '../assets/hsaenzresume.pdf';
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
@@ -21,7 +22,7 @@ const menuItems = [
 const socialLinks = [
   { text: 'GitHub', icon: <GitHubIcon />, url: 'https://github.com/hsaenzdev' },
   { text: 'LinkedIn', icon: <LinkedInIcon />, url: 'https://www.linkedin.com/in/saenzo/' },
-  { text: 'Resume', icon: <DownloadIcon />, url: '/resume.pdf' }
+  { text: 'Resume', icon: <DownloadIcon />, url: '' }
 ];
 
 export const SideNav = () => {
@@ -36,6 +37,22 @@ export const SideNav = () => {
     const index = menuItems.findIndex(item => item.path === location.pathname);
     setActiveMenuIndex(index);
   }, [location.pathname]);
+  
+  // Handle resume download
+  const handleResumeDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      // Create a link element to trigger download
+      const link = document.createElement('a');
+      link.href = resumePdf;
+      link.download = 'hsaenzresume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading resume:", error);
+    }
+  };
   
   return (
     <Paper
@@ -259,7 +276,8 @@ export const SideNav = () => {
                 <ListItemButton
                   component="a"
                   href={link.url}
-                  target="_blank"
+                  target={link.text !== 'Resume' ? "_blank" : undefined}
+                  onClick={link.text === 'Resume' ? handleResumeDownload : undefined}
                   sx={{
                     borderRadius: 1,
                     border: `2px solid ${theme.palette.accent2.main}`,
