@@ -1,7 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import { GlowingText } from "../../components/GlowingText";
-import StarIcon from '@mui/icons-material/Star';
 
 export const GameObjectiveSection = () => {
   const theme = useTheme();
