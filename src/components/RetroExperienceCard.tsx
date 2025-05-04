@@ -14,10 +14,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import { GlowingText } from "./GlowingText";
-import {
-  experienceLevelIcons,
-  getExperienceLevelTitle,
-} from "../config/experience";
+import { getExperienceLevelTitle } from "../config/experience";
 
 export interface ExperienceData {
   id: string;
@@ -25,7 +22,7 @@ export interface ExperienceData {
   company: string;
   period: string;
   description: string[];
-  icon: any; // React component
+  icon: React.ElementType; // React component
   color: string;
   type: "work" | "education" | "project";
   rewards?: string[];
@@ -175,33 +172,6 @@ export const RetroExperienceCard = ({
               }}
             >
               <Icon sx={{ color: "white", fontSize: 24 }} />
-
-              {/* Level indicator */}
-              {experience.level && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    bottom: -8,
-                    right: -8,
-                    bgcolor: theme.palette.background.paper,
-                    border: `2px solid ${theme.palette.primary.main}`,
-                    borderRadius: "50%",
-                    width: 24,
-                    height: 24,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "0.8rem",
-                    boxShadow: `0 0 8px ${alpha(theme.palette.primary.main, 0.5)}`,
-                  }}
-                >
-                  {
-                    experienceLevelIcons[
-                      experience.level as keyof typeof experienceLevelIcons
-                    ]
-                  }
-                </Box>
-              )}
             </Box>
 
             <Box sx={{ flex: 1 }}>
@@ -241,7 +211,10 @@ export const RetroExperienceCard = ({
                   border: `1px solid ${alpha(theme.palette.primary.main, 0.5)}`,
                   height: 24,
                   ml: 1,
-                  boxShadow: `0 0 8px ${alpha(theme.palette.primary.main, 0.3)}`,
+                  boxShadow: `0 0 8px ${alpha(
+                    theme.palette.primary.main,
+                    0.3,
+                  )}`,
                 }}
               />
             )}
@@ -331,7 +304,10 @@ export const RetroExperienceCard = ({
                   fontSize: "0.9rem",
                   mb: 1,
                   color: theme.palette.secondary.main,
-                  textShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.8)}`,
+                  textShadow: `0 0 10px ${alpha(
+                    theme.palette.secondary.main,
+                    0.8,
+                  )}`,
                 }}
               >
                 RESPONSIBILITIES
@@ -355,12 +331,17 @@ export const RetroExperienceCard = ({
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.main, 0.8)} 100%)`,
+                        background: `linear-gradient(135deg, ${
+                          theme.palette.primary.main
+                        } 0%, ${alpha(theme.palette.primary.main, 0.8)} 100%)`,
                         borderRadius: "4px",
                         fontSize: "0.8rem",
                         color: "#fff",
                         fontWeight: "bold",
-                        boxShadow: `0 0 8px ${alpha(theme.palette.primary.main, 0.5)}`,
+                        boxShadow: `0 0 8px ${alpha(
+                          theme.palette.primary.main,
+                          0.5,
+                        )}`,
                       }}
                     >
                       {index + 1}
@@ -390,7 +371,10 @@ export const RetroExperienceCard = ({
                     fontSize: "0.9rem",
                     mb: 1,
                     color: theme.palette.secondary.main,
-                    textShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.8)}`,
+                    textShadow: `0 0 10px ${alpha(
+                      theme.palette.secondary.main,
+                      0.8,
+                    )}`,
                   }}
                 >
                   SKILLS GAINED
@@ -419,7 +403,10 @@ export const RetroExperienceCard = ({
                     fontSize: "0.9rem",
                     mb: 1,
                     color: theme.palette.secondary.main,
-                    textShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.8)}`,
+                    textShadow: `0 0 10px ${alpha(
+                      theme.palette.secondary.main,
+                      0.8,
+                    )}`,
                   }}
                 >
                   REWARDS
@@ -427,7 +414,10 @@ export const RetroExperienceCard = ({
                 <Box
                   sx={{
                     pl: 2,
-                    borderLeft: `4px solid ${alpha(theme.palette.primary.main, 0.5)}`,
+                    borderLeft: `4px solid ${alpha(
+                      theme.palette.primary.main,
+                      0.5,
+                    )}`,
                   }}
                 >
                   {experience.rewards.map((reward, index) => (

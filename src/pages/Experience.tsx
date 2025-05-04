@@ -102,33 +102,6 @@ export const Experience = () => {
             A chronicle of my professional journey and completed quests. Each
             entry represents a significant adventure in my career path.
           </Typography>
-
-          <Box
-            component={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            sx={{
-              height: "8px",
-              width: "120px",
-              background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              borderRadius: "4px",
-              mb: 4,
-              position: "relative",
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                opacity: 0.5,
-                filter: "blur(8px)",
-                borderRadius: "4px",
-              },
-            }}
-          />
         </Box>
 
         {/* Experience Cards */}
@@ -142,7 +115,7 @@ export const Experience = () => {
                 <Fade
                   key={experience.id}
                   in
-                  timeout={500}
+                  timeout={100}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <Box>

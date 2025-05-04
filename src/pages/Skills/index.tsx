@@ -20,7 +20,6 @@ import WebIcon from "@mui/icons-material/Web";
 import ApiIcon from "@mui/icons-material/Api";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import DevicesIcon from "@mui/icons-material/Devices";
-import DnsIcon from "@mui/icons-material/Dns";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import PsychologyIcon from "@mui/icons-material/Psychology";
@@ -28,7 +27,6 @@ import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CalendarViewWeekIcon from "@mui/icons-material/CalendarViewWeek";
 import BrushIcon from "@mui/icons-material/Brush";
-import BuildIcon from "@mui/icons-material/Build";
 import DeveloperModeIcon from "@mui/icons-material/DeveloperMode";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
@@ -36,7 +34,6 @@ interface Skill {
   name: string;
   startYear: number;
   years: number;
-  projects: number;
   icon?: React.ReactNode;
   description?: string;
 }
@@ -61,167 +58,132 @@ export const Skills = () => {
         name: "JavaScript",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 12,
         icon: <JavascriptIcon />,
       },
       {
         name: "TypeScript",
-        startYear: 2016,
-        years: currentYear - 2016,
-        projects: 8,
+        startYear: 2019,
+        years: currentYear - 2019,
         icon: <CodeIcon />,
       },
       {
         name: "React",
-        startYear: 2017,
-        years: currentYear - 2017,
-        projects: 10,
+        startYear: 2020,
+        years: currentYear - 2020,
         icon: <WebIcon />,
       },
       {
         name: "Material UI",
-        startYear: 2018,
-        years: currentYear - 2018,
-        projects: 7,
+        startYear: 2022,
+        years: currentYear - 2022,
         icon: <DevicesIcon />,
       },
       {
         name: "Vue.js",
         startYear: 2018,
         years: currentYear - 2018,
-        projects: 5,
         icon: <LanguageIcon />,
       },
       {
         name: "GraphQL",
-        startYear: 2019,
-        years: currentYear - 2019,
-        projects: 4,
+        startYear: 2022,
+        years: currentYear - 2022,
         icon: <ApiIcon />,
       },
     ],
     backend: [
       {
         name: "Node.js",
-        startYear: 2016,
-        years: currentYear - 2016,
-        projects: 9,
+        startYear: 2015,
+        years: currentYear - 2015,
         icon: <TerminalIcon />,
       },
       {
         name: "Express.js",
-        startYear: 2016,
-        years: currentYear - 2016,
-        projects: 8,
+        startYear: 2015,
+        years: currentYear - 2015,
         icon: <DataObjectIcon />,
       },
       {
         name: "Elixir/Phoenix",
         startYear: 2022,
         years: currentYear - 2022,
-        projects: 3,
         icon: <AutoAwesomeIcon />,
       },
       {
         name: "PHP",
-        startYear: 2014,
-        years: currentYear - 2014,
-        projects: 12,
+        startYear: 2015,
+        years: currentYear - 2015,
         icon: <PhpIcon />,
       },
       {
         name: "C#",
         startYear: 2015,
         years: currentYear - 2015,
-        projects: 6,
         icon: <CodeIcon />,
       },
       {
         name: "Python",
-        startYear: 2018,
-        years: currentYear - 2018,
-        projects: 5,
+        startYear: 2023,
+        years: currentYear - 2023,
         icon: <DesignServicesIcon />,
       },
     ],
     database: [
       {
         name: "PostgreSQL",
-        startYear: 2016,
-        years: currentYear - 2016,
-        projects: 8,
+        startYear: 2023,
+        years: currentYear - 2023,
         icon: <StorageIcon />,
       },
       {
         name: "MongoDB",
-        startYear: 2017,
-        years: currentYear - 2017,
-        projects: 6,
+        startYear: 2015,
+        years: currentYear - 2015,
         icon: <StorageRoundedIcon />,
-      },
-      {
-        name: "Snowflake",
-        startYear: 2022,
-        years: currentYear - 2022,
-        projects: 2,
-        icon: <StorageRoundedIcon />,
-      },
-      {
-        name: "ClickHouse",
-        startYear: 2022,
-        years: currentYear - 2022,
-        projects: 1,
-        icon: <DnsIcon />,
       },
       {
         name: "SQL/NoSQL",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 15,
         icon: <CalendarViewWeekIcon />,
       },
     ],
     devops: [
       {
         name: "AWS",
-        startYear: 2019,
-        years: currentYear - 2019,
-        projects: 6,
+        startYear: 2024,
+        years: currentYear - 2024,
         icon: <CloudIcon />,
       },
       {
         name: "Docker",
         startYear: 2019,
         years: currentYear - 2019,
-        projects: 5,
         icon: <WebIcon />,
       },
       {
-        name: "Git (GitLab CI/CD)",
-        startYear: 2014,
-        years: currentYear - 2014,
-        projects: 20,
+        name: "Git - CI/CD",
+        startYear: 2018,
+        years: currentYear - 2018,
         icon: <GitHubIcon />,
       },
       {
         name: "Linux",
-        startYear: 2014,
-        years: currentYear - 2014,
-        projects: 15,
+        startYear: 2010,
+        years: currentYear - 2010,
         icon: <TerminalIcon />,
       },
       {
         name: "Jira",
-        startYear: 2017,
-        years: currentYear - 2017,
-        projects: 10,
+        startYear: 2022,
+        years: currentYear - 2022,
         icon: <DeveloperModeIcon />,
       },
       {
         name: "LaunchDarkly",
         startYear: 2022,
         years: currentYear - 2022,
-        projects: 2,
         icon: <ApiIcon />,
       },
     ],
@@ -230,7 +192,6 @@ export const Skills = () => {
         name: "Team Collaboration",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 20,
         icon: <HandshakeIcon />,
         description:
           "Party member synergy +100. Works well in multiplayer mode!",
@@ -239,7 +200,6 @@ export const Skills = () => {
         name: "Problem Solving",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 25,
         icon: <PsychologyIcon />,
         description:
           "Can solve puzzles and defeat boss bugs with strategic thinking",
@@ -248,7 +208,6 @@ export const Skills = () => {
         name: "Communication",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 22,
         icon: <RecordVoiceOverIcon />,
         description:
           "High charisma stat! Explains complex concepts in simple terms",
@@ -257,7 +216,6 @@ export const Skills = () => {
         name: "Adaptability",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 20,
         icon: <AutoFixHighIcon />,
         description: "Quick to master new environments and tech skill trees",
       },
@@ -265,7 +223,6 @@ export const Skills = () => {
         name: "Attention to Detail",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 25,
         icon: <StarRateIcon />,
         description: "Eagle-eyed bug hunter with +10 precision stat",
       },
@@ -273,7 +230,6 @@ export const Skills = () => {
         name: "Creativity",
         startYear: 2014,
         years: currentYear - 2014,
-        projects: 18,
         icon: <BrushIcon />,
         description:
           "Thinks outside the inventory box for innovative solutions",
@@ -361,7 +317,10 @@ export const Skills = () => {
                 left: 0,
                 width: "100%",
                 height: "5px",
-                background: `linear-gradient(90deg, ${alpha(color, 0.9)}, ${alpha(color, 0.5)})`,
+                background: `linear-gradient(90deg, ${alpha(
+                  color,
+                  0.9,
+                )}, ${alpha(color, 0.5)})`,
               },
             }}
           >
@@ -489,50 +448,6 @@ export const Skills = () => {
                     }}
                   >
                     {skill.startYear}
-                  </Typography>
-                </Box>
-
-                {/* Stat 3: Projects */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    p: 0.8,
-                    gap: 1,
-                    "&:hover": {
-                      background: alpha(color, 0.1),
-                    },
-                  }}
-                >
-                  <BuildIcon
-                    sx={{
-                      fontSize: "0.8rem",
-                      color: color,
-                      filter: `drop-shadow(0 0 3px ${alpha(color, 0.7)})`,
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      fontFamily: '"Press Start 2P", cursive',
-                      fontSize: "0.5rem",
-                      color: alpha(color, 0.9),
-                      textShadow: `0 0 3px ${alpha(color, 0.3)}`,
-                      flexGrow: 1,
-                      letterSpacing: "-0.5px",
-                    }}
-                  >
-                    PROJECTS
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: '"Press Start 2P", cursive',
-                      fontSize: "0.5rem",
-                      color: alpha(theme.palette.common.white, 0.9),
-                      textShadow: `0 0 4px ${alpha(color, 0.6)}`,
-                      letterSpacing: "-0.5px",
-                    }}
-                  >
-                    {skill.projects}+
                   </Typography>
                 </Box>
               </Box>
