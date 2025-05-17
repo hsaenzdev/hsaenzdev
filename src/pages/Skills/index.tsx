@@ -13,7 +13,6 @@ import JavascriptIcon from "@mui/icons-material/Javascript";
 import PhpIcon from "@mui/icons-material/Php";
 import DataObjectIcon from "@mui/icons-material/DataObject";
 import StorageRoundedIcon from "@mui/icons-material/StorageRounded";
-import LanguageIcon from "@mui/icons-material/Language";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import WebIcon from "@mui/icons-material/Web";
