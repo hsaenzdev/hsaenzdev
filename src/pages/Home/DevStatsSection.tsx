@@ -34,7 +34,7 @@ export const DevStatsSection = () => {
     {
       icon: <StorageIcon />,
       label: "DB",
-      value: "4+",
+      value: "2+",
       unit: "TYPES",
       color: theme.palette.error.main,
     },

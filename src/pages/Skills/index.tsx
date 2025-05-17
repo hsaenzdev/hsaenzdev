@@ -79,12 +79,6 @@ export const Skills = () => {
         icon: <DevicesIcon />,
       },
       {
-        name: "Vue.js",
-        startYear: 2018,
-        years: currentYear - 2018,
-        icon: <LanguageIcon />,
-      },
-      {
         name: "GraphQL",
         startYear: 2022,
         years: currentYear - 2022,
@@ -124,16 +118,16 @@ export const Skills = () => {
       },
       {
         name: "Python",
-        startYear: 2023,
-        years: currentYear - 2023,
+        startYear: 2024,
+        years: currentYear - 2024,
         icon: <DesignServicesIcon />,
       },
     ],
     database: [
       {
         name: "PostgreSQL",
-        startYear: 2023,
-        years: currentYear - 2023,
+        startYear: 2022,
+        years: currentYear - 2022,
         icon: <StorageIcon />,
       },
       {
@@ -144,8 +138,8 @@ export const Skills = () => {
       },
       {
         name: "SQL/NoSQL",
-        startYear: 2014,
-        years: currentYear - 2014,
+        startYear: 2015,
+        years: currentYear - 2015,
         icon: <CalendarViewWeekIcon />,
       },
     ],
@@ -157,12 +151,6 @@ export const Skills = () => {
         icon: <CloudIcon />,
       },
       {
-        name: "Docker",
-        startYear: 2019,
-        years: currentYear - 2019,
-        icon: <WebIcon />,
-      },
-      {
         name: "Git - CI/CD",
         startYear: 2018,
         years: currentYear - 2018,
@@ -170,8 +158,8 @@ export const Skills = () => {
       },
       {
         name: "Linux",
-        startYear: 2010,
-        years: currentYear - 2010,
+        startYear: 2015,
+        years: currentYear - 2015,
         icon: <TerminalIcon />,
       },
       {
@@ -319,7 +307,7 @@ export const Skills = () => {
                 height: "5px",
                 background: `linear-gradient(90deg, ${alpha(
                   color,
-                  0.9,
+                  0.9
                 )}, ${alpha(color, 0.5)})`,
               },
             }}
@@ -573,7 +561,7 @@ export const Skills = () => {
         >
           <Grid container spacing={2}>
             {skills[categoryKey].map((skill, index) =>
-              renderSkillCard(skill, index, categoryKey),
+              renderSkillCard(skill, index, categoryKey)
             )}
           </Grid>
         </Box>

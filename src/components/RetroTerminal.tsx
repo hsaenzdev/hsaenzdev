@@ -391,7 +391,6 @@ export const RetroTerminal = ({
         setCommandHistory((prev) => [...prev, "> Front-End:"]);
         setCommandHistory((prev) => [...prev, ">   • React"]);
         setCommandHistory((prev) => [...prev, ">   • Material UI"]);
-        setCommandHistory((prev) => [...prev, ">   • Vue.js"]);
         setCommandHistory((prev) => [...prev, ">   • GraphQL"]);
         setCommandHistory((prev) => [...prev, "> Back-End:"]);
         setCommandHistory((prev) => [...prev, ">   • Node.js"]);
