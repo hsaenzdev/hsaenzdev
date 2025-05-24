@@ -51,11 +51,13 @@ export const GameObjectiveSection = () => {
             letterSpacing: "0.03em",
           }}
         >
-          With 10+ years crafting intuitive, high-performance web apps. My jam
-          is React, TypeScript, and backend (Node.js, Python), always aiming for
-          faster and scalable systems. Love tackling challenges to build
-          impactful solutions and thrive in collaborative teams. Let's connect
-          if you need a committed and reliable developer!
+          With 10+ years of experience building high-performance web apps, I
+          specialize in React, TypeScript, and backend development with Node.js,
+          SQL/NoSQL. I focus on making systems faster, more efficient, and
+          scalable while solving technical challenges that drive real impact. If
+          you're looking for a developer who brings reliability,
+          problem-solving, and a strong commitment to getting things done, let’s
+          connect!
         </Typography>
       </motion.div>
     </Box>
