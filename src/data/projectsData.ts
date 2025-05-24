@@ -115,7 +115,7 @@ export const projectsData: ProjectData[] = [
       "Optimized performance for large datasets",
       "Created intuitive user interactions for data exploration",
     ],
-    year: "2022-Present",
+    year: "2022-2025",
     githubUrl: "#",
   },
   {

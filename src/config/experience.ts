@@ -8,7 +8,7 @@ export interface ExperienceItem {
   company: string;
   period: string;
   description: string[];
-  icon: any; // React component
+  icon: React.ElementType; // React component
   color: string;
   type: "work" | "education" | "project";
   rewards?: string[];
@@ -32,7 +32,7 @@ export const experienceItems: ExperienceItem[] = [
     id: "sonatafy",
     title: "Full Stack Developer",
     company: "Sonatafy Technology",
-    period: "Jun 2022 - Present",
+    period: "Jun 2022 - 2025",
     shortDescription:
       "Developing interactive data visualizations and full-stack features using TypeScript/React, Material UI, and Elixir/Phoenix.",
     description: [
