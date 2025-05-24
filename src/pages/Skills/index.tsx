@@ -306,7 +306,7 @@ export const Skills = () => {
                 height: "5px",
                 background: `linear-gradient(90deg, ${alpha(
                   color,
-                  0.9
+                  0.9,
                 )}, ${alpha(color, 0.5)})`,
               },
             }}
@@ -560,7 +560,7 @@ export const Skills = () => {
         >
           <Grid container spacing={2}>
             {skills[categoryKey].map((skill, index) =>
-              renderSkillCard(skill, index, categoryKey)
+              renderSkillCard(skill, index, categoryKey),
             )}
           </Grid>
         </Box>
