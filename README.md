@@ -7,11 +7,13 @@
   <img src="https://img.shields.io/badge/Location-Mexico-D80032?style=for-the-badge&logo=google-maps&logoColor=white" />
 </div>
 
-## 🎮 Developer Profile
+<img src="https://i.imgur.com/waxVImv.png" width="100%" height="3" style="margin: 32px 0;" />
 
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=0,2,2,5,30&height=200&section=header&text=Hector%20Saenz&desc=FULL-STACK%20DEVELOPER&fontSize=50&descSize=25&fontColor=FFFFFF&animation=fadeIn&fontAlignY=45&descAlignY=75">
 </div>
+
+<img src="https://i.imgur.com/waxVImv.png" width="100%" height="3" style="margin: 32px 0;" />
 
 <div align="center">
   <table border="0">
@@ -22,7 +24,7 @@
         </div>
         <img src="https://raw.githubusercontent.com/saadeghi/saadeghi/master/dino.gif" width="100%" />
         <div>
-          <img src="https://img.shields.io/badge/Sonatafy-Current-2bbc8a?style=for-the-badge&labelColor=black" />
+          <img src="https://img.shields.io/badge/Sonatafy-3_Years-2bbc8a?style=for-the-badge&labelColor=black" />
           <img src="https://img.shields.io/badge/Classifile-7_Years-0000FF?style=for-the-badge&labelColor=black" />
           <img src="https://img.shields.io/badge/Overall-10+_YEARS-FF0000?style=for-the-badge&labelColor=black" />
         </div>
@@ -48,9 +50,8 @@
   </table>
 </div>
 
-<!-- Special Abilities -->
+<img src="https://i.imgur.com/waxVImv.png" width="100%" height="3">
 <div align="center">
-  <img src="https://i.imgur.com/waxVImv.png" width="100%" height="3">
   <table width="100%" border="0">
     <tr>
       <td align="center" width="33%">
@@ -70,19 +71,20 @@
       </td>
     </tr>
   </table>
-  <img src="https://i.imgur.com/waxVImv.png" width="100%" height="3">
 </div>
+<img src="https://i.imgur.com/waxVImv.png" width="100%" height="3" style="margin: 32px 0;" />
 
 ## 🧙‍♂️ Tech Inventory
 
-<table>
+<div align="center">
+<table width="100%" border="0">
   <tr>
     <td align="center">
       <img src="https://skillicons.dev/icons?i=ts,react,js,vue" alt="Front-End Skills"/><br/>
       <strong>Front-End</strong>
     </td>
     <td align="center">
-      <img src="https://skillicons.dev/icons?i=nodejs,express,elixir,php,cs" alt="Back-End Skills"/><br/>
+      <img src="https://skillicons.dev/icons?i=nodejs,express,java,php,cs" alt="Back-End Skills"/><br/>
       <strong>Back-End</strong>
     </td>
     <td align="center">
@@ -107,33 +109,15 @@
     </td>
   </tr>
 </table>
+</div>
 
-## 📜 Quest Log (Experience)
+<img src="https://i.imgur.com/waxVImv.png" width="100%" height="3" style="margin: 32px 0;" />
 
-### 🏆 Sonatafy Technology (Jun 2022-2025)
-- Developed interactive data visualization dashboards using amCharts
-- Built full-stack features with TypeScript/React, Material UI, Elixir/Phoenix, and Java
-- Implemented feature flags with Launch Darkly
-- Enhanced platform performance through caching and workflow optimizations
-- Streamlined development processes by improving CI/CD pipelines
+## 💬 Who I am?
 
-### 🏆 Classifile de México (2014-2021)
-- Led development of a document management platform
-- Built a secure cloud storage and sync service
-- Created an intuitive file classification system
-- Developed custom integrations using C#
-- Managed entire development lifecycle using PHP, JavaScript, and C#
+> I'm the guy who turns complex technical problems into elegant, user-friendly solutions. After 10+ years in the trenches of web development, I've developed a knack for building systems that scale well and don't break when users do unexpected things. I prefer straightforward communication and collaborative problem solving over bureaucracy. When I'm not coding, I'm usually exploring new tech or finding ways to optimize existing systems - it's just how my brain works.
 
-## 🌟 Current Side Quests
-
-- 🚀 Exploring advanced React patterns and optimizations
-- 🧠 Deepening cloud architecture expertise on AWS
-- 🔄 Perfecting CI/CD automation strategies
-- 🛡️ Enhancing application security practices
-
-## 💬 Character Bio
-
-> "I build user-friendly, scalable web applications with a focus on performance and maintainability. With over a decade of experience across the full stack, I bring reliability, strong problem-solving skills, and excellent communication to every project. I thrive in collaborative environments and enjoy tackling complex technical challenges."
+<img src="https://i.imgur.com/waxVImv.png" width="100%" height="3" style="margin: 32px 0;" />
 
 ## 📟 Contact Info
 
@@ -144,6 +128,9 @@
   <a href="mailto:hectors.digital@gmail.com">
     <img src="https://img.shields.io/badge/EMAIL-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/>
   </a>
+  <a href="https://hsaenzdev.github.io/hsaenzdev/" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/PORTFOLIO-2bbc8a?style=for-the-badge&logo=react&logoColor=white" alt="Portfolio"/>
+  </a>
   <img src="https://img.shields.io/badge/PHONE-+52_867_751_4055-2bbc8a?style=for-the-badge&logo=phonegap&logoColor=white" alt="Phone"/>
 </div>
 
@@ -153,3 +140,5 @@
   <p>Press ⭐ to save progress</p>
   <img src="https://komarev.com/ghpvc/?username=saenzo&style=for-the-badge&color=2bbc8a" alt="Profile Views" />
 </div>
+
+<img src="https://i.imgur.com/waxVImv.png" width="100%" height="3" style="margin: 32px 0;" />
