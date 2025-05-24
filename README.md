@@ -110,7 +110,7 @@
 
 ## 📜 Quest Log (Experience)
 
-### 🏆 Sonatafy Technology (Jun 2022-Present)
+### 🏆 Sonatafy Technology (Jun 2022-2025)
 - Developed interactive data visualization dashboards using amCharts
 - Built full-stack features with TypeScript/React, Material UI, Elixir/Phoenix, and Java
 - Implemented feature flags with Launch Darkly
